@@ -1,0 +1,27 @@
+{
+  "name": "webmention-hosted",
+  "description": "An app to receive and show WebMentions on sites",
+  "author": {
+    "name": "Pelle Wessman",
+    "email": "pelle@kodfabrik.se",
+    "url": "http://kodfabrik.se/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "~3.2.5",
+    "pg": "~1.1.1",
+    "microformat-node": "~0.2.4",
+    "cheerio": "0.10.0",
+    "request": "~2.27.0",
+    "ff": "~0.1.3"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  },
+  "main": "./lib/main",
+  "directories": {
+    "lib": "./lib"
+  },
+  "private": true
+}
