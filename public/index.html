@@ -15,24 +15,33 @@
     <div class="subtitle">Easily accept and embed WebMentions on all type of sites</div>
   </div>
   <div id="main">
-    <div class="post">
+    <div class="receive">
       <h2>How do I receive?</h2>
       <p>You receive WebMentions through this service in three easy steps:</p>
       <ol>
-        <li>
+        <li class="first-step">
           <p>You <strong>sign in</strong> using one of these services:</p>
           <ul>
             <li>
               <form action="/user/auth/github" method="post">
                 <div><button type="submit">Sign in with GitHub</button></div>
+              </form>
             </li>
           </ul>
         </li>
-        <li>Then you add your the <strong>hostname</strong> (eg. example.com) of the site you want to accept WebMentions for.</li>
+        <li class="second-step">
+          <p>Then you add your the <strong>domain name</strong> (eg. example.com) of the site you want to accept WebMentions for.</p>
+          <form action="/user/sites" method="post">
+            <p>
+              <label>Domain name: <input type="text" name="hostname" placeholder="example.com" /></label>
+              <button type="submit">Add domain name</button>
+            </p>
+          </form>
+        </li>
         <li>Lastly you add the WebMention <strong>endpoint</strong> to your posts as well as an <strong>html-snippet</strong> for embedding:</li>
       </ol>
     </div>
-    <div class="post">
+    <div>
       <h2>How do I send?</h2>
       <p>For now refer to the <a href="http://indiewebcamp.com/webmention">IndieWebCamp wiki</a> for information on how to send WebMentions.</p>
     </div>
@@ -42,4 +51,7 @@
     <p>It's a service for accepting and displaying <a href="http://indiewebcamp.com/webmention">WebMentions</a> on your site – something that's especially handy if you're hosting a static blog with a platform like Jekyll and perhaps hosted on GitHub Pages as you then can't really handle it by yourself at your own site.</p>
   </div>
   <address>Built by <a href="http://kodfabrik.se/">VoxPelli</a>. Part of the <a href="http://indiewebcamp.com/">IndieWeb</a> movement.</address>
+
+  <script src="/jquery.min.js" type="text/javascript"></script>
+  <script src="/script.js" type="text/javascript"></script>
 </body>
