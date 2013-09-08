@@ -22,7 +22,10 @@
         <li>
           <p>You <strong>sign in</strong> using one of these services:</p>
           <ul>
-            <li><a href="/auth/github">Sign in with GitHub</a></li>
+            <li>
+              <form action="/user/auth/github" method="post">
+                <div><button type="submit">Sign in with GitHub</button></div>
+            </li>
           </ul>
         </li>
         <li>Then you add your the <strong>hostname</strong> (eg. example.com) of the site you want to accept WebMentions for.</li>
