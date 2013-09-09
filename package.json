@@ -15,7 +15,8 @@
     "request": "~2.27.0",
     "ff": "~0.1.3",
     "passport": "~0.1.17",
-    "passport-github": "~0.1.5"
+    "passport-github": "~0.1.5",
+    "ejs": "~0.8.4"
   },
   "engines": {
     "node": "0.10.x",
