@@ -25,5 +25,8 @@
   "directories": {
     "lib": "./lib"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "passport-dummy": "0.0.1"
+  }
 }
