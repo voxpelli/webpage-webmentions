@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>A WebMention Endpoint</title>
   <link href='http://fonts.googleapis.com/css?family=Faster+One' rel='stylesheet' type='text/css'>
+  <link rel="webmention" href="/api/webmention" />
   <link rel="stylesheet" type="text/css" href="/style.css" />
   <script type="text/javascript">
     document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
@@ -17,7 +18,7 @@
   <div id="main">
     <div class="receive">
       <h2>How do I receive?</h2>
-      <p>You receive WebMentions through this service in three easy steps:</p>
+      <p>You receive WebMentions through this service in <strong>three easy steps</strong>:</p>
       <ol>
         <li class="first-step">
           <p>You <strong>sign in</strong> using one of these services:</p>
@@ -38,12 +39,29 @@
             </p>
           </form>
         </li>
-        <li>Lastly you add the WebMention <strong>endpoint</strong> to your posts as well as an <strong>html-snippet</strong> for embedding:</li>
+        <li>
+          <p>Lastly you add the <strong>WebMention endpoint</strong> to the HTML-head of your posts to accept mentions and a <strong>HTML-snippet</strong> where you want to embed them:</p>
+          <textarea class="webmention-link" readonly><link rel="webmention" href="http://example.com/api/webmention" /></textarea>
+          <textarea class="webmention-embed" readonly><script id="webmention-hosted" src="http://example.com/api/embed?url=http://example.com/path/to/post" type="text/javascript"></script></textarea>
+        </li>
+        <li>(And after you've done all that feel free to add a final touch with some nice styles)</li>
       </ol>
     </div>
     <div>
       <h2>How do I send?</h2>
       <p>For now refer to the <a href="http://indiewebcamp.com/webmention">IndieWebCamp wiki</a> for information on how to send WebMentions.</p>
+    </div>
+    <div>
+      <h2>Example: The mentions of this site</h2>
+      <script id="webmention-hosted">
+        (function () {
+          var sn = document.createElement('script'), s = document.getElementsByTagName('script')[0];
+          sn.type = 'text/javascript';
+          sn.async = true;
+          sn.src = 'http://127.0.0.1:5000/api/embed?url=' + encodeURIComponent(window.location);
+          s.parentNode.insertBefore(sn, s);
+        }());
+      </script>
     </div>
   </div>
   <div id="siteinfo">

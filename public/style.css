@@ -13,3 +13,29 @@ ul{list-style:none}
 .subtitle{font-size:.8em;padding:0 100px 40px;text-align:center;margin-bottom:15px}
 #siteinfo,#main > div{padding: 15px 20px;margin-bottom:8px}
 address{font-style:normal;padding:0 10px 10px;text-align:center;font-size:.7em}
+textarea{width:80%;border-radius:2px;border:1px solid #ccc;background:#eee;padding:5px;resize: none;height:2.5em;margin-top:20px;}
+textarea:first-of-type{margin-top:0}
+
+.webmention-mention {
+  padding-left: 9%;
+  position: relative;
+  margin-bottom: 20px;
+}
+.webmention-text {
+  padding: 10px 0;
+}
+.webmention-author {
+  font-size: .9em;
+}
+.webmention-published {
+  display: block;
+  font-size: .7em;
+  color: inherit;
+}
+.webmention-author img {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 7%;
+  border-radius: 240px;
+}

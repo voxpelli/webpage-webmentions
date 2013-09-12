@@ -1,1 +1,60 @@
-console.log(<%= JSON.stringify(mentions) %>);
+(function (mentions) {
+  var locations = document.getElementById('webmention-hosted')
+    , createChild = function (elem, tag, className) {
+        var newElem = document.createElement(tag);
+        if (elem) elem.appendChild(newElem);
+        if (className) newElem.className = 'webmention-' + className;
+        return newElem;
+      }
+    , addText = function (tag, text) {
+        tag.appendChild(document.createTextNode(text));
+      }
+    , prettyDate = function (time) {
+      var date = new Date(time),
+        diff = (((new Date()).getTime() - date.getTime()) / 1000),
+        day_diff = Math.floor(diff / 86400);
+
+      if (isNaN(day_diff))
+        return '';
+      if (day_diff < 0)
+        return date.toLocaleString();
+
+      return day_diff == 0 && (
+          diff < 60 && "just now" ||
+          diff < 120 && "1 minute ago" ||
+          diff < 3600 && Math.floor( diff / 60 ) + " minutes ago" ||
+          diff < 7200 && "1 hour ago" ||
+          diff < 86400 && Math.floor( diff / 3600 ) + " hours ago") ||
+        day_diff == 1 && "Yesterday" ||
+        day_diff < 7 && day_diff + " days ago" ||
+        day_diff < 365 && Math.ceil( day_diff / 7 ) + " weeks ago" ||
+        Math.ceil( day_diff / 365 ) + " years ago";
+    }
+    , container = createChild(false, 'div', 'container')
+    , i
+    , length
+    , mention
+    , box
+    , author
+    , avatar
+    , published;
+
+  for (i = 0, length = mentions.length; i < length; i += 1) {
+    mention = mentions[i];
+    box = createChild(container, 'div', 'mention');
+
+    author = createChild(createChild(box, 'div', 'author'), 'a');
+    author.href = mention.author.url;
+    avatar = createChild(author, 'img');
+    avatar.src = mention.author.photo;
+    addText(author, mention.author.name);
+
+    addText(createChild(box, 'div', 'text'), mention.name);
+
+    published = createChild(box, 'a', 'published');
+    addText(published, prettyDate(mention.published));
+    published.href = mention.url;
+  }
+
+  if (length) locations.parentNode.insertBefore(container, locations);
+}(<%- JSON.stringify(mentions) %>));

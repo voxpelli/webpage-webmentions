@@ -34,4 +34,11 @@
   };
 
   checkLoginStatus();
+
+  $('textarea').on('mouseup', function () {
+      $(this).select();
+  }).each(function () {
+    var $this = $(this);
+    $this.val($this.val().replace('"http://example.com', '"' + window.location.protocol + '//' + window.location.host));
+  });
 }($));
