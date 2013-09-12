@@ -42,7 +42,16 @@
         <li>
           <p>Lastly you add the <strong>WebMention endpoint</strong> to the HTML-head of your posts to accept mentions and a <strong>HTML-snippet</strong> where you want to embed them:</p>
           <textarea class="webmention-link" readonly><link rel="webmention" href="http://example.com/api/webmention" /></textarea>
-          <textarea class="webmention-embed" readonly><script id="webmention-hosted" src="http://example.com/api/embed?url=http://example.com/path/to/post" type="text/javascript"></script></textarea>
+          <textarea class="webmention-embed" readonly><script id="webmention-hosted">
+  (function () {
+    var sn = document.createElement("script"), s = document.getElementsByTagName("script")[0], url;
+    url = document.querySelectorAll ? document.querySelectorAll("link[rel~=canonical]") : false;
+    url = url && url[0] ? url[0].href : false;
+    sn.type = "text/javascript"; sn.async = true;
+    sn.src = "http://example.com/api/embed?url=" + encodeURIComponent(url || window.location);
+    s.parentNode.insertBefore(sn, s);
+  }());
+</script></textarea>
         </li>
         <li>(And after you've done all that feel free to add a final touch with some nice styles)</li>
       </ol>
@@ -55,10 +64,11 @@
       <h2>Example: The mentions of this site</h2>
       <script id="webmention-hosted">
         (function () {
-          var sn = document.createElement('script'), s = document.getElementsByTagName('script')[0];
-          sn.type = 'text/javascript';
-          sn.async = true;
-          sn.src = 'http://127.0.0.1:5000/api/embed?url=' + encodeURIComponent(window.location);
+          var sn = document.createElement('script'), s = document.getElementsByTagName('script')[0], url;
+          url = document.querySelectorAll ? document.querySelectorAll('link[rel~=canonical]') : false;
+          url = url && url[0] ? url[0].href : false;
+          sn.type = 'text/javascript'; sn.async = true;
+          sn.src = 'http://127.0.0.1:5000/api/embed?url=' + encodeURIComponent(url || window.location);
           s.parentNode.insertBefore(sn, s);
         }());
       </script>
