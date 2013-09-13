@@ -12,6 +12,12 @@
         })))
         checkSites();
       } else {
+        if (data.accountsAvailable !== undefined) {
+          $('<p />', {
+            "class": "accounts-available",
+            text : '(' + data.accountsAvailable + ' accounts left at the moment)'
+          }).insertAfter('.receive li.first-step > ul');
+        }
         $('.receive li.second-step form').remove();
         if (data.dev) {
           $('<a />', {
