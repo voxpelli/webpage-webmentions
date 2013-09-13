@@ -15,7 +15,7 @@ ul{list-style:none}
 .accounts-available{font-size:14px;}
 #siteinfo,#main > div{padding: 15px 20px;margin-bottom:8px}
 address{font-style:normal;padding:0 10px 10px;text-align:center;font-size:.7em}
-textarea{width:80%;border-radius:2px;border:1px solid #ccc;background:#eee;padding:5px;resize: none;height:1em;margin-top:20px;}
+textarea{width:80%;border-radius:2px;border:1px solid #ccc;background:#eee;padding:5px;resize: none;height:2.1em;margin-top:20px;}
 textarea.webmention-embed{height:14em}
 textarea:first-of-type{margin-top:0}
 
