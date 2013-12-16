@@ -1,7 +1,7 @@
 (function ($) {
   "use strict";
 
-  var checkLoginStatus, checkSites;
+  var checkLoginStatus, checkSites, removeSite;
 
   checkLoginStatus = function () {
     $.getJSON('/user/status', function (data) {
@@ -33,10 +33,26 @@
     $.getJSON('/user/sites', function (data) {
       var $list = $('<ul />');
       $.each(data.sites, function (i, value) {
-        $('<li />').text(value).appendTo($list);
+        var $listItem = $('<li />').text(value + ' ');
+        $('<button />').attr('type', 'button').text('Remove').appendTo($listItem).click(function (e) {
+          removeSite.call(this, value);
+        });
+        $listItem.appendTo($list);
       });
       $list.insertBefore('.receive li.second-step form');
     });
+  };
+
+  removeSite = function (site) {
+    var $this = $(this).text('Removing...');
+    $.post('/user/sites', {
+      action : 'delete',
+      hostname : site
+    }, function () {
+      $this.parent().slideUp(function () {
+        $this.remove();
+      });
+    }, 'json');
   };
 
   checkLoginStatus();
