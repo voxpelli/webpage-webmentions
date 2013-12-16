@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>A WebMention Endpoint</title>
-  <link href='http://fonts.googleapis.com/css?family=Faster+One' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Faster+One' rel='stylesheet' type='text/css'>
   <link rel="webmention" href="/api/webmention" />
   <link rel="stylesheet" type="text/css" href="/style.css" />
   <script type="text/javascript">
@@ -32,7 +32,7 @@
           </ul>
         </li>
         <li class="second-step">
-          <p>Then you add your the <strong>domain name</strong> (eg. example.com) of the site you want to accept WebMentions for.</p>
+          <p>Then you add the <strong>domain name</strong> (eg. example.com) of the site you want to accept WebMentions for:</p>
           <form action="/user/sites" method="post">
             <p>
               <label>Domain name: <input type="text" name="hostname" placeholder="example.com" /></label>
@@ -41,7 +41,7 @@
           </form>
         </li>
         <li>
-          <p>Lastly you add the <strong>WebMention endpoint</strong> to the HTML-head of your posts to accept mentions and a <strong>HTML-snippet</strong> where you want to embed them:</p>
+          <p>Lastly you add this <strong>WebMention endpoint</strong> to the HTML-head of your posts and the following <strong>HTML-snippet</strong> where you want to embed the mentions:</p>
           <textarea class="webmention-link" readonly><link rel="webmention" href="http://example.com/api/webmention" /></textarea>
           <textarea class="webmention-embed" readonly><script id="webmention-hosted">
   (function () {
@@ -54,7 +54,7 @@
   }());
 </script></textarea>
         </li>
-        <li>(And after you've done all that feel free to add a final touch with some nice styles)</li>
+        <li>(Add some cool styles!)</li>
       </ol>
     </div>
     <div>
@@ -77,7 +77,7 @@
   </div>
   <div id="siteinfo">
     <h2>Why this?</h2>
-    <p>It's a service for accepting and displaying <a href="http://indiewebcamp.com/webmention">WebMentions</a> on your site – something that's especially handy if you're hosting a static blog with a platform like Jekyll and perhaps hosted on GitHub Pages as you then can't really handle it by yourself at your own site.</p>
+    <p>It's a service for accepting and displaying <a href="http://indiewebcamp.com/webmention">WebMentions</a> on your site. Handy if you're hosting a static blog, like a <a href="http://jekyllrb.com/">Jekyll</a> one, on something like <a href="http://pages.github.com/">GitHub Pages</a> where you then can't really handle the mentions by yourself.</p>
   </div>
   <address>Built by <a href="http://kodfabrik.se/">VoxPelli</a>. Part of the <a href="http://indiewebcamp.com/">IndieWeb</a> movement.</address>
 
