@@ -61,6 +61,9 @@
       $(this).select();
   }).each(function () {
     var $this = $(this);
-    $this.val($this.val().replace('"http://example.com', '"' + window.location.protocol + '//' + window.location.host));
+      , text = $this.val();
+    text = text.replace('"http://example.com', '"' + window.location.protocol + '//' + window.location.host);
+    text = text.replace('//example.com', '//' + window.location.host);
+    $this.val(text);
   });
 }($));
