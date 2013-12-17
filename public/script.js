@@ -60,7 +60,7 @@
   $('textarea').on('mouseup', function () {
       $(this).select();
   }).each(function () {
-    var $this = $(this);
+    var $this = $(this)
       , text = $this.val();
     text = text.replace('"http://example.com', '"' + window.location.protocol + '//' + window.location.host);
     text = text.replace('//example.com', '//' + window.location.host);

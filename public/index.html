@@ -49,7 +49,7 @@
     url = document.querySelectorAll ? document.querySelectorAll("link[rel~=canonical]") : false;
     url = url && url[0] ? url[0].href : false;
     sn.type = "text/javascript"; sn.async = true;
-    sn.src = "http://example.com/api/embed?url=" + encodeURIComponent(url || window.location);
+    sn.src = "//example.com/api/embed?url=" + encodeURIComponent(url || window.location);
     s.parentNode.insertBefore(sn, s);
   }());
 </script></textarea>
@@ -69,7 +69,7 @@
           url = document.querySelectorAll ? document.querySelectorAll('link[rel~=canonical]') : false;
           url = url && url[0] ? url[0].href : false;
           sn.type = 'text/javascript'; sn.async = true;
-          sn.src = 'http://' + window.location.host + '/api/embed?url=' + encodeURIComponent(url || window.location);
+          sn.src = '//' + window.location.host + '/api/embed?url=' + encodeURIComponent(url || window.location);
           s.parentNode.insertBefore(sn, s);
         }());
       </script>
