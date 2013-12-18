@@ -41,15 +41,25 @@
 
   for (i = 0, length = mentions.length; i < length; i += 1) {
     mention = mentions[i];
+    mention.author = mention.author || {};
     box = createChild(container, 'div', 'mention');
 
-    author = createChild(createChild(box, 'div', 'author'), 'a');
-    author.href = mention.author.url;
-    avatar = createChild(author, 'img');
-    avatar.src = mention.author.photo;
-    addText(author, mention.author.name);
+    author = createChild(createChild(box, 'div', 'author'), mention.author.url ? 'a' : 'span');
+    if (mention.author.url) {
+      author.href = mention.author.url;
+    }
+    if (mention.author.photo) {
+      avatar = createChild(author, 'img');
+      avatar.src = mention.author.photo;
+    }
+    addText(author, mention.author.name || 'Unknown');
 
-    addText(createChild(box, 'div', 'text'), mention.name);
+    if (mention.name) {
+      addText(createChild(box, 'div', 'name'), mention.name);
+    }
+    if (mention.summary) {
+      addText(createChild(box, 'div', 'summary'), mention.summary);
+    }
 
     published = createChild(box, 'a', 'published');
     addText(published, prettyDate(mention.published));

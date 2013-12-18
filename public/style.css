@@ -25,8 +25,8 @@ textarea:first-of-type{margin-top:0}
   position: relative;
   margin-bottom: 20px;
 }
-.webmention-text {
-  padding: 10px 0;
+.webmention-name, .webmention-summary {
+  margin: 10px 0;
 }
 .webmention-author {
   font-size: .9em;
