@@ -38,6 +38,14 @@
 
   checkLoginStatus = function () {
     $.getJSON('/user/status', function (data) {
+      if (data.version) {
+        $('<span />').text('. ').prependTo('body > address');
+        $('<a />').attr({
+          href: 'https://github.com/voxpelli/webpage-webmentions/releases/tag/v' + encodeURIComponent(data.version),
+          target: '_blank'
+        }).text(data.version).prependTo('body > address');
+        $('<span />').text('Version ').prependTo('body > address');
+      }
       if (data.loggedin) {
         $('.receive li.first-step ul').replaceWith($('<p />').text('Done! ').append($('<a />', {
           href : '/user/logout',

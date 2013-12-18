@@ -1,6 +1,7 @@
 {
   "name": "webmention-hosted",
-  "description": "An app to receive and show WebMentions on sites",
+  "description": "A site that receives and embeds WebMentions for other sites",
+  "version": "0.1.0",
   "author": {
     "name": "Pelle Wessman",
     "email": "pelle@kodfabrik.se",
