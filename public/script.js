@@ -1,7 +1,40 @@
 (function ($) {
   "use strict";
 
-  var checkLoginStatus, checkSites, removeSite;
+  var getQueryParams, showErrorMessages, checkLoginStatus, checkSites, removeSite;
+
+  getQueryParams = function () {
+    var params = {};
+    $.each(window.location.search.substr(1).split('&'), function (key, value) {
+      value = value.split('=');
+      params[value[0]] = value[1] || true;
+    });
+    return params;
+  };
+
+  showErrorMessages = function () {
+    var queryParams = getQueryParams(),
+      message,
+      $error = $('#main .error');
+
+    switch (queryParams['error']) {
+      case 'login':
+        message = 'Login failed';
+        break;
+      case 'sites':
+        message = 'Failed to add domain';
+        break;
+    }
+
+    if (message) {
+      if (!$error.length) {
+        $error = $('<div />').text(message).addClass('error').wrapInner('<p />').prepend($('<h2 />').text('Error')).prependTo('#main');
+      }
+      $error.text();
+    } else {
+      $error.remove();
+    }
+  };
 
   checkLoginStatus = function () {
     $.getJSON('/user/status', function (data) {
@@ -55,6 +88,7 @@
     }, 'json');
   };
 
+  showErrorMessages();
   checkLoginStatus();
 
   $('textarea').on('mouseup', function () {
