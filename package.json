@@ -1,7 +1,7 @@
 {
   "name": "webmention-hosted",
   "description": "A site that receives and embeds WebMentions for other sites",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Pelle Wessman",
     "email": "pelle@kodfabrik.se",
@@ -18,7 +18,8 @@
     "passport": "~0.1.17",
     "passport-github": "~0.1.5",
     "ejs": "~0.8.5",
-    "lru-cache": "~2.5.0"
+    "lru-cache": "~2.5.0",
+    "newrelic": "~1.2.0"
   },
   "engines": {
     "node": "0.10.x",

@@ -24,14 +24,17 @@ Set these up locally by copying `sample.env` to `.env` and changing the values i
 ### Required
 
 * **DATABASE_URL** - a configuration URL for a PostgreSQL database
-* **WEBMENTIONS___COOKIE___SECRET** - a secret for the cookie that will make sure a user stays logged in
-* **WEBMENTIONS___GITHUB___ID** - a GitHub OAuth consumer id, used for logging in with GitHub
-* **WEBMENTIONS___GITHUB___SECRET** - a GitHub OAuth consumer secret
+* **WEBMENTIONS_COOKIE_SECRET** - a secret for the cookie that will make sure a user stays logged in
+* **WEBMENTIONS_GITHUB_ID** - a GitHub OAuth consumer id, used for logging in with GitHub
+* **WEBMENTIONS_GITHUB_SECRET** - a GitHub OAuth consumer secret
 * **WEBMENTIONS_HOSTNAME** - the hostname of the place your hosting the application on
+
 
 ### Optional
 
-* **WEBMENTIONS___USER___LIMIT** - the total maximum of users you want to be able to use your application
+* **WEBMENTIONS_USER_LIMIT** - the total maximum of users you want to be able to use your application
+* **NEW_RELIC_LICENSE_KEY** - the license key for New Relic, if you want to use that
+* **NEW_RELIC_ENABLED** - set to true if you want to use New Relic
 
 ## Requirements
 
@@ -40,6 +43,10 @@ Set these up locally by copying `sample.env` to `.env` and changing the values i
 * [Foreman](http://ddollar.github.io/foreman/) (can be avoided, but is highly recommended)
 
 ## Changelog
+
+### 0.1.1
+
+* Added New Relic diagnostics
 
 ### 0.1.0
 
