@@ -44,6 +44,10 @@ Set these up locally by copying `sample.env` to `.env` and changing the values i
 
 ## Changelog
 
+### 0.1.2
+
+* Expanding relative links in the source page when checking for a valid target
+
 ### 0.1.1
 
 * Added New Relic diagnostics
