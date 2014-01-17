@@ -47,6 +47,7 @@ Set these up locally by copying `sample.env` to `.env` and changing the values i
 ### 0.1.2
 
 * Expanding relative links in the source page when checking for a valid target
+* Ensure graceful shutdown of database to handle Heroku environment better
 
 ### 0.1.1
 
