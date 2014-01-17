@@ -48,6 +48,8 @@ Set these up locally by copying `sample.env` to `.env` and changing the values i
 
 * Expanding relative links in the source page when checking for a valid target
 * Ensure graceful shutdown of database to handle Heroku environment better
+* Ignore port when matching a mention's target host to registered hosts
+* Do not throttle pings in development environments (useful with [webmention-testpinger](https://github.com/voxpelli/node-webmention-testpinger))
 
 ### 0.1.1
 
