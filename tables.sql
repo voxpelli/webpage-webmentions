@@ -30,7 +30,8 @@ WITH (OIDS=FALSE);
 DROP TABLE IF EXISTS "public"."mentions";
 CREATE TABLE "public"."mentions" (
 	"eid" int4 NOT NULL,
-	"url" varchar NOT NULL COLLATE "default"
+	"url" varchar NOT NULL COLLATE "default",
+	"hostname" varchar NOT NULL COLLATE "default"
 )
 WITH (OIDS=FALSE);
 
