@@ -74,9 +74,11 @@
     $.getJSON('/user/sites', function (data) {
       var $list = $('<ul />');
       $.each(data.sites, function (i, value) {
-        var $listItem = $('<li />').text(value + ' ');
-        $('<button />').attr('type', 'button').text('Remove').appendTo($listItem).click(function (e) {
-          removeSite.call(this, value);
+        var $listItem = $('<li />').text(', mentioned ' + value.mentions + ' times. ').prepend($('<strong />').text(value.hostname));
+        $('<a />').attr('href', '/user/sites/' + encodeURIComponent(value.hostname)).text('Export all mentions').appendTo($listItem);
+        $listItem.append(' ');
+        $('<button />').attr('type', 'button').text('Remove site').appendTo($listItem).click(function (e) {
+          removeSite.call(this, value.hostname);
         });
         $listItem.appendTo($list);
       });
