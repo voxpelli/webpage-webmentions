@@ -44,6 +44,13 @@ Set these up locally by copying `sample.env` to `.env` and changing the values i
 
 ## Changelog
 
+### 0.2.0
+
+* Added a way to export all mentions of a site
+* Updated database schema to include the target site's hostname in the mentions table, makes it easier to look up a site's mentions
+* Added mention counts to the site list
+* Updated the user-agent string used when fetching webmention sources
+
 ### 0.1.2
 
 * Expanding relative links in the source page when checking for a valid target
