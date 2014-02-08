@@ -11,7 +11,7 @@
   "dependencies": {
     "express": "~3.4.7",
     "pg": "~2.8.4",
-    "microformat-node": "~0.2.6",
+    "microformat-node": "0.2.6",
     "cheerio": "0.10.0",
     "request": "~2.30.0",
     "ff": "~0.2.0",
