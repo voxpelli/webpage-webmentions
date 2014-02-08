@@ -6,9 +6,10 @@ A site that receives and embeds [WebMentions](http://indiewebcamp.com/webmention
 
 ### Locally
 
-1. Set up a new PostgreSQL database by importing `tables.sql`
-2. Copy `sample.env` to `.env` and set up the environment variables
-3. Run `foreman start`
+1. Set up a new PostgreSQL database
+2. Run `./node_modules/.bin/db-migrate up` to set up the tables
+3. Copy `sample.env` to `.env` and set up the environment variables
+4. Run `foreman start`
 
 ### Heroku
 
@@ -50,6 +51,7 @@ Set these up locally by copying `sample.env` to `.env` and changing the values i
 * Updated database schema to include the target site's hostname in the mentions table, makes it easier to look up a site's mentions
 * Added mention counts to the site list
 * Updated the user-agent string used when fetching webmention sources
+* New migration and installation system using [db-migrate](https://github.com/kunklejr/node-db-migrate)
 * Bug fixes
 
 ### 0.1.2
