@@ -50,6 +50,7 @@ Set these up locally by copying `sample.env` to `.env` and changing the values i
 * Updated database schema to include the target site's hostname in the mentions table, makes it easier to look up a site's mentions
 * Added mention counts to the site list
 * Updated the user-agent string used when fetching webmention sources
+* Bug fixes
 
 ### 0.1.2
 
