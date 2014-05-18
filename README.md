@@ -45,6 +45,16 @@ Set these up locally by copying `sample.env` to `.env` and changing the values i
 
 ## Changelog
 
+### 0.2.2
+
+* User friendly information on GET-requests to endpoint
+* Showing totalt amount of accounts on front page
+
+### 0.2.1
+
+* Dependency updates
+* Less chatty NewRelic in the logs
+
 ### 0.2.0
 
 * Added a way to export all mentions of a site
