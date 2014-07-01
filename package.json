@@ -1,7 +1,7 @@
 {
   "name": "webmention-hosted",
   "description": "A site that receives and embeds WebMentions for other sites",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "author": {
     "name": "Pelle Wessman",
     "email": "pelle@kodfabrik.se",
@@ -9,18 +9,19 @@
   },
   "license": "MIT",
   "dependencies": {
-    "express": "^3.4.7",
-    "pg": "^2.8.4",
-    "microformat-node": "0.2.6",
     "cheerio": "0.10.0",
-    "request": "~2.30.0",
+    "ejs": "^1.0.0",
+    "express": "^3.4.7",
     "ff": "~0.2.0",
+    "knex": "^0.6.20",
+    "lru-cache": "~2.5.0",
+    "microformat-node": "0.2.6",
+    "newrelic": "^1.2.0",
     "passport": "~0.2.0",
     "passport-github": "~0.1.5",
-    "ejs": "^1.0.0",
-    "lru-cache": "~2.5.0",
-    "newrelic": "^1.2.0",
-    "db-migrate": "~0.6.3"
+    "pg.js": "^3.3.0",
+    "promise": "^5.0.0",
+    "request": "~2.30.0"
   },
   "engines": {
     "node": "0.10.x",
@@ -30,12 +31,19 @@
   "directories": {
     "lib": "./lib"
   },
+  "scripts": {
+    "start": "node .",
+    "install-schema": "node lib/install-schema.js",
+    "migrate-schema": "./node_modules/.bin/knex migrate:latest",
+    "rollback-schema": "./node_modules/.bin/knex migrate:rollback"
+  },
   "private": true,
   "devDependencies": {
-    "passport-dummy": "0.0.1",
+    "dotenv": "^0.4.0",
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.7.2",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-notify": "~0.2.4"
+    "grunt-notify": "~0.2.4",
+    "passport-dummy": "0.0.1"
   }
 }
