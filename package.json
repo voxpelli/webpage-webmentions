@@ -12,7 +12,6 @@
     "cheerio": "0.10.0",
     "ejs": "^1.0.0",
     "express": "^3.4.7",
-    "ff": "~0.2.0",
     "knex": "^0.6.20",
     "lru-cache": "~2.5.0",
     "microformat-node": "0.2.6",
