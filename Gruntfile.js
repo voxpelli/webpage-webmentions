@@ -6,12 +6,14 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
-      files: ['Gruntfile.js', 'lib/*.js', 'public/js/script.js'],
+      files: [
+        'Gruntfile.js',
+        'lib/**/*.js',
+        'migrations/**/*.js',
+        'public/js/script.js'
+      ],
       options: {
-        globals: {
-          console: true,
-          module: true
-        }
+        jshintrc: '.jshintrc'
       }
     },
     watch: {

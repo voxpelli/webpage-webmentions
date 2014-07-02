@@ -73,6 +73,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 * Moved from interacting with Postgres directly to using Knex to talk with the database. Makes any SQL-database work + gives a nice migration framework and schema declaration base.
 * Added a built in .env parser, dotenv, to the development environment to make sure that the site works without foreman. Needed by eg. Knex migration system as it isn't run by foreman.
 * Made it possible to test throttle system locally by adding WEBMENTIONS_DEV_THROTTLIING, variable
+* Apart from adding new dependencies, also updated the dev-dependencies and the shrinkwrap
 
 ### 0.2.2
 

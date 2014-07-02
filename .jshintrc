@@ -1,0 +1,19 @@
+{
+  "bitwise": true,
+  "camelcase": false, // May cause problems with eg. options arrays for third party modules
+  "freeze": true,
+  "indent": 2,
+  "nonbsp": true,
+  "nonew": true,
+  "unused": true,
+  "strict": true,
+  "trailing": true,
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "undef": true,
+  "node": true
+}
