@@ -10,7 +10,8 @@ module.exports = function (grunt) {
         'Gruntfile.js',
         'lib/**/*.js',
         'migrations/**/*.js',
-        'public/js/script.js'
+        'public/js/script.js',
+        'test/**/*.js'
       ],
       options: { jshintrc: '.jshintrc' }
     },
@@ -18,23 +19,47 @@ module.exports = function (grunt) {
       files: ['<%= jshint.files %>'],
       options: { editorconfig: '.editorconfig' }
     },
+    mocha_istanbul: {
+      options: {
+        root: './lib'
+      },
+      basic: {
+        src: 'test'
+      },
+      coveralls: {
+        src: 'test',
+        options: {
+          coverage: true,
+          reportFormats: ['lcovonly']
+        }
+      }
+    },
     watch: {
       jshint : {
         files: ['<%= jshint.files %>'],
-        tasks: ['jshint']
-      },
-      lintspaces : {
-        files: ['<%= lintspaces.files %>'],
-        tasks: ['lintspaces']
+        tasks: ['test']
       }
     }
   });
+
 
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-lintspaces');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-mocha-istanbul');
 
-  grunt.registerTask('test', ['lintspaces', 'jshint']);
+  grunt.registerTask('travis', ['lintspaces', 'jshint', 'mocha_istanbul:coveralls']);
+  grunt.registerTask('test', ['lintspaces', 'jshint', 'mocha_istanbul:basic']);
   grunt.registerTask('default', 'test');
+
+
+  grunt.event.on('coverage', function(lcov, done){
+    require('coveralls').handleInput(lcov, function(err){
+      if (err) {
+        return done(err);
+      }
+      done();
+    });
+  });
 };
