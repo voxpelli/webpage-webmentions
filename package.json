@@ -42,6 +42,7 @@
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-watch": "~0.6.1",
+    "grunt-lintspaces": "^0.5.1",
     "grunt-notify": "~0.3.0",
     "passport-dummy": "0.0.1"
   }

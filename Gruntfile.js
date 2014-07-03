@@ -12,22 +12,29 @@ module.exports = function (grunt) {
         'migrations/**/*.js',
         'public/js/script.js'
       ],
-      options: {
-        jshintrc: '.jshintrc'
-      }
+      options: { jshintrc: '.jshintrc' }
+    },
+    lintspaces: {
+      files: ['<%= jshint.files %>'],
+      options: { editorconfig: '.editorconfig' }
     },
     watch: {
       jshint : {
         files: ['<%= jshint.files %>'],
         tasks: ['jshint']
+      },
+      lintspaces : {
+        files: ['<%= lintspaces.files %>'],
+        tasks: ['lintspaces']
       }
     }
   });
 
   grunt.loadNpmTasks('grunt-notify');
+  grunt.loadNpmTasks('grunt-lintspaces');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['jshint']);
+  grunt.registerTask('test', ['lintspaces', 'jshint']);
   grunt.registerTask('default', 'test');
 };
