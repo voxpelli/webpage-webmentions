@@ -147,7 +147,36 @@ describe('WebMentionPing', function () {
       ]);
     });
 
-    it('should ignore www subdomains');
+    it('should ignore www subdomains', function () {
+      var altPing1, altPing2, altPing3, altPing4;
+
+      altPing1 = new WebMentionPing('http://example.com/foo', 'http://www.example.org/bar');
+      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar');
+      altPing3 = new WebMentionPing('http://example.com/foo', 'http://foo.example.org/bar');
+      altPing4 = new WebMentionPing('http://example.com/foo', 'http://www.foo.example.org/bar');
+
+      expect(function () {
+        new WebMentionPing('http://example.com/foo', '/bar');
+      }).to.throw();
+
+      return Promise.all([
+        altPing1.parseSourcePage('<a href="http://www.example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing1.parseSourcePage('<a href="http://foo.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        altPing1.parseSourcePage('<a href="http://www.www.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+
+        altPing2.parseSourcePage('<a href="http://www.example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://foo.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+
+        altPing3.parseSourcePage('<a href="http://foo.example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing3.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        altPing3.parseSourcePage('<a href="http://www.foo.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+
+        altPing4.parseSourcePage('<a href="http://www.foo.example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing4.parseSourcePage('<a href="http://foo.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+      ]);
+    });
 
   });
 

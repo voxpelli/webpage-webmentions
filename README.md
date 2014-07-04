@@ -74,6 +74,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 * Added a built in .env parser, dotenv, to the development environment to make sure that the site works without foreman. Needed by eg. Knex migration system as it isn't run by foreman.
 * Made it possible to test throttle system locally by adding WEBMENTIONS_DEV_THROTTLIING, variable
 * Apart from adding new dependencies, also updated the dev-dependencies and the shrinkwrap
+* Normalizes the URL before matching target – eg. ignores trailing slashes, strips www. subdomains and treats https and http as the same
 
 ### 0.2.2
 
