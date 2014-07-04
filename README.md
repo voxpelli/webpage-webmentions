@@ -29,13 +29,13 @@ Then please let me know. So far I'm easiest to reach on Twitter as [@voxpelli](h
 
 ### Locally
 
-Just run `npm run update-schema`.
+Just run `npm run migrate-schema`.
 
 ### Heroku
 
 1. Before you push any code you may want to activate the [Maintenance Mode](https://devcenter.heroku.com/articles/maintenance-mode) if it is a breaking update
 2. Push the new code and let Heroku deploy it
-3. Use a [One-Off Dyno](https://devcenter.heroku.com/articles/one-off-dynos) to do the migration: `heroku run npm run update-schema`
+3. Use a [One-Off Dyno](https://devcenter.heroku.com/articles/one-off-dynos) to do the migration: `heroku run npm run migrate-schema`
 4. If you activated the [Maintenance Mode](https://devcenter.heroku.com/articles/maintenance-mode) – then remember to deactivate it as well
 
 ## Revert an update
