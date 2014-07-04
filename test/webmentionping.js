@@ -1,12 +1,16 @@
+/* jshint nonew:false */
 /* global beforeEach, describe, it */
 
 "use strict";
 
 var chai = require('chai'),
-  chaiAsPromised = require('chai-as-promised');
+  chaiAsPromised = require('chai-as-promised'),
+  Promise = require('promise'),
+  expect;
 
 chai.use(chaiAsPromised);
 chai.should();
+expect = chai.expect;
 
 describe('WebMentionPing', function () {
   var WebMentionPing = require('../lib/classes/webmentionping'),
@@ -72,6 +76,78 @@ describe('WebMentionPing', function () {
           .that.contain.keys('author', 'name', 'published', 'summary')
           .that.have.deep.property('author[0].properties.name[0]', 'W. Developer');
     });
+
+    it('should ensure that there is always a path component', function () {
+      var altPing1, altPing2;
+
+      altPing1 = new WebMentionPing('http://example.com/foo', 'http://example.org');
+      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/');
+
+      return Promise.all([
+        altPing1.parseSourcePage('<a href="http://example.org/">Bar</a>').should.be.fulfilled,
+        altPing1.parseSourcePage('<a href="http://example.org">Bar</a>').should.be.fulfilled,
+        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        altPing1.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        altPing2.parseSourcePage('<a href="http://example.org/">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://example.org">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+      ]);
+    });
+
+    it('should ignore trailing slashes when looking for target', function () {
+      var altPing1, altPing2, altPing3, altPing4;
+
+      altPing1 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar/');
+      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar');
+      altPing3 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar/?bar=1');
+      altPing4 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar?bar=1');
+
+      return Promise.all([
+        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing1.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.fulfilled,
+        altPing1.parseSourcePage('<a href="http://example.org/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+
+        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://example.org/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+
+        altPing3.parseSourcePage('<a href="http://example.org/bar?bar=1">Bar</a>').should.be.fulfilled,
+        altPing3.parseSourcePage('<a href="http://example.org/bar/?bar=1">Bar</a>').should.be.fulfilled,
+        altPing3.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+
+        altPing4.parseSourcePage('<a href="http://example.org/bar?bar=1">Bar</a>').should.be.fulfilled,
+        altPing4.parseSourcePage('<a href="http://example.org/bar/?bar=1">Bar</a>').should.be.fulfilled,
+        altPing4.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+      ]);
+    });
+
+    it('should ignore whether it is http, https or no protocol when looking for target', function () {
+      var altPing1, altPing2, altPing3;
+
+      altPing1 = new WebMentionPing('http://example.com/foo', 'https://example.org/bar');
+      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar');
+      altPing3 = new WebMentionPing('http://example.com/foo', '//example.org/bar');
+
+      expect(function () {
+        new WebMentionPing('http://example.com/foo', '/bar');
+      }).to.throw();
+
+      return Promise.all([
+        altPing1.parseSourcePage('<a href="https://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing1.parseSourcePage('<a href="//example.org/bar">Bar</a>').should.be.fulfilled,
+
+        altPing2.parseSourcePage('<a href="https://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="//example.org/bar">Bar</a>').should.be.fulfilled,
+
+        altPing3.parseSourcePage('<a href="https://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing3.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing3.parseSourcePage('<a href="//example.org/bar">Bar</a>').should.be.fulfilled,
+      ]);
+    });
+
+    it('should ignore www subdomains');
 
   });
 
