@@ -69,6 +69,13 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.1
+
+Apart from all of the bigger changes in the latest release:
+
+* Now normalizing also the embed URL:s so that you get the same result, no matter what target a mention was at and no matter if your site can be accessed across a few different variations of the same URL. This change requires a migration.
+* Minor: Added a migration to drop the old migration table
+
 ### 0.3.0
 
 * Moved from interacting with Postgres directly to using Knex to talk with the database. Makes any SQL-database work + gives a nice migration framework and schema declaration base.
