@@ -13,7 +13,7 @@ Then please let me know. So far I'm easiest to reach on Twitter as [@voxpelli](h
 ### Locally
 
 1. Set up a new PostgreSQL database
-2. Run `npm install-schema` to set up the tables
+2. Run `npm run install-schema` to set up the tables
 3. Set up the environment variables by eg. copying `sample.env` to `.env`
 4. Run `foreman start` or `npm start`
 
@@ -21,25 +21,26 @@ Then please let me know. So far I'm easiest to reach on Twitter as [@voxpelli](h
 
 1. Set up a new application
 2. Set up a database for the new application
-2. Set up environment variables using `heroku config`
-3. Push up the code
+3. Set up environment variables using `heroku config`
+4. Push up the code
+5. Use a [One-Off Dyno](https://devcenter.heroku.com/articles/one-off-dynos) to set up the tables: `heroku run npm run install-schema`
 
 ## To update
 
 ### Locally
 
-Just run `npm update-schema`.
+Just run `npm run update-schema`.
 
 ### Heroku
 
 1. Before you push any code you may want to activate the [Maintenance Mode](https://devcenter.heroku.com/articles/maintenance-mode) if it is a breaking update
 2. Push the new code and let Heroku deploy it
-3. Use a [One-Off Dyno](https://devcenter.heroku.com/articles/one-off-dynos) to do the migration: `heroku run npm update-schema`
+3. Use a [One-Off Dyno](https://devcenter.heroku.com/articles/one-off-dynos) to do the migration: `heroku run npm run update-schema`
 4. If you activated the [Maintenance Mode](https://devcenter.heroku.com/articles/maintenance-mode) – then remember to deactivate it as well
 
 ## Revert an update
 
-Just run `npm rollback-schema` locally or, if on Heroku, use a [One-Off Dyno](https://devcenter.heroku.com/articles/one-off-dynos) to do the rollback: `heroku run npm rollback-schema` And afterwards – of course make sure that you also revert your code to a version that matches the schema – but you already knew that of course :)
+Just run `npm run rollback-schema` locally or, if on Heroku, use a [One-Off Dyno](https://devcenter.heroku.com/articles/one-off-dynos) to do the rollback: `heroku run npm run rollback-schema` And afterwards – of course make sure that you also revert your code to a version that matches the schema – but you already knew that of course :)
 
 ## Environment variables
 
