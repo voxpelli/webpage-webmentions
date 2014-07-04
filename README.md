@@ -56,7 +56,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 ### Optional
 
 * **WEBMENTIONS_USER_LIMIT** - the total maximum of users you want to be able to use your application. Defaults to 6.
-* **WEBMENTIONS_DEV_THROTTLIING** – in a development environment, enables throttling for local pings made by eg. [webmention-testpinger](https://www.npmjs.org/package/webmention-testpinger) – needed to test throttling mechanism
+* **WEBMENTIONS_DEV_THROTTLING** – in a development environment, enables throttling for local pings made by eg. [webmention-testpinger](https://www.npmjs.org/package/webmention-testpinger) – needed to test throttling mechanism
 * **NEW_RELIC_LICENSE_KEY** - the license key for New Relic, if you want to use that
 * **NEW_RELIC_ENABLED** - set to true if you want to use New Relic
 
@@ -72,7 +72,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 * Moved from interacting with Postgres directly to using Knex to talk with the database. Makes any SQL-database work + gives a nice migration framework and schema declaration base.
 * Added a built in .env parser, dotenv, to the development environment to make sure that the site works without foreman. Needed by eg. Knex migration system as it isn't run by foreman.
-* Made it possible to test throttle system locally by adding WEBMENTIONS_DEV_THROTTLIING, variable
+* Made it possible to test throttle system locally by adding WEBMENTIONS_DEV_THROTTLING, variable
 * Apart from adding new dependencies, also updated the dev-dependencies and the shrinkwrap
 * Normalizes the URL before matching target – eg. ignores trailing slashes, strips www. subdomains and treats https and http as the same
 
