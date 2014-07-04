@@ -21,7 +21,8 @@ module.exports = function (grunt) {
     },
     mocha_istanbul: {
       options: {
-        root: './lib'
+        root: './lib',
+        mask: '*.spec.js'
       },
       basic: {
         src: 'test'
@@ -49,8 +50,12 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-istanbul');
 
-  grunt.registerTask('travis', ['lintspaces', 'jshint', 'mocha_istanbul:coveralls']);
-  grunt.registerTask('test', ['lintspaces', 'jshint', 'mocha_istanbul:basic']);
+  grunt.registerTask('setTestEnv', 'Ensure that environment (database etc) is set up for testing', function () {
+    process.env.NODE_ENV = 'test';
+  });
+
+  grunt.registerTask('travis', ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:coveralls']);
+  grunt.registerTask('test', ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:basic']);
   grunt.registerTask('default', 'test');
 
 
