@@ -56,7 +56,7 @@
         if (data.accountsAvailable !== undefined) {
           $('<p />', {
             "class": "accounts-available",
-            text : '(' + data.accountsAvailable + ' of ' + data.accountsTotal + ' accounts left at the moment)'
+            text : '(' + data.accountsAvailable + ' of ' + data.accountsTotal + ' accounts left at the moment – more will be released as development goes on)'
           }).insertAfter('.receive li.first-step > ul');
         }
         $('.receive li.second-step form').remove();
