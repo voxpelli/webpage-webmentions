@@ -22,7 +22,10 @@ module.exports = function (grunt) {
     mocha_istanbul: {
       options: {
         root: './lib',
-        mask: '*.spec.js'
+        mask: '**/*.spec.js'
+      },
+      unit: {
+        src: 'test/unit'
       },
       basic: {
         src: 'test'
@@ -38,7 +41,7 @@ module.exports = function (grunt) {
     watch: {
       jshint : {
         files: ['<%= jshint.files %>'],
-        tasks: ['test']
+        tasks: ['fast-test']
       }
     }
   });
@@ -54,8 +57,9 @@ module.exports = function (grunt) {
     process.env.NODE_ENV = 'test';
   });
 
-  grunt.registerTask('travis', ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:coveralls']);
-  grunt.registerTask('test', ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:basic']);
+  grunt.registerTask('travis',    ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:coveralls']);
+  grunt.registerTask('test',      ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:basic']);
+  grunt.registerTask('fast-test', ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:unit']);
   grunt.registerTask('default', 'test');
 
 

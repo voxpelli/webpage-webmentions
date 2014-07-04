@@ -13,7 +13,7 @@ chai.should();
 expect = chai.expect;
 
 describe('WebMentionPing', function () {
-  var WebMentionPing = require('../lib/classes/webmentionping'),
+  var WebMentionPing = require('../../lib/classes/webmentionping'),
     ping, exampleHtml, parsedExample;
 
   // Taken from the h-entry Microformats wiki page
