@@ -512,16 +512,16 @@
     },
     "knex": {
       "version": "0.6.20",
-      "from": "knex@",
+      "from": "https://registry.npmjs.org/knex/-/knex-0.6.20.tgz",
       "resolved": "https://registry.npmjs.org/knex/-/knex-0.6.20.tgz",
       "dependencies": {
         "minimist": {
           "version": "0.0.10",
-          "from": "minimist@0.0.10"
+          "from": "minimist@~0.0.9"
         },
         "bluebird": {
           "version": "1.2.4",
-          "from": "bluebird@1.2.4",
+          "from": "bluebird@1.2.x",
           "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-1.2.4.tgz"
         },
         "chalk": {
@@ -534,11 +534,11 @@
             },
             "ansi-styles": {
               "version": "1.0.0",
-              "from": "ansi-styles@1.0.0"
+              "from": "ansi-styles@~1.0.0"
             },
             "strip-ansi": {
               "version": "0.1.1",
-              "from": "strip-ansi@0.1.1"
+              "from": "strip-ansi@~0.1.0"
             }
           }
         },
@@ -547,13 +547,13 @@
           "from": "commander@^2.2.0"
         },
         "interpret": {
-          "version": "0.3.4",
+          "version": "0.3.5",
           "from": "interpret@^0.3.2",
-          "resolved": "https://registry.npmjs.org/interpret/-/interpret-0.3.4.tgz"
+          "resolved": "https://registry.npmjs.org/interpret/-/interpret-0.3.5.tgz"
         },
         "liftoff": {
           "version": "0.11.3",
-          "from": "liftoff@0.11.3",
+          "from": "liftoff@^0.11.0",
           "resolved": "https://registry.npmjs.org/liftoff/-/liftoff-0.11.3.tgz",
           "dependencies": {
             "findup-sync": {
@@ -570,10 +570,6 @@
                       "from": "minimatch@0.3",
                       "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-0.3.0.tgz",
                       "dependencies": {
-                        "lru-cache": {
-                          "version": "2.5.0",
-                          "from": "lru-cache@2"
-                        },
                         "sigmund": {
                           "version": "1.0.0",
                           "from": "sigmund@~1.0.0"
@@ -637,7 +633,7 @@
         },
         "readable-stream": {
           "version": "1.1.13-1",
-          "from": "readable-stream@1.1.13-1",
+          "from": "readable-stream@^1.1.12",
           "dependencies": {
             "core-util-is": {
               "version": "1.0.1",
