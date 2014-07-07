@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.2
+
+* Ignore fragments when matching URL:s – http://example.com/#foo and http://example.com/ should be treated the same. Thanks for the report @hugoroy!
+
 ### 0.3.1
 
 Apart from all of the bigger changes in the latest release:

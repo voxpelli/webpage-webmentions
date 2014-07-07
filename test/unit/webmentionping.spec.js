@@ -178,6 +178,25 @@ describe('WebMentionPing', function () {
       ]);
     });
 
+    it('should ignore fragments', function () {
+      var altPing1, altPing2;
+
+      altPing1 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar#foo');
+      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar');
+
+      expect(function () {
+        new WebMentionPing('http://example.com/foo', '/bar');
+      }).to.throw();
+
+      return Promise.all([
+        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing1.parseSourcePage('<a href="http://example.org/bar#foo">Bar</a>').should.be.fulfilled,
+
+        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://example.org/bar#foo">Bar</a>').should.be.fulfilled,
+      ]);
+    });
+
   });
 
   describe('createMention', function () {
