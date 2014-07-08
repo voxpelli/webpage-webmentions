@@ -1,0 +1,53 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <title>A WebMention Endpoint</title>
+  <link href='//fonts.googleapis.com/css?family=Faster+One' rel='stylesheet' type='text/css'>
+  <link rel="webmention" href="/api/webmention" />
+  <link rel="stylesheet" type="text/css" href="/style.css" />
+  <script type="text/javascript">
+    document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
+  </script>
+</head>
+<body>
+  <div id="header">
+    <h1><a href="/">A <em>WebMention</em> Endpoint</a></h1>
+    <div class="subtitle">Easily accept and embed WebMentions on all type of sites</div>
+  </div>
+  <div id="main">
+    <div class="receive">
+      <h2>API Documentation</h2>
+      <h3>Embedding</h3>
+      <p><strong>Path:</strong> /api/embed</p>
+      <p>Returns a javascript that, when included in a page, will add all the HTML for listing the matching WebMentions</p>
+
+      <h4>Simple example</h4>
+      <p><textarea class="webmention-embed-example" readonly>http://example.com/api/embed?url=http://example.com/foo</textarea></p>
+      <h4>Advanced example</h4>
+      <p><textarea class="webmention-embed-example" readonly>http://example.com/api/embed?url=http://example.com/foo/1&url=http://example.com/foo/2&path=http://example.com/bar</textarea></p>
+
+      <h4>Preferred usage</h4>
+      <p><textarea class="webmention-embed" readonly><script id="webmention-hosted">
+  (function () {
+    var sn = document.createElement("script"), s = document.getElementsByTagName("script")[0], url;
+    url = document.querySelectorAll ? document.querySelectorAll("link[rel~=canonical]") : false;
+    url = url && url[0] ? url[0].href : false;
+    sn.type = "text/javascript"; sn.async = true;
+    sn.src = "//example.com/api/embed?url=" + encodeURIComponent(url || window.location);
+    s.parentNode.insertBefore(sn, s);
+  }());
+</script></textarea></p>
+
+      <h4>Query parameters</h4>
+      <ul>
+        <li><strong>example</strong> – when set returns dummy data rather than real data. Useful for testing out ones styling of the embedded mentions. Returns a new random set each time, showing a variety of different possible combinations.</li>
+        <li><strong>url=http://example.com/foo/bar.html</strong> – multiple allowed – includes all WebMentions mentioning the specified URL</li>
+        <li><strong>site=example.com</strong> – multiple allowed – includes all WebMentions mentioning a page on the specified site</li>
+        <li><strong>path=http://example.com/foo</strong> – multiple allowed – includes all WebMentions that mentions a page on the specified path or below (eg. both WebMentions mentioning http://example.com/foo and http://example.com/foo/bar will be included)</li>
+      </ul>
+    </div>
+  </div>
+
+  <address>Built by <a href="http://voxpelli.com/">VoxPelli</a>. Part of the <a href="http://indiewebcamp.com/">IndieWeb</a> movement.</address>
+</body>
