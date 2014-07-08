@@ -14,7 +14,7 @@
   <div id="header">
     <h1><a href="/">A <em>WebMention</em> Endpoint</a></h1>
     <div class="subtitle">Easily accept and embed WebMentions on all type of sites</div>
-    <div class="subtitle warning">A work in progress, use with caution and <a href="https://github.com/voxpelli/webpage-webmentions/issues">report bugs and missing features</a></div>
+    <div class="subtitle warning">A work in progress, <a href="https://github.com/voxpelli/webpage-webmentions/issues">report bugs and missing features</a></div>
   </div>
   <div id="main">
     <div class="receive">
@@ -62,19 +62,6 @@
       <p>For now refer to the <a href="http://indiewebcamp.com/webmention">IndieWebCamp wiki</a> for information on how to send WebMentions.</p>
     </div>
     <div>
-      <h2>Example: The mentions of this site</h2>
-      <script id="webmention-hosted">
-        (function () {
-          var sn = document.createElement('script'), s = document.getElementsByTagName('script')[0], url;
-          url = document.querySelectorAll ? document.querySelectorAll('link[rel~=canonical]') : false;
-          url = url && url[0] ? url[0].href : false;
-          sn.type = 'text/javascript'; sn.async = true;
-          sn.src = '//' + window.location.host + '/api/embed?url=' + encodeURIComponent(url || window.location);
-          s.parentNode.insertBefore(sn, s);
-        }());
-      </script>
-    </div>
-    <div>
       <h2>Keep updated</h2>
       <p>
         Be sure to
@@ -82,11 +69,33 @@
         to keep up to date on additions, tweaks and fixes of the service.
       </p>
     </div>
+    <div>
+      <h2>FAQ</h2>
+
+      <h3>Purpose of this service?</h3>
+      <p>To accept and display <a href="http://indiewebcamp.com/webmention">WebMentions</a> on people's site. Especially handy if the site is a static one – eg. based on <a href="http://jekyllrb.com/">Jekyll</a> and perhaps hosted on something like <a href="http://pages.github.com/">GitHub Pages</a> – because then you can't really handle WebMentions in the site itself.</p>
+
+      <h3>How can I style my mentions?</h3>
+      <p>To get up to date example HTML, temporarily replace your WebMention embed with this script instead:</p>
+      <p><textarea class="webmention-embed webmention-embed-example" readonly><script id="webmention-hosted" src="http://example.com/api/embed?example"></script></textarea></p>
+    </div>
+
+    <div>
+      <h2>Example: The mentions of this site</h2>
+      <script id="webmention-hosted">
+        (function () {
+          var sn = document.createElement('script'), s = document.getElementsByTagName('script')[0], url;
+          url = document.querySelectorAll ? document.querySelectorAll('link[rel~=canonical]') : false;
+          url = url && url[0] ? url[0].href : false;
+          url = 'http://voxpelli.com/2012/10/why-federate-just-the-social-web/';
+          sn.type = 'text/javascript'; sn.async = true;
+          sn.src = '//' + window.location.host + '/api/embed?url=' + encodeURIComponent(url || window.location);
+          s.parentNode.insertBefore(sn, s);
+        }());
+      </script>
+    </div>
   </div>
-  <div id="siteinfo">
-    <h2>Why this?</h2>
-    <p>It's a service for accepting and displaying <a href="http://indiewebcamp.com/webmention">WebMentions</a> on your site. Handy if you're hosting a static blog, like a <a href="http://jekyllrb.com/">Jekyll</a> one, on something like <a href="http://pages.github.com/">GitHub Pages</a> where you then can't really handle the mentions by yourself.</p>
-  </div>
+
   <address>Built by <a href="http://voxpelli.com/">VoxPelli</a>. Part of the <a href="http://indiewebcamp.com/">IndieWeb</a> movement.</address>
 
   <script src="/jquery.min.js" type="text/javascript"></script>
