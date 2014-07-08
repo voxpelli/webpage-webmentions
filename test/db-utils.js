@@ -72,13 +72,17 @@ module.exports = {
         var target = 'http://example.org/path/' + id[0],
           normalizedTarget = urlTools.normalizeUrl(target);
 
-        mentions.push(knex('mentions').insert({
-          url : target,
-          normalizedUrl : normalizedTarget,
-          eid : id[0],
-          hostname : 'example.org'
-        }));
+        // Let one mention only have the foo path
+        if (id[0] !== 10) {
+          mentions.push(knex('mentions').insert({
+            url : target,
+            normalizedUrl : normalizedTarget,
+            eid : id[0],
+            hostname : 'example.org'
+          }));
+        }
 
+        // Let four of the entries mention the very same page
         if (id % 3 === 1) {
           mentions.push(knex('mentions').insert({
             url : 'http://example.org/foo/',
