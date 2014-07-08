@@ -1,6 +1,6 @@
 {
   "name": "webmention-hosted",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "dependencies": {
     "cheerio": {
       "version": "0.10.0",
@@ -522,6 +522,11 @@
         }
       }
     },
+    "faker": {
+      "version": "1.0.0",
+      "from": "faker@",
+      "resolved": "https://registry.npmjs.org/faker/-/faker-1.0.0.tgz"
+    },
     "knex": {
       "version": "0.6.20",
       "from": "https://registry.npmjs.org/knex/-/knex-0.6.20.tgz",
@@ -667,6 +672,10 @@
           }
         }
       }
+    },
+    "lodash": {
+      "version": "2.4.1",
+      "from": "lodash@"
     },
     "lru-cache": {
       "version": "2.5.0",
