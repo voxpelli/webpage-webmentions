@@ -87,7 +87,6 @@
           var sn = document.createElement('script'), s = document.getElementsByTagName('script')[0], url;
           url = document.querySelectorAll ? document.querySelectorAll('link[rel~=canonical]') : false;
           url = url && url[0] ? url[0].href : false;
-          url = 'http://voxpelli.com/2012/10/why-federate-just-the-social-web/';
           sn.type = 'text/javascript'; sn.async = true;
           sn.src = '//' + window.location.host + '/api/embed?url=' + encodeURIComponent(url || window.location);
           s.parentNode.insertBefore(sn, s);
