@@ -98,8 +98,10 @@
     }, 'json');
   };
 
-  showErrorMessages();
-  checkLoginStatus();
+  if ($('.receive')[0]) {
+    showErrorMessages();
+    checkLoginStatus();
+  }
 
   $('textarea').on('mouseup', function () {
       $(this).select();
