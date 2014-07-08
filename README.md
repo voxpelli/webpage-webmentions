@@ -69,6 +69,11 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.3
+
+* Added sample data in the API and in the tests. Can now embed sample data by using /api/embed?example rather than /api/embed?url=...
+* Updated the documentation on the site, restructured it a bit and added an FAQ-section mentioning the above sample data
+
 ### 0.3.2
 
 * Ignore fragments when matching URL:s – http://example.com/#foo and http://example.com/ should be treated the same. Thanks for the report @hugoroy!
