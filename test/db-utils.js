@@ -2,6 +2,8 @@
 
 var knex = require('../lib/knex'),
   Promise = require('promise'),
+  sampleData = require('../lib/utils/sample-data'),
+  urlTools = require('../lib/utils/url-tools'),
   options = require('../lib/config'),
   installSchema = require('../lib/install-schema'),
   tables = [
@@ -46,5 +48,48 @@ module.exports = {
         created: knex.raw('NOW()')
       })
     ]);
+  },
+
+  setupSampleMentions : function (count) {
+    count = count || 10;
+
+    var entries = sampleData.mentions(count);
+
+    entries.forEach(function (entry, i) {
+      entries[i] = knex('entries').insert({
+        url: entry.url,
+        data: entry,
+        raw: {}
+      }, 'id');
+
+      delete entry.url;
+    });
+
+    return Promise.all(entries).then(function (ids) {
+      var mentions = [];
+
+      ids.forEach(function (id) {
+        var target = 'http://example.org/path/' + id[0],
+          normalizedTarget = urlTools.normalizeUrl(target);
+
+        mentions.push(knex('mentions').insert({
+          url : target,
+          normalizedUrl : normalizedTarget,
+          eid : id[0],
+          hostname : 'example.org'
+        }));
+
+        if (id % 3 === 1) {
+          mentions.push(knex('mentions').insert({
+            url : 'http://example.org/foo/',
+            normalizedUrl : 'http://example.org/foo/',
+            eid : id[0],
+            hostname : 'example.org'
+          }));
+        }
+      });
+
+      return Promise.all(mentions);
+    });
   }
 };

@@ -94,4 +94,52 @@ describe('WebMentionPing', function () {
     });
   });
 
+  describe('fetch mentions', function () {
+    beforeEach(function () {
+      return dbUtils.setupSampleMentions();
+    });
+
+    var matchMentions = function (done, err, res) {
+      if (err) {
+        return done(err);
+      }
+
+      res.body.should.be.an('array').of.length(4);
+
+      res.body.should.have.deep.property('[0].name', null);
+      res.body.should.have.deep.property('[0].url').that.match(/^https?:\/\/[^\/]+\//);
+      res.body.should.have.deep.property('[0].author.name').that.is.a('string');
+
+      res.body.should.have.deep.property('[0].author.photo')
+        .that.is.a('string')
+        .that.match(/^https?:\/\/[^\/]+\//);
+
+      res.body.should.have.deep.property('[0].author.url')
+        .that.is.a('string')
+        .that.match(/^https?:\/\/[^\/]+\//);
+
+      res.body.should.have.deep.property('[0].published')
+        .that.is.a('number')
+        .that.is.closeTo(Date.now(), 31 * 24 * 60 * 60 * 1000);
+
+      done();
+    };
+
+    it('should return all matching mentions in an expected format', function (done) {
+      request(app)
+        .get('/api/mentions')
+        .query({ url: 'http://example.org/foo' })
+        .expect(200)
+        .end(matchMentions.bind(undefined, done));
+    });
+
+    it('should return example mentions in an expected format', function (done) {
+      request(app)
+        .get('/api/mentions')
+        .query({ example: 1 })
+        .expect(200)
+        .end(matchMentions.bind(undefined, done));
+    });
+  });
+
 });
