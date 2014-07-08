@@ -208,7 +208,23 @@ describe('WebMentionPing', function () {
 
               resolve();
             });
-        })
+        }),
+        new Promise(function (resolve, reject) {
+          // Test that the escaping works
+          request(app)
+            .get('/api/mentions')
+            .query({ path: ['http://example.org/%h', 'http://example.org/p_th'] })
+            .expect(200)
+            .end(function (err, res) {
+              if (err) {
+                return reject(err);
+              }
+
+              res.body.should.be.an('array').of.length(0);
+
+              resolve();
+            });
+        }),
       ]);
     });
 
