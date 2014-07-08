@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.4
+
+* Many new options for selecting which mentions to embed. Can now specify multiple URL:s as well as instead of or in addition to that specify one or many sites to include all mentions of and/or one or many paths for which all mentions of that or to a subpath of that should be included. For more info see the new /documentation.html
+
 ### 0.3.3
 
 * Added sample data in the API and in the tests. Can now embed sample data by using /api/embed?example rather than /api/embed?url=...
