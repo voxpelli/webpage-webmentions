@@ -58,6 +58,7 @@ module.exports = {
     entries.forEach(function (entry, i) {
       entries[i] = knex('entries').insert({
         url: entry.url,
+        normalizedUrl: urlTools.normalizeUrl(entry.url),
         data: entry,
         raw: {}
       }, 'id');

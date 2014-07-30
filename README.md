@@ -69,6 +69,11 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.6
+
+* Change: Separates the u-url URL from the URL of the page it was found on. u-url is used for presentation, the other URL for the rest. This increases compatibility with likes and retweets sent by Brid.gy.
+* Fix: Added a normalizedUrl to the entries table and moved the unique constraint of that table to it so that duplicates are more easily avoided
+
 ### 0.3.5
 
 * Improvement: Normalised all double slashes (eg. http://example.com/foo//bar) to ensure that there's never more than a single slash separating each level of the path in a normalized URL. This will help some matching cases.
