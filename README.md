@@ -69,6 +69,12 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.5
+
+* Improvement: Normalised all double slashes (eg. http://example.com/foo//bar) to ensure that there's never more than a single slash separating each level of the path in a normalized URL. This will help some matching cases.
+* Fix: Hardened the lookup mechanism a bit
+* Change: Only redirects to HTTPS on GET-requests as redirects of POST:s should generally be done with a lot more care, so better with an error message than a helpful redirect in those cases.
+
 ### 0.3.4
 
 * Many new options for selecting which mentions to embed. Can now specify multiple URL:s as well as instead of or in addition to that specify one or many sites to include all mentions of and/or one or many paths for which all mentions of that or to a subpath of that should be included. For more info see the new /documentation.html
