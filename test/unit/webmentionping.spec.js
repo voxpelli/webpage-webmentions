@@ -121,6 +121,25 @@ describe('WebMentionPing', function () {
       ]);
     });
 
+    it('should ignore double slashes when looking for target', function () {
+      var altPing1, altPing2, altPing3;
+
+      altPing1 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar/');
+      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar//foo');
+      altPing3 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar/?bar=1//2');
+
+      return Promise.all([
+        altPing1.parseSourcePage('<a href="http://example.org/bar//">Bar</a>').should.be.fulfilled,
+
+        altPing2.parseSourcePage('<a href="http://example.org/bar/foo">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://example.org/bar//foo">Bar</a>').should.be.fulfilled,
+        altPing2.parseSourcePage('<a href="http://example.org/bar///foo///">Bar</a>').should.be.fulfilled,
+
+        altPing3.parseSourcePage('<a href="http://example.org/bar/?bar=1//2">Bar</a>').should.be.fulfilled,
+        altPing3.parseSourcePage('<a href="http://example.org/bar/?bar=1/2">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+      ]);
+    });
+
     it('should ignore whether it is http, https or no protocol when looking for target', function () {
       var altPing1, altPing2, altPing3;
 
