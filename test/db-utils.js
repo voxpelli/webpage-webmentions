@@ -56,9 +56,13 @@ module.exports = {
     var entries = sampleData.mentions(count);
 
     entries.forEach(function (entry, i) {
+      var now = new Date();
+
       entries[i] = knex('entries').insert({
         url: entry.url,
         normalizedUrl: urlTools.normalizeUrl(entry.url),
+        published: now,
+        fetched: now,
         data: entry,
         raw: {}
       }, 'id');

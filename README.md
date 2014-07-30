@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.7
+
+* Improvement: Now sorts mentions based on their published date
+
 ### 0.3.6
 
 * Change: Separates the u-url URL from the URL of the page it was found on. u-url is used for presentation, the other URL for the rest. This increases compatibility with likes and retweets sent by Brid.gy.
