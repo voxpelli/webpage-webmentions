@@ -67,6 +67,10 @@ describe('WebMentionPing', function () {
       return ping.parseSourcePage('<a href="http://example.com/elsewhere">123</a>').should.be.rejectedWith("Couldn't find a link");
     });
 
+    it('should not choke on non-http URL:s', function () {
+      return ping.parseSourcePage('<a href="mailto:foo@example.com">Mail</a> <a href="http://example.org/bar">Bar</a>').should.be.fulfilled;
+    });
+
     it('should parse the microformats data', function () {
       return ping.parseSourcePage(exampleHtml)
         .should.eventually.be.an('object')
