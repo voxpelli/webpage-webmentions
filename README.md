@@ -69,6 +69,8 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.9
+
 ### 0.3.8
 
 * Bug fix: Shouldn't fail on pages with non-http(s) links like mailto:
