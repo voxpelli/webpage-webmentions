@@ -72,6 +72,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 ### 0.3.7
 
 * Improvement: Now sorts mentions based on their published date
+* Fix: Improved auto-selection in the textareas to only auto-select if no selection as been made. Less annoying.
 
 ### 0.3.6
 

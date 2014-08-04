@@ -104,7 +104,9 @@
   }
 
   $('textarea').on('mouseup', function () {
+    if (document.activeElement === this && this.selectionStart === this.selectionEnd) {
       $(this).select();
+    }
   }).each(function () {
     var $this = $(this)
       , text = $this.val();
