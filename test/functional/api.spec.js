@@ -79,7 +79,7 @@ describe('WebMentionPing', function () {
         .then(function () {
           //TODO: Remake so that this delay isn't necessary
           return new Promise(function (resolve) {
-            setTimeout(resolve, 500);
+            setTimeout(resolve, 1000);
           });
         })
         .then(function () {
