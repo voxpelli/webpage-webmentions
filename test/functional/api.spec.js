@@ -234,7 +234,7 @@ describe('WebMentionPing', function () {
         .query({
           url: [
             'http://example.org/path/2',
-            'http://example.org/path/3',
+            'http://example.org/path/4',
           ],
           path: 'http://example.org/foo'
         })
@@ -249,6 +249,32 @@ describe('WebMentionPing', function () {
 
           done();
         });
+    });
+
+    it('should allow matching based on path', function () {
+      return new Promise(function (resolve, reject) {
+        request(app)
+          .get('/api/mentions')
+          .query({ path: 'http://example.org/path' })
+          .expect(200)
+          .end(function (err, res) {
+            if (err) {
+              return reject(err);
+            }
+
+            res.body.should.be.an('array').and.satisfy(function (entries) {
+              return false !== entries.reduce(function (previousValue, currentValue) {
+                previousValue = previousValue.published || previousValue;
+                if (previousValue === false || previousValue >= currentValue.published) {
+                  return false;
+                }
+                return currentValue.published;
+              });
+            }, 'Should sort by publish date, starting with the oldest one');
+
+            resolve();
+          });
+      });
     });
 
   });

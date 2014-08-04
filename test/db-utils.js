@@ -53,32 +53,42 @@ module.exports = {
   setupSampleMentions : function (count) {
     count = count || 10;
 
-    var entries = sampleData.mentions(count);
+    var entries = [], i, now;
 
-    entries.forEach(function (entry, i) {
-      var now = new Date();
+    now = Date.now() - count * 1000;
 
-      entries[i] = knex('entries').insert({
-        url: entry.url,
-        normalizedUrl: urlTools.normalizeUrl(entry.url),
-        published: now,
-        fetched: now,
+    for (i = 0; i < count; i++) {
+      entries.push(sampleData.mentions(1)[0]);
+    }
+
+    return Promise.all(entries.map(function (entry, i) {
+      var entryUrl = entry.url;
+
+      entry.published = now + i * 1000;
+      delete entry.url; // Doesn't belong in the database
+
+      // Create expectable metadata
+      if (i % 3) {
+        entry.name = null;
+      }
+
+      return knex('entries').insert({
+        url: entryUrl,
+        normalizedUrl: urlTools.normalizeUrl(entryUrl),
+        published: new Date(entry.published),
+        fetched: new Date(entry.published),
         data: entry,
         raw: {}
       }, 'id');
-
-      delete entry.url;
-    });
-
-    return Promise.all(entries).then(function (ids) {
+    })).then(function (ids) {
       var mentions = [];
 
-      ids.forEach(function (id) {
-        var target = 'http://example.org/path/' + id[0],
+      ids.forEach(function (id, i) {
+        var target = 'http://example.org/path/' + i,
           normalizedTarget = urlTools.normalizeUrl(target);
 
         // Let one mention only have the foo path
-        if (id[0] !== 10) {
+        if (i !== 9) {
           mentions.push(knex('mentions').insert({
             url : target,
             normalizedUrl : normalizedTarget,
@@ -88,7 +98,7 @@ module.exports = {
         }
 
         // Let four of the entries mention the very same page
-        if (id % 3 === 1) {
+        if (i % 3 === 0) {
           mentions.push(knex('mentions').insert({
             url : 'http://example.org/foo/',
             normalizedUrl : 'http://example.org/foo/',
