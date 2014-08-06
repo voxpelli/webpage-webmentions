@@ -46,7 +46,8 @@ describe('WebMentionPing', function () {
         }],
         "name": ["Microformats are amazing"],
         "published": ["2013-12-18T22:45:00Z"],
-        "summary": ["In which I extoll the virtues of using microformats."]
+        "summary": ["In which I extoll the virtues of using microformats."],
+        "url": ["http://example.net/abc"],
       },
       "type": ["h-entry"]
     }],
@@ -273,8 +274,10 @@ describe('WebMentionPing', function () {
       var mention = ping.createMention(parsedExample);
 
       mention.should.have.property('url', 'http://example.com/foo');
+      mention.should.have.property('normalizedUrl', 'http://example.com/foo/');
       mention.should.have.property('raw', parsedExample);
 
+      mention.should.have.deep.property('data.url', 'http://example.net/abc');
       mention.should.have.deep.property('data.name', 'Microformats are amazing');
       mention.should.have.deep.property('data.summary', 'In which I extoll the virtues of using microformats.');
       mention.should.have.deep.property('data.published', 1387406700000);
