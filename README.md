@@ -69,6 +69,8 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.10
+
 ### 0.3.9
 
 * Security fix: All embed data is filtered from having non-http URL:s to make "javascript:" URL XSS impossible. Thanks @pierreozoux for reporting the issue! 
