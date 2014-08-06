@@ -1,4 +1,4 @@
-/* jshint nonew:false */
+/* jshint nonew:false, scripturl:true */
 /* global beforeEach, describe, it */
 
 "use strict";
@@ -14,7 +14,7 @@ expect = chai.expect;
 
 describe('WebMentionPing', function () {
   var WebMentionPing = require('../../lib/classes/webmentionping'),
-    ping, exampleHtml, parsedExample;
+    ping, exampleHtml, parsedExample, xssExample;
 
   // Taken from the h-entry Microformats wiki page
   exampleHtml = '<article class="h-entry">' +
@@ -47,6 +47,33 @@ describe('WebMentionPing', function () {
         "name": ["Microformats are amazing"],
         "published": ["2013-12-18T22:45:00Z"],
         "summary": ["In which I extoll the virtues of using microformats."]
+      },
+      "type": ["h-entry"]
+    }],
+    "rels": {}
+  };
+
+  xssExample = {
+    "items": [{
+      "properties": {
+        "author": [{
+          "properties": {
+            "name": ["W. Developer"],
+            "url": ["javascript:alert('hcard')"]
+          },
+          "type": [
+            "h-card"
+          ],
+          "value": "W. Developer"
+        }],
+        "content": [{
+          "html": "<p><a href=\"http://example.org/bar\">Blah</a> blah blah</p>  ",
+          "value": "Blah blah blah"
+        }],
+        "name": ["Microformats are amazing"],
+        "published": ["2013-12-18T22:45:00Z"],
+        "summary": ["In which I extoll the virtues of using microformats."],
+        "url": ["javascript:alert('hentry')"],
       },
       "type": ["h-entry"]
     }],
@@ -253,6 +280,14 @@ describe('WebMentionPing', function () {
       mention.should.have.deep.property('data.published', 1387406700000);
       mention.should.have.deep.property('data.author.name', 'W. Developer');
       mention.should.have.deep.property('data.author.url', 'http://example.com/');
+    });
+
+    it('should filter non-http(s) urls', function () {
+      var mention = ping.createMention(xssExample);
+
+      mention.should.have.property('url', 'http://example.com/foo');
+      mention.should.have.deep.property('data.url', 'http://example.com/foo');
+      mention.should.have.deep.property('data.author.url', null);
     });
 
   });

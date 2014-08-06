@@ -71,6 +71,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ### 0.3.9
 
+* Security fix: All embed data is filtered from having non-http URL:s to make "javascript:" URL XSS impossible. Thanks @pierreozoux for reporting the issue! 
 * Improvement: Added a Retry-After header as suggested by the HTTP docs for HTTP code 503 for when the throttle cap is reached. The Retry-After header indicates when the site is available for the client again, which is implemented as when the all of the queued fetches are expected to have been made.
 
 ### 0.3.8
