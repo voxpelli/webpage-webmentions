@@ -11,7 +11,7 @@ exports.up = function (knex, Promise) {
       if (!urlTools.isHttpUrl.test(data.url)) {
         data.url = entry.url;
       }
-      if (!urlTools.isHttpUrl.test(data.author.url)) {
+      if (data.author && data.author.url && !urlTools.isHttpUrl.test(data.author.url)) {
         data.author.url = null;
       }
 
