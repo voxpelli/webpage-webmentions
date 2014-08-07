@@ -1,5 +1,5 @@
 /* jshint nonew:false */
-/* global describe, beforeEach, it */
+/* global describe, beforeEach, afterEach, it */
 
 "use strict";
 
@@ -23,6 +23,10 @@ describe('WebMentionPing', function () {
     return dbUtils.clearDb()
       .then(dbUtils.setupSchema)
       .then(dbUtils.setupSampleData);
+  });
+
+  afterEach(function () {
+    nock.cleanAll();
   });
 
   describe('parseSourcePage', function () {
@@ -57,14 +61,13 @@ describe('WebMentionPing', function () {
 
           templateNames.forEach(function (name) {
             requests.push(new Promise(function (resolve, reject) {
-              //TODO: Add a way to make this call syncronous
               request(app)
                 .post('/api/webmention?sync')
                 .send({
                   source: 'http://' + name + '.example.com/',
                   target: 'http://example.org/foo'
                 })
-                .expect(202)
+                .expect(200)
                 .end(function (err) {
                   if (err) {
                     return reject(err);
@@ -84,6 +87,50 @@ describe('WebMentionPing', function () {
             templateMock.done();
           });
           result.count.should.be.a('string').and.equal(templateCount + '');
+        });
+    });
+    it('should handle pings asynchronously', function () {
+      var templateMock;
+
+      templateCollection.getTemplateNames()
+        .then(function (templateNames) {
+          return templateNames[0];
+        })
+        .then(function (templateName) {
+          return templateCollection.getTemplate(templateName, 'http://example.org/foo');
+        })
+        .then(function (template) {
+          return nock('http://example.com/')
+            .get('/')
+            .reply(200, function() {
+              return template;
+            });
+        })
+        .then(function (mock) {
+          templateMock = mock;
+
+          return new Promise(function (resolve, reject) {
+            request(app)
+              .post('/api/webmention')
+              .send({
+                source: 'http://example.com/',
+                target: 'http://example.org/foo'
+              })
+              .expect(202)
+              .end(function (err) {
+                if (err) {
+                  return reject(err);
+                }
+                resolve();
+              });
+          });
+        })
+        .then(function () {
+          return knex('entries').count('id').first();
+        })
+        .then(function (result) {
+          templateMock.done();
+          result.count.should.be.a('string').and.equal('1');
         });
     });
   });
