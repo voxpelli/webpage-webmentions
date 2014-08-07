@@ -59,7 +59,7 @@ describe('WebMentionPing', function () {
             requests.push(new Promise(function (resolve, reject) {
               //TODO: Add a way to make this call syncronous
               request(app)
-                .post('/api/webmention')
+                .post('/api/webmention?sync')
                 .send({
                   source: 'http://' + name + '.example.com/',
                   target: 'http://example.org/foo'
@@ -75,12 +75,6 @@ describe('WebMentionPing', function () {
           });
 
           return Promise.all(requests);
-        })
-        .then(function () {
-          //TODO: Remake so that this delay isn't necessary
-          return new Promise(function (resolve) {
-            setTimeout(resolve, 1000);
-          });
         })
         .then(function () {
           return knex('entries').count('id').first();

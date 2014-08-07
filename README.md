@@ -71,6 +71,8 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ### 0.3.10
 
+* Feature: Synchronous pinging – to make pinging easier to debug and to make our own tests easier to run, there's now a possibility to add `?sync` to the endpoint to get it to not respond until it has fetched the site
+
 ### 0.3.9
 
 * Security fix: All embed data is filtered from having non-http URL:s to make "javascript:" URL XSS impossible. Thanks @pierreozoux for reporting the issue! 
