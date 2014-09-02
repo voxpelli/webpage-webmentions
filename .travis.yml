@@ -3,9 +3,8 @@ node_js:
   - "0.10"
   - "0.11"
 before_script:
-  - npm install -g grunt-cli
   - psql -c 'create database webmention_test;' -U postgres
-script: grunt travis
+script: npm run travis
 matrix:
   fast_finish: true
   allow_failures:
