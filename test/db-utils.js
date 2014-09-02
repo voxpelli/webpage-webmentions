@@ -1,3 +1,6 @@
+/*jslint node: true */
+/* global -Promise */
+
 "use strict";
 
 var knex = require('../lib/knex'),

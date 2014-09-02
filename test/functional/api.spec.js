@@ -1,5 +1,5 @@
 /* jshint nonew:false */
-/* global describe, beforeEach, afterEach, it */
+/* global describe, beforeEach, afterEach, it, -Promise */
 
 "use strict";
 

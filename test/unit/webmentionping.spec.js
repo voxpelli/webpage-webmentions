@@ -1,5 +1,5 @@
 /* jshint nonew:false, scripturl:true */
-/* global beforeEach, describe, it */
+/* global beforeEach, describe, it, -Promise */
 
 "use strict";
 
