@@ -15,6 +15,8 @@ chai.use(chaiAsPromised);
 chai.should();
 
 describe('WebMentionPing', function () {
+  this.timeout(5000);
+
   var app = require('../../lib/main'),
     WebMentionTemplates = require('webmention-testpinger').WebMentionTemplates,
     templateCollection = new WebMentionTemplates();
@@ -92,7 +94,7 @@ describe('WebMentionPing', function () {
     it('should handle pings asynchronously', function () {
       var templateMock;
 
-      templateCollection.getTemplateNames()
+      return templateCollection.getTemplateNames()
         .then(function (templateNames) {
           return templateNames[0];
         })
@@ -123,6 +125,11 @@ describe('WebMentionPing', function () {
                 }
                 resolve();
               });
+          });
+        })
+        .then(function () {
+          return new Promise(function (resolve) {
+            setTimeout(resolve, 100);
           });
         })
         .then(function () {

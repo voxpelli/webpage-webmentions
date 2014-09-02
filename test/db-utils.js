@@ -30,7 +30,6 @@ module.exports = {
     var lastDeleted = Promise.resolve(true);
 
     tables.forEach(function (table) {
-      console.log(table);
       lastDeleted = lastDeleted.then(function () {
         return knex.schema.dropTableIfExists(table);
       });
