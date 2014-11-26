@@ -170,6 +170,10 @@ describe('WebMentionPing', function () {
         .that.is.a('number')
         .that.is.closeTo(Date.now(), 31 * 24 * 60 * 60 * 1000);
 
+      res.body.should.have.deep.property('[0].targets')
+        .that.is.an('array')
+        .of.length.above(0);
+
       done();
     };
 
