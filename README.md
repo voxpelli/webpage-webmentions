@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.3.11
+
+* Feature: Return `targets` in `api/mentions` so that one more easily can ask the API for all mentions of a site
+
 ### 0.3.10
 
 * Feature: Synchronous pinging – to make pinging easier to debug and to make our own tests easier to run, there's now a possibility to add `?sync` to the endpoint to get it to not respond until it has fetched the site
