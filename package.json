@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "0.10.0",
+    "cors": "^2.5.2",
     "ejs": "^1.0.0",
     "express": "^3.4.7",
     "faker": "^1.0.0",
@@ -20,6 +21,7 @@
     "newrelic": "^1.2.0",
     "passport": "~0.2.0",
     "passport-github": "~0.1.5",
+    "pg-pubsub": "^0.1.0",
     "pg.js": "^3.3.0",
     "promise": "^5.0.0",
     "request": "~2.30.0"
@@ -33,8 +35,8 @@
   },
   "scripts": {
     "start": "node .",
-    "test":  "node -e \"require('grunt').tasks(['test']);\"",
-    "travis":  "node -e \"require('grunt').tasks(['travis']);\"",
+    "test": "node -e \"require('grunt').tasks(['test']);\"",
+    "travis": "node -e \"require('grunt').tasks(['travis']);\"",
     "install-schema": "node lib/install-schema.js",
     "migrate-schema": "./node_modules/.bin/knex migrate:latest",
     "rollback-schema": "./node_modules/.bin/knex migrate:rollback"

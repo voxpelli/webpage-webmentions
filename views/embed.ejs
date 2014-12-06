@@ -1,4 +1,4 @@
-(function (mentions) {
+(function (mentions, options) {
   var locations = document.getElementById('webmention-hosted')
     , createChild = function (elem, tag, className) {
         var newElem = document.createElement(tag);
@@ -30,7 +30,33 @@
         day_diff < 365 && Math.ceil( day_diff / 7 ) + " weeks ago" ||
         Math.ceil( day_diff / 365 ) + " years ago";
     }
+    , addMention = function (mention) {
+      mention.author = mention.author || {};
+      box = createChild(container, 'div', 'mention');
+
+      author = createChild(createChild(box, 'div', 'author'), mention.author.url ? 'a' : 'span');
+      if (mention.author.url) {
+        author.href = mention.author.url;
+      }
+      if (mention.author.photo) {
+        avatar = createChild(author, 'img');
+        avatar.src = mention.author.photo;
+      }
+      addText(author, mention.author.name || 'Unknown');
+
+      if (mention.name) {
+        addText(createChild(box, 'div', 'name'), mention.name);
+      }
+      if (mention.summary) {
+        addText(createChild(box, 'div', 'summary'), mention.summary);
+      }
+
+      published = createChild(box, 'a', 'published');
+      addText(published, prettyDate(mention.published));
+      published.href = mention.url;
+    }
     , container = createChild(false, 'div', 'container')
+    , updateListener
     , i
     , length
     , mention
@@ -39,32 +65,37 @@
     , avatar
     , published;
 
+  if (EventSource) {
+    updateListener = function (retries) {
+      retries = retries || 0;
+      var updates = new EventSource(options.baseUrl + '/api/mentions/live?' + options.query);
+      updates.onerror = function (e) {
+        if (updates.readyState === 2) {
+          setTimeout(
+            updateListener.bind(undefined, Math.min(5, retries + 1)),
+            500 + (Math.floor(1000 * Math.pow(1.5, retries) * Math.random()))
+          );
+        }
+      };
+      updates.addEventListener('mention', function (e) {
+        var mention;
+        try {
+          mention = JSON.parse(e.data);
+        } catch (e) {}
+        if (mention) {
+          addMention(mention);
+          if (!container.parentNode) {
+            locations.parentNode.insertBefore(container, locations);
+          }
+        }
+      });
+    };
+    updateListener();
+  }
+
   for (i = 0, length = mentions.length; i < length; i += 1) {
-    mention = mentions[i];
-    mention.author = mention.author || {};
-    box = createChild(container, 'div', 'mention');
-
-    author = createChild(createChild(box, 'div', 'author'), mention.author.url ? 'a' : 'span');
-    if (mention.author.url) {
-      author.href = mention.author.url;
-    }
-    if (mention.author.photo) {
-      avatar = createChild(author, 'img');
-      avatar.src = mention.author.photo;
-    }
-    addText(author, mention.author.name || 'Unknown');
-
-    if (mention.name) {
-      addText(createChild(box, 'div', 'name'), mention.name);
-    }
-    if (mention.summary) {
-      addText(createChild(box, 'div', 'summary'), mention.summary);
-    }
-
-    published = createChild(box, 'a', 'published');
-    addText(published, prettyDate(mention.published));
-    published.href = mention.url;
+    addMention(mentions[i]);
   }
 
   if (length) locations.parentNode.insertBefore(container, locations);
-}(<%- JSON.stringify(mentions) %>));
+}(<%- JSON.stringify(mentions) %>, <%- JSON.stringify(options) %>));
