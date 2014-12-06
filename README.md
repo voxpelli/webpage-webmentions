@@ -69,6 +69,12 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.4.0
+
+* Feature: Exposes an EventSource at `api/mentions/live` that notifies about new WebMentions. It accepts same arguments as `api/mentions`. Thanks @stuartlangridge for pushing this! (Built on top of PostgreSQL NOTIFY/LISTEN functionality so no new dependencies)
+* Feature: The embeddable mention list implements the new EventSource to get realtime updates of new WebMentions
+* Feature: Both `api/mentions` and `api/mentions/live` have received CORS-headers and can be requested from everywhere!
+
 ### 0.3.11
 
 * Feature: Return `targets` in `api/mentions` so that one more easily can ask the API for all mentions of a site
