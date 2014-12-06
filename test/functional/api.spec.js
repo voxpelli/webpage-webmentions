@@ -140,6 +140,65 @@ describe('WebMentionPing', function () {
           result.count.should.be.a('string').and.equal('1');
         });
     });
+    it('should send a live update', function (done) {
+      var templateMock;
+
+      var updates = '';
+      request(app)
+        .get('/api/mentions/live?site=example.org')
+        .query({ site: 'example.org' })
+        .buffer(false)
+        .end().req.on('response', function(res){
+          res.on('data', function (data) {
+            updates += data;
+            if (data.indexOf('data:') === 0) {
+              updates.should.contain('event: mention\ndata: {"url":"');
+              done();
+            }
+          });
+        });
+
+      templateCollection.getTemplateNames()
+        .then(function (templateNames) {
+          return templateNames[0];
+        })
+        .then(function (templateName) {
+          return templateCollection.getTemplate(templateName, 'http://example.org/foo');
+        })
+        .then(function (template) {
+          return nock('http://example.com/')
+            .get('/')
+            .reply(200, function() {
+              return template;
+            });
+        })
+        .then(function (mock) {
+          templateMock = mock;
+
+          return new Promise(function (resolve, reject) {
+            request(app)
+              .post('/api/webmention?sync')
+              .send({
+                source: 'http://example.com/',
+                target: 'http://example.org/foo'
+              })
+              .expect(202)
+              .end(function (err) {
+                if (err) {
+                  return reject(err);
+                }
+                resolve();
+              });
+          });
+        })
+        .then(function () {
+          return knex('entries').count('id').first();
+        })
+        .then(function (result) {
+          templateMock.done();
+          result.count.should.be.a('string').and.equal('1');
+        });
+    });
   });
 
   describe('fetch mentions', function () {
