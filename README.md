@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.4.1
+
+* Fix: Heartbeat for EventSource at `api/mentions/live` to avoid Heroku timing it out
+
 ### 0.4.0
 
 * Feature: Exposes an EventSource at `api/mentions/live` that notifies about new WebMentions. It accepts same arguments as `api/mentions`. Thanks @stuartlangridge for pushing this! (Built on top of PostgreSQL NOTIFY/LISTEN functionality so no new dependencies)
