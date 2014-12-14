@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.4.2
+
+* Fix: The `api/mentions/live` request wasn't always closed down properly which resulted in a memory leak
+
 ### 0.4.1
 
 * Fix: Heartbeat for EventSource at `api/mentions/live` to avoid Heroku timing it out
