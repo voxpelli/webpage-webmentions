@@ -20,5 +20,13 @@ exports.config = {
      * production applications.
      */
     level : 'info'
+  },
+  rules : {
+    /**
+     * Ensures that the EventSource endpoint doesn't dominate the response time metrics
+     */
+    ignore : [
+      '^/api/mentions/live'
+    ]
   }
 };
