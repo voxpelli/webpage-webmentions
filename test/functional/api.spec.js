@@ -11,10 +11,11 @@ var chai = require('chai'),
   _ = require('lodash'),
   mod_url = require('url'),
   knex = require('../../lib/knex'),
-  dbUtils = require('../db-utils');
+  dbUtils = require('../db-utils'),
+  should;
 
 chai.use(chaiAsPromised);
-chai.should();
+should = chai.should();
 
 describe('WebMentionPing', function () {
   this.timeout(5000);
@@ -86,7 +87,7 @@ describe('WebMentionPing', function () {
           return Promise.all(requests);
         })
         .then(function () {
-          return knex('entries').select('url', 'data');
+          return knex('entries').select('url', 'type', 'data', 'raw');
         })
         .then(function (result) {
           templateMocks.forEach(function (templateMock) {
@@ -107,6 +108,16 @@ describe('WebMentionPing', function () {
               }
 
               templateMention.data.should.deep.equal(target);
+
+              if (target.interactionType) {
+                should.equal(templateMention.type, target.interactionType);
+              } else {
+                should.not.exist(templateMention.type);
+              }
+            } else {
+              // Uncomment to inspect new templates to easily add them to ../template-mentions.json
+              // console.log(JSON.stringify(templateMention.data));
+              // console.log(JSON.stringify(templateMention.raw));
             }
           });
         });

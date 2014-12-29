@@ -69,9 +69,12 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
-### 0.4.4
+### 0.5.0
 
-* Fix: Confirm the "Remove site" action to avoid accidental deletion!
+* Feature: Now parses the [interactions](http://indiewebcamp.com/interactions) of mentions
+* Improvement: Confirm the "Remove site" action to avoid accidental deletion!
+* Improvement: Added tests to ensure mentions are parsed consistently
+* Fix: Updated `microformat-node` and `cheerio`
 
 ### 0.4.3
 
