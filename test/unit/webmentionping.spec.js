@@ -296,6 +296,7 @@ describe('WebMentionPing', function () {
   });
 
   describe('parseSourcePage and createMention', function () {
+
     it('should create a correct mention from a basic page', function () {
       return ping.parseSourcePage(exampleHtml).then(ping.createMention.bind(ping)).then(function (mention) {
         mention.should.have.property('url', 'http://example.com/foo');
@@ -310,5 +311,21 @@ describe('WebMentionPing', function () {
         mention.should.have.deep.property('data.author.url', 'http://example.com/');
       });
     });
+
+    it('should resolve relative URL:s', function () {
+      var relativeHtml = exampleHtml
+        .replace('"http://example.net/abc"', '"/abc/123"')
+        .replace(
+          '<a class="p-author h-card" href="http://example.com">W. Developer</a>',
+          '<a class="p-author h-card" href="bar.html"><img src="abc.png" alt="" /> W. Developer</a>'
+        );
+
+      return ping.parseSourcePage(relativeHtml).then(ping.createMention.bind(ping)).then(function (mention) {
+        mention.should.have.deep.property('data.url', 'http://example.com/abc/123');
+        mention.should.have.deep.property('data.author.url', 'http://example.com/bar.html');
+        mention.should.have.deep.property('data.author.photo', 'http://example.com/abc.png');
+      });
+    });
+
   });
 });
