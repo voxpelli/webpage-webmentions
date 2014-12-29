@@ -18,7 +18,7 @@ describe('WebMentionPing', function () {
 
   // Taken from the h-entry Microformats wiki page
   exampleHtml = '<article class="h-entry">' +
-    '  <h1 class="p-name">Microformats are amazing</h1>' +
+    '  <h1 class="p-name"><a class="u-url" href="http://example.net/abc">Microformats are amazing</a></h1>' +
     '  <p>Published by <a class="p-author h-card" href="http://example.com">W. Developer</a>' +
     '     on <time class="dt-published" datetime="2013-06-13 12:00:00">13<sup>th</sup> June 2013</time>' +
     '  <p class="p-summary">In which I extoll the virtues of using microformats.</p>' +
@@ -45,7 +45,7 @@ describe('WebMentionPing', function () {
           "value": "Blah blah blah"
         }],
         "name": ["Microformats are amazing"],
-        "published": ["2013-12-18T22:45:00Z"],
+        "published": ["2013-06-13 12:00:00"],
         "summary": ["In which I extoll the virtues of using microformats."],
         "url": ["http://example.net/abc"],
       },
@@ -280,7 +280,7 @@ describe('WebMentionPing', function () {
       mention.should.have.deep.property('data.url', 'http://example.net/abc');
       mention.should.have.deep.property('data.name', 'Microformats are amazing');
       mention.should.have.deep.property('data.summary', 'In which I extoll the virtues of using microformats.');
-      mention.should.have.deep.property('data.published', 1387406700000);
+      mention.should.have.deep.property('data.published', 1371117600000);
       mention.should.have.deep.property('data.author.name', 'W. Developer');
       mention.should.have.deep.property('data.author.url', 'http://example.com/');
     });
@@ -293,5 +293,22 @@ describe('WebMentionPing', function () {
       mention.should.have.deep.property('data.author.url', null);
     });
 
+  });
+
+  describe('parseSourcePage and createMention', function () {
+    it('should create a correct mention from a basic page', function () {
+      return ping.parseSourcePage(exampleHtml).then(ping.createMention.bind(ping)).then(function (mention) {
+        mention.should.have.property('url', 'http://example.com/foo');
+        mention.should.have.property('normalizedUrl', 'http://example.com/foo/');
+        mention.should.have.property('raw').that.deep.equals(parsedExample);
+
+        mention.should.have.deep.property('data.url', 'http://example.net/abc');
+        mention.should.have.deep.property('data.name', 'Microformats are amazing');
+        mention.should.have.deep.property('data.summary', 'In which I extoll the virtues of using microformats.');
+        mention.should.have.deep.property('data.published', 1371117600000);
+        mention.should.have.deep.property('data.author.name', 'W. Developer');
+        mention.should.have.deep.property('data.author.url', 'http://example.com/');
+      });
+    });
   });
 });
