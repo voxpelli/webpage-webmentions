@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.4.4
+
+* Fix: Confirm the "Remove site" action to avoid accidental deletion!
+
 ### 0.4.3
 
 * Fix: Updated dependencies
