@@ -87,15 +87,20 @@
   };
 
   removeSite = function (site) {
-    var $this = $(this).text('Removing...');
-    $.post('/user/sites', {
-      action : 'delete',
-      hostname : site
-    }, function () {
-      $this.parent().slideUp(function () {
-        $this.remove();
-      });
-    }, 'json');
+    var $this = $(this).text('Confirming...');
+    if (confirm('Do you really want to remove ' + site + '?')) {
+      $this.text('Removing...');
+      $.post('/user/sites', {
+        action : 'delete',
+        hostname : site
+      }, function () {
+        $this.parent().slideUp(function () {
+          $this.remove();
+        });
+      }, 'json');
+    } else {
+      $this.text('Remove site');
+    }
   };
 
   if ($('.receive')[0]) {
