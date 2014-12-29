@@ -8,6 +8,8 @@ var chai = require('chai'),
   request = require('supertest'),
   nock = require('nock'),
   Promise = require('promise'),
+  _ = require('lodash'),
+  mod_url = require('url'),
   knex = require('../../lib/knex'),
   dbUtils = require('../db-utils');
 
@@ -33,7 +35,9 @@ describe('WebMentionPing', function () {
 
   describe('parseSourcePage', function () {
     it('should handle the templates alright', function () {
-      var templateCount, templateMocks = [];
+      var templateCount,
+        templateMocks = [],
+        mentionTargets = require('../template-mentions.json');
 
       return templateCollection.getTemplateNames()
         .then(function (templateNames) {
@@ -82,13 +86,29 @@ describe('WebMentionPing', function () {
           return Promise.all(requests);
         })
         .then(function () {
-          return knex('entries').count('id').first();
+          return knex('entries').select('url', 'data');
         })
         .then(function (result) {
           templateMocks.forEach(function (templateMock) {
             templateMock.done();
           });
-          result.count.should.be.a('string').and.equal(templateCount + '');
+
+          result.should.be.an('array').be.of.length(templateCount);
+
+          result.forEach(function (templateMention) {
+            var target, name = mod_url.parse(templateMention.url).hostname.replace('.example.com', '');
+            if (name && mentionTargets[name]) {
+              target = _.cloneDeep(mentionTargets[name]);
+
+              // Some templates don't have a published date, falling back to
+              // Date.now() which messes up the deepEqual(). Working around it.
+              if (target.published === undefined) {
+                target.published = templateMention.data.published;
+              }
+
+              templateMention.data.should.deep.equal(target);
+            }
+          });
         });
     });
     it('should handle pings asynchronously', function () {
