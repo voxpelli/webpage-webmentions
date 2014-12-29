@@ -69,6 +69,12 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.4.3
+
+* Fix: Updated dependencies
+* Refactor: Some refactorings and updates made possible or required by the updated dependencies
+* Improvement: Better New Relic settings to eg. ignore the EventSource endpoint when calculating response time
+
 ### 0.4.2
 
 * Fix: The `api/mentions/live` request wasn't always closed down properly which resulted in a memory leak

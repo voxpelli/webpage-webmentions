@@ -1,7 +1,7 @@
 {
   "name": "webmention-hosted",
   "description": "A site that receives and embeds WebMentions for other sites",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "author": {
     "name": "Pelle Wessman",
     "email": "pelle@kodfabrik.se",
