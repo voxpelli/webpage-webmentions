@@ -76,6 +76,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 * Feature: The example embed on the frontpage now uses the `cutting-edge` embed
 * Improvement: Confirm the "Remove site" action to avoid accidental deletion!
 * Improvement: Added more tests to ensure that mentions are parsed consistently over time
+* Improvement: Added documentation of the available API:s
 * Fix: Updated dependencies
 
 ### 0.4.3
