@@ -64,7 +64,7 @@
       published.href = mention.url;
     },
     addInteraction = function (mention) {
-      var interaction, wrapper, avatar, text;
+      var interaction, wrapper, href, avatar, text;
 
       if (!facepile.parentNode) {
         if (container.childNodes.length === 0) {
@@ -76,19 +76,23 @@
 
       mention.author = mention.author || {};
 
+      if (mention.author.url && mention.type === 'like') {
+        href = mention.author.url;
+      } else if (mention.url) {
+        href = mention.url;
+      }
+
       text = mention.author.name || 'Someone';
       text += ' ' + interactionPresentation[mention.type] + ' this ' + prettyDate(mention.published);
 
       interaction = createChild(
         createChild(facepile, 'li', 'interaction-' + mention.type),
-        mention.author.url ? 'a' : 'span',
+        href ? 'a' : 'span',
         'interaction-presentation'
       );
 
       interaction.title = text;
-      if (mention.author.url) {
-        interaction.href = mention.author.url;
-      }
+      interaction.href = href;
 
       wrapper = createChild(interaction, 'span');
       if (mention.author.photo) {

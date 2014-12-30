@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.5.1
+
+* Improvement: Link to the posts rather than author in facepiles for repost interactions and author-url-less posts
+
 ### 0.5.0
 
 * Feature: Now parses the [interactions](http://indiewebcamp.com/interactions) of mentions. **Requires database migration**, but is otherwise backwards compatible
