@@ -21,10 +21,11 @@
     "newrelic": "^1.14.4",
     "passport": "~0.2.0",
     "passport-github": "~0.1.5",
-    "pg-pubsub": "^0.1.0",
     "pg": "^4.1.0",
+    "pg-pubsub": "^0.1.0",
     "promise": "^6.0.0",
-    "request": "~2.51.0"
+    "request": "~2.51.0",
+    "time": "^0.11.0"
   },
   "engines": {
     "node": "0.10.x"
