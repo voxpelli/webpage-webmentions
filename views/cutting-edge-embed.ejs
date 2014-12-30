@@ -1,0 +1,147 @@
+(function (mentions, interactions, options) {
+  'use strict';
+
+  var createChild = function (elem, tag, className) {
+      var newElem = document.createElement(tag);
+      if (elem) { elem.appendChild(newElem); }
+      if (className) { newElem.className = 'webmention-' + className; }
+      return newElem;
+    },
+    locations = document.getElementById('webmention-hosted'),
+    container = createChild(false, 'div', 'container'),
+    facepile = createChild(false, 'ul', 'facepile'),
+    interactionPresentation = {
+      'like': 'liked',
+      'repost': 'reposted',
+    },
+    addText = function (tag, text) {
+      tag.appendChild(document.createTextNode(text));
+    },
+    prettyDate = function (time) {
+      var date = new Date(time),
+        diff = (((new Date()).getTime() - date.getTime()) / 1000),
+        day_diff = Math.floor(diff / 86400);
+
+      if (isNaN(day_diff)) { return ''; }
+      if (day_diff < 0) { return date.toLocaleString(); }
+
+      return (day_diff === 0 && (
+          (diff < 60 && "just now") ||
+          (diff < 120 && "1 minute ago") ||
+          (diff < 3600 && Math.floor( diff / 60 ) + " minutes ago") ||
+          (diff < 7200 && "1 hour ago") ||
+          (diff < 86400 && Math.floor( diff / 3600 ) + " hours ago"))) ||
+        (day_diff === 1 && "Yesterday") ||
+        (day_diff < 7 && day_diff + " days ago") ||
+        (day_diff < 365 && Math.ceil( day_diff / 7 ) + " weeks ago") ||
+        Math.ceil( day_diff / 365 ) + " years ago";
+    },
+    addMention = function (mention) {
+      var box, author, avatar, published;
+
+      mention.author = mention.author || {};
+      box = createChild(container, 'div', 'mention');
+
+      author = createChild(createChild(box, 'div', 'author'), mention.author.url ? 'a' : 'span');
+      if (mention.author.url) {
+        author.href = mention.author.url;
+      }
+      if (mention.author.photo) {
+        avatar = createChild(author, 'img');
+        avatar.src = mention.author.photo;
+      }
+      addText(author, mention.author.name || 'Unknown');
+
+      if (mention.name) {
+        addText(createChild(box, 'div', 'name'), mention.name);
+      }
+      if (mention.summary) {
+        addText(createChild(box, 'div', 'summary'), mention.summary);
+      }
+
+      published = createChild(box, 'a', 'published');
+      addText(published, prettyDate(mention.published));
+      published.href = mention.url;
+    },
+    addInteraction = function (mention) {
+      var interaction, wrapper, avatar, text;
+
+      if (!facepile.parentNode) {
+        if (container.childNodes.length === 0) {
+          container.appendChild(facepile)
+        } else {
+          container.insertBefore(facepile, container.childNodes[0])
+        }
+      }
+
+      mention.author = mention.author || {};
+
+      text = mention.author.name || 'Someone';
+      text += ' ' + interactionPresentation[mention.type] + ' this ' + prettyDate(mention.published);
+
+      interaction = createChild(
+        createChild(facepile, 'li', 'interaction-' + mention.type),
+        mention.author.url ? 'a' : 'span',
+        'interaction-presentation'
+      );
+
+      interaction.title = text;
+      if (mention.author.url) {
+        interaction.href = mention.author.url;
+      }
+
+      wrapper = createChild(interaction, 'span');
+      if (mention.author.photo) {
+        avatar = createChild(wrapper, 'img');
+        avatar.src = mention.author.photo;
+      }
+      addText(wrapper, text);
+    },
+    updateListener,
+    i,
+    length;
+
+  if (EventSource) {
+    updateListener = function (retries) {
+      retries = retries || 0;
+      var updates = new EventSource(options.baseUrl + '/api/mentions/live?' + options.query);
+      updates.onerror = function () {
+        if (updates.readyState === 2) {
+          setTimeout(
+            updateListener.bind(undefined, Math.min(5, retries + 1)),
+            500 + (Math.floor(1000 * Math.pow(1.5, retries) * Math.random()))
+          );
+        }
+      };
+      updates.addEventListener('mention', function (e) {
+        var mention;
+        try {
+          mention = JSON.parse(e.data);
+        } catch (ignore) {}
+        if (mention) {
+          //TODO: Check if a face should be added instead?
+          if (interactionPresentation[mention.type]) {
+            addInteraction(mention);
+          } else {
+            addMention(mention);
+          }
+          if (!container.parentNode) {
+            locations.parentNode.insertBefore(container, locations);
+          }
+        }
+      });
+    };
+    updateListener();
+  }
+
+  for (i = 0, length = mentions.length; i < length; i += 1) {
+    addMention(mentions[i]);
+  }
+  for (i = 0, length = interactions.length; i < length; i += 1) {
+    addInteraction(interactions[i]);
+  }
+
+  if (mentions[0] || interactions[0]) {
+    locations.parentNode.insertBefore(container, locations);
+  }
+}(<%- JSON.stringify(mentions) %>, <%- JSON.stringify(interactions) %>, <%- JSON.stringify(options) %>));

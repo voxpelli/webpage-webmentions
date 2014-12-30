@@ -45,3 +45,48 @@ textarea:first-of-type{margin-top:0}
   width: 7%;
   border-radius: 240px;
 }
+.webmention-facepile {
+  margin-bottom: 25px;
+}
+.webmention-facepile > li {
+  display: inline-block;
+  position: relative;
+  margin: 0 5px 5px 0;
+}
+.webmention-interaction-presentation:after {
+  display: block;
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  padding: 4px;
+  width: 1em;
+  height: 1em;
+
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+
+  color: #000;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+}
+.webmention-interaction-like .webmention-interaction-presentation:after {content: "♥"}
+.webmention-interaction-repost .webmention-interaction-presentation:after {content: "♺"}
+.webmention-interaction-presentation > span {
+  display: block;
+  text-indent: -5000em;
+  position: relative;
+  overflow: hidden;
+  width: 2em;
+  height: 2em;
+  border-radius: 240px;
+  background: #eee;
+  border: 1px solid #ccc;
+}
+.webmention-interaction-presentation > span > img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
