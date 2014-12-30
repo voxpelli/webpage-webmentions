@@ -71,10 +71,12 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ### 0.5.0
 
-* Feature: Now parses the [interactions](http://indiewebcamp.com/interactions) of mentions
+* Feature: Now parses the [interactions](http://indiewebcamp.com/interactions) of mentions. **Requires database migration**, but is otherwise backwards compatible
+* Feature: New `cutting-edge` embed that features a [facepile](http://indiewebcamp.com/facepile) of [like](http://indiewebcamp.com/like) and [repost](http://indiewebcamp.com/repost) interactions. This embed is experimental and no changes to it will be considered as breaking changes. Successful new features will find their way into new stable embed versions.
+* Feature: The example embed on the frontpage now uses the `cutting-edge` embed
 * Improvement: Confirm the "Remove site" action to avoid accidental deletion!
-* Improvement: Added tests to ensure mentions are parsed consistently
-* Fix: Updated `microformat-node` and `cheerio`
+* Improvement: Added more tests to ensure that mentions are parsed consistently over time
+* Fix: Updated dependencies
 
 ### 0.4.3
 
