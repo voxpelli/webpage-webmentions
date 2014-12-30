@@ -72,6 +72,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 ### 0.5.1
 
 * Improvement: Link to the posts rather than author in facepiles for repost interactions and author-url-less posts
+* Improvement: Added interaction support to example mentions
 
 ### 0.5.0
 
