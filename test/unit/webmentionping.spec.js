@@ -280,7 +280,7 @@ describe('WebMentionPing', function () {
       mention.should.have.deep.property('data.url', 'http://example.net/abc');
       mention.should.have.deep.property('data.name', 'Microformats are amazing');
       mention.should.have.deep.property('data.summary', 'In which I extoll the virtues of using microformats.');
-      mention.should.have.deep.property('data.published', 1371117600000);
+      mention.should.have.deep.property('data.published', 1371124800000);
       mention.should.have.deep.property('data.author.name', 'W. Developer');
       mention.should.have.deep.property('data.author.url', 'http://example.com/');
     });
@@ -306,7 +306,7 @@ describe('WebMentionPing', function () {
         mention.should.have.deep.property('data.url', 'http://example.net/abc');
         mention.should.have.deep.property('data.name', 'Microformats are amazing');
         mention.should.have.deep.property('data.summary', 'In which I extoll the virtues of using microformats.');
-        mention.should.have.deep.property('data.published', 1371117600000);
+        mention.should.have.deep.property('data.published', 1371124800000);
         mention.should.have.deep.property('data.author.name', 'W. Developer');
         mention.should.have.deep.property('data.author.url', 'http://example.com/');
       });
