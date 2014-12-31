@@ -64,6 +64,7 @@
         <li><strong>path=http://example.com/foo</strong> – multiple allowed – includes all WebMentions that mentions a page on the specified path or below (eg. both WebMentions mentioning http://example.com/foo and http://example.com/foo/bar will be included)</li>
         <li><strong>site=example.com</strong> – multiple allowed – includes all WebMentions mentioning a page on the specified site</li>
         <li><strong>url=http://example.com/foo/bar.html</strong> – multiple allowed – includes all WebMentions mentioning the specified URL</li>
+        <li><strong>interactions=1</strong> – <em>experimental</em> – set to 1 or 0 to either include only like/repost interactions or only non-like/repost posts. When returning only interactions an interaction is only included if the target of the interaction matches the query. Normally interactions are included also if they just mentioned a page matching the query.</li>
       </ul>
 
 
@@ -74,7 +75,7 @@
 
       <p>Is <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a>-enabled to enable use by web applications.</p>
 
-      <p>Supports the same query parameters as <strong>/api/mentions</strong>.</p>
+      <p>Supports the same query parameters as <strong>/api/mentions</strong>, except for the "interactions" one.</p>
 
 
 
