@@ -264,6 +264,13 @@ describe('WebMentionPing', function () {
         .that.is.an('array')
         .of.length.above(0);
 
+      res.body.should.have.deep.property('[0].type')
+        .that.is.a('string')
+        .that.match(/^(like|repost|reply|mention)$/);
+
+      res.body.should.have.deep.property('[0].interactions')
+        .that.is.an('array');
+
       done();
     };
 

@@ -52,7 +52,7 @@ module.exports = {
     ]);
   },
 
-  setupSampleMentions : function (count) {
+  setupSampleMentions : function (count, options) {
     count = count || 10;
 
     var entries = [], i, now;
@@ -60,14 +60,16 @@ module.exports = {
     now = Date.now() - count * 1000;
 
     for (i = 0; i < count; i++) {
-      entries.push(sampleData.mentions(1)[0]);
+      entries.push(sampleData.mentions(1, options)[0]);
     }
 
     return Promise.all(entries.map(function (entry, i) {
       var entryUrl = entry.url;
 
       entry.published = now + i * 1000;
+      entry.type = entry.type === 'mention' ? null : entry.type;
       delete entry.url; // Doesn't belong in the database
+      delete entry.targets; // Doesn't belong in the database
 
       // Create expectable metadata
       if (i % 3) {
@@ -79,6 +81,7 @@ module.exports = {
         normalizedUrl: urlTools.normalizeUrl(entryUrl),
         published: new Date(entry.published),
         fetched: new Date(entry.published),
+        type: entry.type,
         data: entry,
         raw: {}
       }, 'id');
