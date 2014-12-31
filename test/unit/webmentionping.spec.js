@@ -6,6 +6,7 @@
 var chai = require('chai'),
   chaiAsPromised = require('chai-as-promised'),
   Promise = require('promise'),
+  _ = require('lodash'),
   expect;
 
 chai.use(chaiAsPromised);
@@ -291,6 +292,17 @@ describe('WebMentionPing', function () {
       mention.should.have.property('url', 'http://example.com/foo');
       mention.should.have.deep.property('data.url', 'http://example.com/foo');
       mention.should.have.deep.property('data.author.url', null);
+    });
+
+    it('should parse dates correctly', function () {
+      _.each({
+        '2013-12-18T22:45:00Z': 1387406700000,
+        '2013-09-08T07:21:50-07:00': 1378650110000,
+      }, function (timestamp, publishDate) {
+        var alternateExample = _.cloneDeep(parsedExample);
+        alternateExample.items[0].properties.published[0] = publishDate;
+        ping.createMention(alternateExample).should.have.deep.property('data.published', timestamp);
+      });
     });
 
   });
