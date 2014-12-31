@@ -71,8 +71,11 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ### 0.5.1
 
+* Feature: Added a new experimental `interactions` query parameter to the `/api/mentions` endpoint. Enables custom facepile-solutions.
 * Improvement: Link to the posts rather than author in facepiles for repost interactions and author-url-less posts
 * Improvement: Added interaction support to example mentions
+* Improvement: Some minor style changes to the website
+* Fix: Now falls back correctly to UTC for timezone-less publish times (best solution for now until a more proper timezone can be resolved for those)
 
 ### 0.5.0
 
