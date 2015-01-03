@@ -72,6 +72,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 ### 0.5.2
 
 * Fix: Quick workaround for duplicated interaction texts. Works until a more proper fix for #10 is in place.
+* Improvement: Increased example mentions from 4 to 14
 
 ### 0.5.1
 
