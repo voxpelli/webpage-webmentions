@@ -45,6 +45,7 @@
         "interactions": [
             "http://example.org/another-post"
         ],
+        "interactionTarget": true,
         "url": "http://example.com/post"
     }
 ]</textarea></p>
@@ -55,6 +56,7 @@
         <li><strong>type</strong> – the <a href="http://indiewebcamp.com/interactions">interaction</a> type. Currently supported are: like, repost, reply and lastly also "mention" which is really a non-interaction. More may be added in the future.</li>
         <li><strong>interactions</strong> – all the URL:s interacted with by the post (liked, reposted etc depending on the post type). Interaction URL:s are included even if they don't match the specified query and even if they never were pinged to this WebMention endpoint. Purely mentioned URL:s are never included as mentions are never considered an interaction.</li>
         <li><strong>targets</strong> – all the target URL:s that were mentioned in the post and which matches the query of request</li>
+        <li><strong>interactionTarget</strong> – available for non-mention interactions and set to "true" or "false" dependening on whether a normalized target URL matched a normalized interaction URL or not. This is to tell whether the interaction is an interaction or just a mention from the perspective of the query.
         <li><strong>published</strong> – microsecond timestamp – for that special javascript feeling!</li>
       </ul>
 
