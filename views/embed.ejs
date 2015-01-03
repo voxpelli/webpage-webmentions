@@ -9,6 +9,10 @@
     },
     locations = document.getElementById('webmention-hosted'),
     container = createChild(false, 'div', 'container'),
+    interactionPresentation = {
+      'like': 'liked',
+      'repost': 'reposted',
+    },
     addText = function (tag, text) {
       tag.appendChild(document.createTextNode(text));
     },
@@ -35,6 +39,13 @@
       var box, author, avatar, published;
 
       mention.author = mention.author || {};
+
+      if (interactionPresentation[mention.type]) {
+        mention.author.name = mention.author.name || 'Someone';
+        mention.name = null;
+        mention.summary = interactionPresentation[mention.type] + (mention.interactionTarget ? ' this' : ' something');
+      }
+
       box = createChild(container, 'div', 'mention');
 
       author = createChild(createChild(box, 'div', 'author'), mention.author.url ? 'a' : 'span');

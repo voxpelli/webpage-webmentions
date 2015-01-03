@@ -287,7 +287,7 @@ describe('WebMentionPing', function () {
         .get('/api/mentions')
         .query({ example: 1 })
         .expect(200)
-        .end(matchMentions.bind(undefined, done, 4));
+        .end(matchMentions.bind(undefined, done, 14));
     });
 
     it('should allow matching based on hostname', function (done) {

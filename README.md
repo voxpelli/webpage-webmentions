@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.5.2
+
+* Fix: Quick workaround for duplicated interaction texts. Works until a more proper fix for #10 is in place.
+
 ### 0.5.1
 
 * Feature: Added a new experimental `interactions` query parameter to the `/api/mentions` endpoint. Enables custom facepile-solutions.
