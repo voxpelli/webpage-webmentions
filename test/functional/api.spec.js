@@ -25,6 +25,9 @@ describe('WebMentionPing', function () {
     templateCollection = new WebMentionTemplates();
 
   beforeEach(function () {
+    nock.disableNetConnect();
+    nock.enableNetConnect('127.0.0.1');
+
     return dbUtils.clearDb()
       .then(dbUtils.setupSchema)
       .then(dbUtils.setupSampleData);
