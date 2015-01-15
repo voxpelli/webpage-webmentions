@@ -122,6 +122,7 @@ describe('WebMentionPing', function () {
           });
         });
     });
+
     it('should handle pings asynchronously', function () {
       var templateMock;
 
@@ -171,6 +172,7 @@ describe('WebMentionPing', function () {
           result.count.should.be.a('string').and.equal('1');
         });
     });
+
     it('should send a live update', function (done) {
       var templateMock;
 
@@ -180,13 +182,15 @@ describe('WebMentionPing', function () {
         .query({ site: 'example.org' })
         .buffer(false)
         .end().req.on('response', function(res){
-          res.on('data', function (data) {
+          var listener = function (data) {
             updates += data;
             if (data.indexOf('data:') === 0) {
               updates.should.contain('event: mention\ndata: {"url":"');
+              res.removeListener('data', listener);
               done();
             }
-          });
+          };
+          res.on('data', listener);
         });
 
       templateCollection.getTemplateNames()
@@ -229,6 +233,50 @@ describe('WebMentionPing', function () {
           templateMock.done();
           result.count.should.be.a('string').and.equal('1');
         });
+    });
+
+    it('should handle multiple mentions', function () {
+      var templateMock;
+
+      templateMock = nock('http://example.com')
+        .get('/')
+        .times(2)
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.org/foo">First</a>' +
+            '<a href="http://example.org/bar">second</a>' +
+          '</div>';
+        });
+
+      return Promise.all(
+        [
+          'http://example.org/foo',
+          'http://example.org/bar'
+        ].map(function (target) {
+          return new Promise(function (resolve, reject) {
+            request(app)
+              .post('/api/webmention?sync')
+              .send({
+                source: 'http://example.com/',
+                target: target
+              })
+              .expect(200)
+              .end(function (err) {
+                if (err) {
+                  return reject(err);
+                }
+                resolve();
+              });
+          });
+        })
+      )
+      .then(function () {
+        return knex('mentions').count('url').first();
+      })
+      .then(function (result) {
+        templateMock.done();
+        result.count.should.be.a('string').and.equal('2');
+      });
     });
   });
 

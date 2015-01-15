@@ -59,6 +59,6 @@
     "nock": "~0.41.0",
     "passport-dummy": "0.0.1",
     "supertest": "~0.15.0",
-    "webmention-testpinger": "~0.4.0"
+    "webmention-testpinger": "~0.5.0"
   }
 }
