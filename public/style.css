@@ -45,6 +45,7 @@ textarea:first-of-type{margin-top:0}
   width: 7%;
   border-radius: 240px;
 }
+img.webmention-error {display: none;}
 .webmention-facepile {
   margin-bottom: 25px;
 }

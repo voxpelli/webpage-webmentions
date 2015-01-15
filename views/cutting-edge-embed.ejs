@@ -1,10 +1,18 @@
 (function (mentions, interactions, options) {
   'use strict';
 
-  var createChild = function (elem, tag, className) {
+  var addClass = function (elem, className) {
+      className = 'webmention-' + className;
+      if (elem.className !== '') {
+        if ((new RegExp('(^|\\s)' + className + '($|\\s)')).test(elem.className)) { return; }
+        elem.className += ' ';
+      }
+      elem.className += className;
+    },
+    createChild = function (elem, tag, className) {
       var newElem = document.createElement(tag);
       if (elem) { elem.appendChild(newElem); }
-      if (className) { newElem.className = 'webmention-' + className; }
+      if (className) { addClass(newElem, className); }
       return newElem;
     },
     locations = document.getElementById('webmention-hosted'),
@@ -16,6 +24,15 @@
     },
     addText = function (tag, text) {
       tag.appendChild(document.createTextNode(text));
+    },
+    imgOnError = function () { addClass(this, 'error'); },
+    addImage = function (container, src) {
+      var elem;
+      if (src) {
+        elem = createChild(container, 'img');
+        elem.onerror = imgOnError;
+        elem.src = src;
+      }
     },
     prettyDate = function (time) {
       var date = new Date(time),
@@ -53,10 +70,7 @@
       if (mention.author.url) {
         author.href = mention.author.url;
       }
-      if (mention.author.photo) {
-        avatar = createChild(author, 'img');
-        avatar.src = mention.author.photo;
-      }
+      addImage(author, mention.author.photo);
       addText(author, mention.author.name || 'Unknown');
 
       if (mention.name) {
@@ -102,10 +116,7 @@
       interaction.href = href;
 
       wrapper = createChild(interaction, 'span');
-      if (mention.author.photo) {
-        avatar = createChild(wrapper, 'img');
-        avatar.src = mention.author.photo;
-      }
+      addImage(wrapper, mention.author.photo);
       addText(wrapper, text);
     },
     updateListener,
