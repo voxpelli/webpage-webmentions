@@ -69,6 +69,11 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.5.3
+
+* Fix: Take the [base](https://developer.mozilla.org/docs/Web/HTML/Element/base)-tag into consideration when resolving all relative URL:s
+* Fix: Accept multiple mentions from the same source
+
 ### 0.5.2
 
 * Fix: Quick workaround for duplicated interaction texts. Works until a more proper fix for #10 is in place.
