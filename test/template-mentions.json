@@ -92,7 +92,7 @@
     "author": {
       "name": "Tantek \u00c7elik",
       "photo": "http://tantek.com/logo.jpg",
-      "url": "http://tantek-com.example.com/"
+      "url": "http://tantek.com/"
     },
     "name": null,
     "published": 1400496960000,
@@ -105,7 +105,7 @@
     "author": {
       "name": "Pelle Wessman",
       "photo": "http://voxpelli.com/avatar.jpg",
-      "url": "http://voxpelli-com.example.com/"
+      "url": "http://voxpelli.com/"
     },
     "name": "New service: WebMentions for static pages",
     "published": 1387406700000,
