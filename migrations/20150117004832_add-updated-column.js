@@ -2,9 +2,14 @@
 
 exports.up = function (knex, Promise) {
   return knex.transaction(function (trx) {
-    return trx.schema.table('entries', function (table) {
-        table.timestamp('updated', true);
-      })
+    return Promise.all([
+        trx.schema.table('entries', function (table) {
+          table.timestamp('updated', true);
+        }),
+        trx.schema.table('mentions', function (table) {
+          table.timestamp('updated', true);
+        })
+      ])
       .then(function () {
         return trx.from('entries');
       })

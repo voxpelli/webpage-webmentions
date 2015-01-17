@@ -81,6 +81,7 @@ module.exports = {
         normalizedUrl: urlTools.normalizeUrl(entryUrl),
         published: new Date(entry.published),
         fetched: new Date(entry.published),
+        updated: new Date(entry.published),
         type: entry.type,
         data: entry,
         raw: {}
