@@ -74,6 +74,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 * Fix: Take the [base](https://developer.mozilla.org/docs/Web/HTML/Element/base)-tag into consideration when resolving all relative URL:s
 * Fix: Accept multiple mentions from the same source
 * Improvement: Updating mention content and removing outdated mentions on valid pings (can't yet remove the mention from a page)
+* Improvement: Mentions are now updated and removed in realtime from cutting-edge embeds
 
 ### 0.5.2
 

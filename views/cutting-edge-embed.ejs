@@ -9,9 +9,13 @@
       }
       elem.className += className;
     },
-    createChild = function (elem, tag, className) {
+    createChild = function (elem, tag, className, oldElem) {
       var newElem = document.createElement(tag);
-      if (elem) { elem.appendChild(newElem); }
+      if (oldElem) {
+        elem.replaceChild(newElem, oldElem);
+      } else if (elem) {
+        elem.appendChild(newElem);
+      }
       if (className) { addClass(newElem, className); }
       return newElem;
     },
@@ -34,7 +38,20 @@
         elem.src = src;
       }
     },
+    attr = function (elem, key, value) {
+      if (!value) {
+        return elem.getAttribute('data-' + key);
+      }
+      elem.setAttribute('data-' + key, value);
+    },
+    eachElem = function (selector, callback) {
+      var elems = container.querySelectorAll('.webmention-' + selector), i = 0, length = elems.length;
+      for (; i < length; i++) {
+        callback.call(elems[i]);
+      }
+    },
     prettyDate = function (time) {
+      time = typeof time === 'string' ? parseInt(time, 10) : time;
       var date = new Date(time),
         diff = (((new Date()).getTime() - date.getTime()) / 1000),
         day_diff = Math.floor(diff / 86400);
@@ -53,7 +70,18 @@
         (day_diff < 365 && Math.ceil( day_diff / 7 ) + " weeks ago") ||
         Math.ceil( day_diff / 365 ) + " years ago";
     },
-    addMention = function (mention) {
+    getMention = function (url) {
+      var escapedUrl = url.replace('"', '%22');
+      var elem = container.querySelector('.webmention-published[href="' + escapedUrl + '"]');
+      if (!elem) {
+        elem = facepile.querySelector('.webmention-interaction-presentation[data-url="' + escapedUrl + '"]');
+      }
+      if (elem) {
+        elem = elem.parentNode;
+      }
+      return elem;
+    },
+    addMention = function (mention, oldBox) {
       var box, author, avatar, published;
 
       mention.author = mention.author || {};
@@ -64,7 +92,7 @@
         mention.summary = interactionPresentation[mention.type] + (mention.interactionTarget ? ' this' : ' something');
       }
 
-      box = createChild(container, 'div', 'mention');
+      box = createChild(container, 'div', 'mention', oldBox);
 
       author = createChild(createChild(box, 'div', 'author'), mention.author.url ? 'a' : 'span');
       if (mention.author.url) {
@@ -81,10 +109,11 @@
       }
 
       published = createChild(box, 'a', 'published');
+      attr(published, 'published', mention.published);
       addText(published, prettyDate(mention.published));
       published.href = mention.url;
     },
-    addInteraction = function (mention) {
+    addInteraction = function (mention, oldBox) {
       var interaction, wrapper, href, avatar, text;
 
       if (!facepile.parentNode) {
@@ -99,7 +128,7 @@
 
       if (mention.author.url && mention.type === 'like') {
         href = mention.author.url;
-      } else if (mention.url) {
+      } else {
         href = mention.url;
       }
 
@@ -107,11 +136,12 @@
       text += ' ' + interactionPresentation[mention.type] + ' this ' + prettyDate(mention.published);
 
       interaction = createChild(
-        createChild(facepile, 'li', 'interaction-' + mention.type),
+        createChild(facepile, 'li', 'interaction-' + mention.type, oldBox),
         href ? 'a' : 'span',
         'interaction-presentation'
       );
 
+      attr(interaction, 'url', mention.url);
       interaction.title = text;
       interaction.href = href;
 
@@ -136,19 +166,28 @@
         }
       };
       updates.addEventListener('mention', function (e) {
-        var mention;
+        var mention, mentionBox;
         try {
           mention = JSON.parse(e.data);
         } catch (ignore) {}
         if (mention) {
-          //TODO: Check if a face should be added instead?
-          if (interactionPresentation[mention.type]) {
-            addInteraction(mention);
+          mentionBox = getMention(mention.url);
+        }
+        if (mention && mention.targets.length) {
+          eachElem('published', function () {
+            this.childNodes[0].nodeValue = prettyDate(attr(this, 'published'));
+          });
+          if (options.nofacepile || !interactionPresentation[mention.type]) {
+            addMention(mention, mentionBox);
           } else {
-            addMention(mention);
+            addInteraction(mention, mentionBox);
           }
           if (!container.parentNode) {
             locations.parentNode.insertBefore(container, locations);
+          }
+        } else if (mention && mention.removedTargets.length) {
+          if (mentionBox) {
+            mentionBox.parentNode.removeChild(mentionBox);
           }
         }
       });
