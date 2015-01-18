@@ -8,6 +8,7 @@ exports.up = function (knex, Promise) {
         }),
         trx.schema.table('mentions', function (table) {
           table.timestamp('updated', true);
+          table.boolean('removed').notNullable().defaultTo(false);
         })
       ])
       .then(function () {
@@ -34,8 +35,16 @@ exports.up = function (knex, Promise) {
     });
 };
 
-exports.down = function (knex) {
-  return knex.schema.table('entries', function (table) {
-    table.dropColumn('updated');
+exports.down = function (knex, Promise) {
+  return knex.transaction(function (trx) {
+    return Promise.all([
+      trx.schema.table('entries', function (table) {
+        table.dropColumn('updated');
+      }),
+      trx.schema.table('mentions', function (table) {
+        table.dropColumn('updated');
+        table.dropColumn('removed');
+      }),
+    ]);
   });
 };
