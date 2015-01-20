@@ -281,6 +281,145 @@ describe('WebMentionPing', function () {
         result.count.should.be.a('string').and.equal('2');
       });
     });
+
+    it('should update all existing source mentions on valid ping', function () {
+      var templateMock1, templateMock2;
+
+      templateMock1 = nock('http://example.com')
+        .get('/')
+        .times(1)
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.org/foo">First</a>' +
+            '<a href="http://example.org/bar">second</a>' +
+          '</div>';
+        });
+
+      templateMock2 = nock('http://example.com')
+        .get('/')
+        .times(1)
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a class="u-like-of" href="http://example.org/foo">First</a>' +
+            '<a href="http://example.org/bar">second</a>' +
+          '</div>';
+        });
+
+      return _.reduce(
+        [
+          'http://example.org/foo',
+          'http://example.org/bar',
+        ],
+        function (promiseChain, target) {
+          return promiseChain.then(function () {
+            return new Promise(function (resolve, reject) {
+              request(app)
+                .post('/api/webmention?sync')
+                .send({
+                  source: 'http://example.com/',
+                  target: target
+                })
+                .expect(200)
+                .end(function (err) {
+                  if (err) {
+                    return reject(err);
+                  }
+                  resolve();
+                });
+            });
+          });
+        },
+        Promise.resolve()
+      )
+      .then(function () {
+        return knex('mentions').select().orderBy('url', 'desc');
+      })
+      .then(function (result) {
+        templateMock1.done();
+        templateMock2.done();
+
+        result.should.be.an('array').with.a.lengthOf(2);
+
+        result.should.have.deep.property('[0].url', 'http://example.org/foo');
+        result.should.have.deep.property('[0].interaction', true);
+        result.should.not.have.deep.property('[0].updated', null);
+        result.should.have.deep.property('[0].removed', false);
+
+        result.should.have.deep.property('[1].url', 'http://example.org/bar');
+        result.should.have.deep.property('[1].interaction', false);
+        result.should.have.deep.property('[1].updated', null);
+        result.should.have.deep.property('[1].removed', false);
+      });
+    });
+
+    it('should update remove all outdated source mentions on valid ping', function () {
+      var templateMock1, templateMock2;
+
+      templateMock1 = nock('http://example.com')
+        .get('/')
+        .times(1)
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.org/foo">First</a>' +
+          '</div>';
+        });
+
+      templateMock2 = nock('http://example.com')
+        .get('/')
+        .times(1)
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.org/bar">second</a>' +
+          '</div>';
+        });
+
+
+      return _.reduce(
+        [
+          'http://example.org/foo',
+          'http://example.org/bar',
+        ],
+        function (promiseChain, target) {
+          return promiseChain.then(function () {
+            return new Promise(function (resolve, reject) {
+              request(app)
+                .post('/api/webmention?sync')
+                .send({
+                  source: 'http://example.com/',
+                  target: target
+                })
+                .expect(200)
+                .end(function (err) {
+                  if (err) {
+                    return reject(err);
+                  }
+                  resolve();
+                });
+            });
+          });
+        },
+        Promise.resolve()
+      )
+      .then(function () {
+        return knex('mentions').select();
+      })
+      .then(function (result) {
+        templateMock1.done();
+        templateMock2.done();
+
+        result.should.be.an('array').with.a.lengthOf(2);
+
+        result.should.have.deep.property('[0].url', 'http://example.org/foo');
+        result.should.have.deep.property('[0].interaction', false);
+        result.should.not.have.deep.property('[0].updated', null);
+        result.should.have.deep.property('[0].removed', true);
+
+        result.should.have.deep.property('[1].url', 'http://example.org/bar');
+        result.should.have.deep.property('[1].interaction', false);
+        result.should.have.deep.property('[1].updated', null);
+        result.should.have.deep.property('[1].removed', false);
+      });
+    });
   });
 
   describe('fetch mentions', function () {
