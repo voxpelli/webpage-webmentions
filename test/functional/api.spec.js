@@ -332,12 +332,13 @@ describe('WebMentionPing', function () {
         Promise.resolve()
       )
       .then(function () {
+        templateMock1.done();
+        templateMock2.done();
+      })
+      .then(function () {
         return knex('mentions').select().orderBy('url', 'desc');
       })
       .then(function (result) {
-        templateMock1.done();
-        templateMock2.done();
-
         result.should.be.an('array').with.a.lengthOf(2);
 
         result.should.have.deep.property('[0].url', 'http://example.org/foo');
@@ -349,6 +350,19 @@ describe('WebMentionPing', function () {
         result.should.have.deep.property('[1].interaction', false);
         result.should.have.deep.property('[1].updated', null);
         result.should.have.deep.property('[1].removed', false);
+      })
+      .then(function () {
+        return knex('entries').select();
+      })
+      .then(function (result) {
+        result.should.be.an('array').with.a.lengthOf(1);
+
+        result.should.have.deep.property('[0].url', 'http://example.com/');
+        result.should.have.deep.property('[0].published').that.is.a('date');
+        result.should.have.deep.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
+        result.should.have.deep.property('[0].type', 'like');
+        result.should.have.deep.property('[0].data.interactionType', 'like');
+        result.should.have.deep.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
       });
     });
 
@@ -401,7 +415,7 @@ describe('WebMentionPing', function () {
         Promise.resolve()
       )
       .then(function () {
-        return knex('mentions').select();
+        return knex('mentions').select().orderBy('url', 'desc');
       })
       .then(function (result) {
         templateMock1.done();
