@@ -1,7 +1,7 @@
 {
   "name": "webmention-hosted",
   "description": "A site that receives and embeds WebMentions for other sites",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "author": {
     "name": "Pelle Wessman",
     "email": "pelle@kodfabrik.se",
@@ -49,10 +49,10 @@
     "coveralls": "^2.11.0",
     "dotenv": "~0.4.0",
     "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-jshint": "~0.11.0",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-lintspaces": "~0.6.0",
-    "grunt-mocha-istanbul": "~2.2.0",
+    "grunt-mocha-istanbul": "~2.3.0",
     "grunt-notify": "~0.4.1",
     "istanbul": "^0.3.4",
     "mocha": "^2.1.0",

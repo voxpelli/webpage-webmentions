@@ -69,6 +69,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.6.1
+
+Updated dependencies to eg. address the [Open Redirect](https://nodesecurity.io/advisories/serve-static-open-redirect) security advisory on the `express`-submodule `serve-static`
+
 ### 0.6.0
 
 **Hosts needs to do a database migration**. People just using the embed are of course fine though – will never break an embed.
