@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - "0.10"
   - "0.11"
+  - "iojs"
 before_script:
   - psql -c 'create database webmention_test;' -U postgres
 script: npm run travis
@@ -9,5 +10,6 @@ matrix:
   fast_finish: true
   allow_failures:
     - node_js: "0.11"
+    - node_js: "iojs"
 addons:
   postgresql: "9.3"
