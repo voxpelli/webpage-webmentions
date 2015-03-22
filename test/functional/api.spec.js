@@ -366,6 +366,85 @@ describe('WebMentionPing', function () {
       });
     });
 
+    it('should update on repeated ping', function () {
+      var templateMock1, templateMock2;
+
+      templateMock1 = nock('http://example.com')
+        .get('/')
+        .times(1)
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.org/foo">First</a>' +
+          '</div>';
+        });
+
+      templateMock2 = nock('http://example.com')
+        .get('/')
+        .times(1)
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a class="u-like-of" href="http://example.org/foo">First</a>' +
+          '</div>';
+        });
+
+      return new Promise(function (resolve, reject) {
+        request(app)
+          .post('/api/webmention?sync')
+          .send({
+            source: 'http://example.com/',
+            target: 'http://example.org/foo'
+          })
+          .expect(200)
+          .end(function (err) {
+            if (err) {
+              return reject(err);
+            }
+            resolve();
+          });
+      })
+      .then(function () {
+        templateMock1.done();
+        return knex('entries').select();
+      })
+      .then(function (result) {
+        result.should.be.an('array').with.a.lengthOf(1);
+        result.should.have.deep.property('[0].published').that.is.a('date');
+        result.should.have.deep.property('[0].updated').that.is.a('date').that.equals(result[0].published);
+        result.should.have.deep.property('[0].type', null);
+        result.should.not.have.deep.property('[0].data.interactionType');
+        result.should.not.have.deep.property('[0].data.interactions');
+      })
+      .then(function () {
+        return new Promise(function (resolve, reject) {
+          request(app)
+            .post('/api/webmention?sync')
+            .send({
+              source: 'http://example.com/',
+              target: 'http://example.org/foo'
+            })
+            .expect(200)
+            .end(function (err) {
+              if (err) {
+                return reject(err);
+              }
+              resolve();
+            });
+        });
+      })
+      .then(function () {
+        templateMock2.done();
+        return knex('entries').select();
+      })
+      .then(function (result) {
+        result.should.be.an('array').with.a.lengthOf(1);
+        result.should.have.deep.property('[0].published').that.is.a('date');
+        result.should.have.deep.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
+        result.should.have.deep.property('[0].type', 'like');
+        result.should.have.deep.property('[0].data.interactionType', 'like');
+        result.should.have.deep.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
+      });
+    });
+
     it('should update remove all outdated source mentions on valid ping', function () {
       var templateMock1, templateMock2;
 
