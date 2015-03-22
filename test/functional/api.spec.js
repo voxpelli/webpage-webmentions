@@ -494,6 +494,9 @@ describe('WebMentionPing', function () {
         .end(matchMentions.bind(undefined, done, 14));
     });
 
+    // Test the resolveDerivedData() method and use
+    it.skip('should derive interaction target status correctly');
+
     it('should allow matching based on hostname', function (done) {
       request(app)
         .get('/api/mentions')
@@ -630,6 +633,13 @@ describe('WebMentionPing', function () {
       });
     });
 
+  });
+
+  describe('live updates', function () {
+    it.skip('should return data in an expected format');
+
+    // Test the resolveDerivedData() method and use
+    it.skip('should derive interaction target status correctly');
   });
 
 });
