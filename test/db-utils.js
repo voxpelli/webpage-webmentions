@@ -9,16 +9,7 @@ var knex = require('../lib/knex'),
   urlTools = require('../lib/utils/url-tools'),
   options = require('../lib/config'),
   installSchema = require('../lib/install-schema'),
-  tables = [
-    'sites',
-    'accounts',
-
-    'mentions',
-    'entries',
-
-    'failurelog',
-    'knex_migrations',
-  ];
+  tables = installSchema.tables;
 
 // Avoid running tests in non-test environments
 if (options.env !== 'test') {

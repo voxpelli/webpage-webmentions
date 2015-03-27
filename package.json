@@ -14,7 +14,7 @@
     "ejs": "^1.0.0",
     "express": "^3.4.7",
     "faker": "^2.1.1",
-    "fetch-politely": "^0.1.0",
+    "fetch-politely": "~0.2.0",
     "knex": "^0.7.3",
     "lodash": "^2.4.1",
     "lru-cache": "~2.5.0",
@@ -24,9 +24,10 @@
     "passport": "~0.2.0",
     "passport-github": "~0.1.5",
     "pg": "^4.1.0",
-    "pg-pubsub": "^0.1.0",
+    "pg-pubsub": "~0.1.1",
     "promise": "^6.0.0",
-    "request": "~2.51.0"
+    "request": "~2.51.0",
+    "verror": "^1.6.0"
   },
   "engines": {
     "node": "0.10.x"
