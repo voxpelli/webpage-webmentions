@@ -69,6 +69,14 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.7.0
+
+**Hosts needs to do a database migration**. People not hosting this site themselves don't have to do anything though – embeds etc are working just like before.
+
+* Improvement: Now using a database backed throttling mechanism, based on [fetch-politely](https://github.com/voxpelli/node-fetch-politely), which means no more limits to how many source URL:s can be queued for lookup
+* Change: Disabled sync-pinging outside of development and test environments as its incompatible with the new throttling
+* Fix: Updated dependencies
+
 ### 0.6.1
 
 Updated dependencies to eg. address the [Open Redirect](https://nodesecurity.io/advisories/serve-static-open-redirect) security advisory on the `express`-submodule `serve-static`
