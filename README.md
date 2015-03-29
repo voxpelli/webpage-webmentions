@@ -58,6 +58,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 * **WEBMENTIONS_USER_LIMIT** - the total maximum of users you want to be able to use your application. Defaults to 6.
 * **WEBMENTIONS_DEV_THROTTLING** – in a development environment, enables throttling for local pings made by eg. [webmention-testpinger](https://www.npmjs.org/package/webmention-testpinger) – needed to test throttling mechanism
+* **WEBMENTIONS_DEV_SIGINT_CLEANUP** – enables graceful shutdown on `SIGINT` command
 * **NEW_RELIC_LICENSE_KEY** - the license key for New Relic, if you want to use that
 * **NEW_RELIC_ENABLED** - set to true if you want to use New Relic
 
@@ -75,6 +76,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 * Improvement: Now using a database backed throttling mechanism, based on [fetch-politely](https://github.com/voxpelli/node-fetch-politely), which means no more limits to how many source URL:s can be queued for lookup
 * Change: Disabled sync-pinging outside of development and test environments as its incompatible with the new throttling
+* Change: Added option, `WEBMENTIONS_DEV_SIGINT_CLEANUP`, to graceful shutdown on `SIGINT`
 * Fix: Updated dependencies
 
 ### 0.6.1
