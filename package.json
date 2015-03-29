@@ -49,7 +49,7 @@
     "chai": "^1.10.0",
     "chai-as-promised": "^4.1.1",
     "coveralls": "^2.11.0",
-    "dotenv": "~0.4.0",
+    "dotenv": "^1.0.0",
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.11.0",
     "grunt-contrib-watch": "~0.6.1",
