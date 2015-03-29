@@ -77,6 +77,7 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 * Improvement: Now using a database backed throttling mechanism, based on [fetch-politely](https://github.com/voxpelli/node-fetch-politely), which means no more limits to how many source URL:s can be queued for lookup
 * Change: Disabled sync-pinging outside of development and test environments as its incompatible with the new throttling
 * Change: Added option, `WEBMENTIONS_DEV_SIGINT_CLEANUP`, to graceful shutdown on `SIGINT`
+* Fix: Got graceful shutdown working again
 * Fix: Updated dependencies
 
 ### 0.6.1
