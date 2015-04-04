@@ -28,5 +28,6 @@ exports.config = {
     ignore : [
       '^/api/mentions/live'
     ]
-  }
+  },
+  capture_params : true
 };
