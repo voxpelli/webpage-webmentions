@@ -70,6 +70,11 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.7.1
+
+* Fix: No more warnings in the logs about too many listeners
+* Fix: New Relic will now log request parameters, which will make it easier to understand certain errors
+
 ### 0.7.0
 
 **Hosts needs to do a database migration**. People not hosting this site themselves don't have to do anything though – embeds etc are working just like before.
