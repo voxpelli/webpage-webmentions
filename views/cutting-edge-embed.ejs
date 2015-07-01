@@ -1,4 +1,6 @@
 (function (mentions, interactions, options) {
+  /*jslint browser: true */
+  /* global EventSource */
   'use strict';
 
   var addClass = function (elem, className) {
@@ -82,7 +84,7 @@
       return elem;
     },
     addMention = function (mention, oldBox) {
-      var box, author, avatar, published;
+      var box, author, published;
 
       mention.author = mention.author || {};
 
@@ -114,13 +116,13 @@
       published.href = mention.url;
     },
     addInteraction = function (mention, oldBox) {
-      var interaction, wrapper, href, avatar, text;
+      var interaction, wrapper, href, text;
 
       if (!facepile.parentNode) {
         if (container.childNodes.length === 0) {
-          container.appendChild(facepile)
+          container.appendChild(facepile);
         } else {
-          container.insertBefore(facepile, container.childNodes[0])
+          container.insertBefore(facepile, container.childNodes[0]);
         }
       }
 
