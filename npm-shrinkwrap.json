@@ -1080,62 +1080,62 @@
       "resolved": "https://registry.npmjs.org/moment/-/moment-2.9.0.tgz"
     },
     "newrelic": {
-      "version": "1.18.1",
-      "from": "newrelic@1.18.1",
-      "resolved": "https://registry.npmjs.org/newrelic/-/newrelic-1.18.1.tgz",
+      "version": "1.21.0",
+      "from": "newrelic@1.21.0",
+      "resolved": "https://registry.npmjs.org/newrelic/-/newrelic-1.21.0.tgz",
       "dependencies": {
         "json-stringify-safe": {
-          "version": "5.0.0",
-          "from": "json-stringify-safe@^5.0.0",
-          "resolved": "https://registry.npmjs.org/json-stringify-safe/-/json-stringify-safe-5.0.0.tgz"
+          "version": "5.0.1",
+          "from": "json-stringify-safe@>=5.0.0 <6.0.0",
+          "resolved": "https://registry.npmjs.org/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz"
         },
         "https-proxy-agent": {
-          "version": "0.3.5",
-          "from": "https-proxy-agent@^0.3.5",
-          "resolved": "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-0.3.5.tgz",
+          "version": "0.3.6",
+          "from": "https-proxy-agent@>=0.3.5 <0.4.0",
+          "resolved": "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-0.3.6.tgz",
           "dependencies": {
             "agent-base": {
-              "version": "1.0.1",
-              "from": "agent-base@~1.0.1",
-              "resolved": "https://registry.npmjs.org/agent-base/-/agent-base-1.0.1.tgz"
+              "version": "1.0.2",
+              "from": "agent-base@>=1.0.1 <1.1.0",
+              "resolved": "https://registry.npmjs.org/agent-base/-/agent-base-1.0.2.tgz"
             },
             "debug": {
-              "version": "1.0.4",
-              "from": "debug@~1.0.0",
-              "resolved": "https://registry.npmjs.org/debug/-/debug-1.0.4.tgz",
+              "version": "2.2.0",
+              "from": "debug@>=2.0.0 <3.0.0",
+              "resolved": "https://registry.npmjs.org/debug/-/debug-2.2.0.tgz",
               "dependencies": {
                 "ms": {
-                  "version": "0.6.2",
-                  "from": "ms@0.6.2",
-                  "resolved": "https://registry.npmjs.org/ms/-/ms-0.6.2.tgz"
+                  "version": "0.7.1",
+                  "from": "ms@0.7.1",
+                  "resolved": "https://registry.npmjs.org/ms/-/ms-0.7.1.tgz"
                 }
               }
             },
             "extend": {
-              "version": "1.2.1",
-              "from": "extend@~1.2.1",
-              "resolved": "https://registry.npmjs.org/extend/-/extend-1.2.1.tgz"
+              "version": "3.0.0",
+              "from": "extend@>=3.0.0 <4.0.0",
+              "resolved": "https://registry.npmjs.org/extend/-/extend-3.0.0.tgz"
             }
           }
         },
         "semver": {
-          "version": "4.3.3",
-          "from": "semver@^4.2.0",
-          "resolved": "https://registry.npmjs.org/semver/-/semver-4.3.3.tgz"
+          "version": "4.3.6",
+          "from": "semver@>=4.2.0 <5.0.0",
+          "resolved": "https://registry.npmjs.org/semver/-/semver-4.3.6.tgz"
         },
         "yakaa": {
           "version": "1.0.1",
-          "from": "yakaa@^1.0.1",
+          "from": "yakaa@>=1.0.1 <2.0.0",
           "resolved": "https://registry.npmjs.org/yakaa/-/yakaa-1.0.1.tgz"
         },
         "readable-stream": {
           "version": "1.1.13",
-          "from": "readable-stream@^1.1.13",
+          "from": "readable-stream@>=1.1.13 <2.0.0",
           "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-1.1.13.tgz",
           "dependencies": {
             "core-util-is": {
               "version": "1.0.1",
-              "from": "core-util-is@~1.0.0",
+              "from": "core-util-is@>=1.0.0 <1.1.0",
               "resolved": "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.1.tgz"
             },
             "isarray": {
@@ -1145,12 +1145,12 @@
             },
             "string_decoder": {
               "version": "0.10.31",
-              "from": "string_decoder@~0.10.x",
+              "from": "string_decoder@>=0.10.0 <0.11.0",
               "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
             },
             "inherits": {
               "version": "2.0.1",
-              "from": "inherits@2",
+              "from": "inherits@>=2.0.1 <2.1.0",
               "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
             }
           }
