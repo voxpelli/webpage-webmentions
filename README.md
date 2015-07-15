@@ -70,6 +70,13 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.7.2
+
+* Change: Move to iojs as main node runtime
+* Fix: A bug that made sites with no mentions not show when logged in
+* Fix: Updated lots of dependencies
+* Tests: Fix for out of order returns of mocked requests when running on iojs
+
 ### 0.7.1
 
 * Fix: No more warnings in the logs about too many listeners
