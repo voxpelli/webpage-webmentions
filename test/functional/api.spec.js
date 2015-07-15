@@ -611,56 +611,64 @@ describe('WebMentionPing', function () {
     });
 
     it('should allow matching based on path', function () {
-      return Promise.all([
-        new Promise(function (resolve, reject) {
-          request(app)
-            .get('/api/mentions')
-            .query({ path: 'http://example.org/path' })
-            .expect(200)
-            .end(function (err, res) {
-              if (err) {
-                return reject(err);
-              }
+      return _.reduce([
+        function () {
+          return new Promise(function (resolve, reject) {
+            request(app)
+              .get('/api/mentions')
+              .query({ path: 'http://example.org/path' })
+              .expect(200)
+              .end(function (err, res) {
+                if (err) {
+                  return reject(err);
+                }
 
-              res.body.should.be.an('array').of.length(9);
-              res.body.should.have.deep.property('[0].author.name');
+                res.body.should.be.an('array').of.length(9);
+                res.body.should.have.deep.property('[0].author.name');
 
-              resolve();
+                resolve();
+              });
+          });
+        },
+        function () {
+          return new Promise(function (resolve, reject) {
+            request(app)
+              .get('/api/mentions')
+              .query({ path: 'http://example.org/foo' })
+              .expect(200)
+              .end(function (err, res) {
+                if (err) {
+                  return reject(err);
+                }
+
+                res.body.should.be.an('array').of.length(4);
+                res.body.should.have.deep.property('[0].author.name');
+
+                resolve();
+              });
             });
-        }),
-        new Promise(function (resolve, reject) {
-          request(app)
-            .get('/api/mentions')
-            .query({ path: 'http://example.org/foo' })
-            .expect(200)
-            .end(function (err, res) {
-              if (err) {
-                return reject(err);
-              }
+        },
+        function () {
+          return new Promise(function (resolve, reject) {
+            // Test that the escaping works
+            request(app)
+              .get('/api/mentions')
+              .query({ path: ['http://example.org/%h', 'http://example.org/p_th'] })
+              .expect(200)
+              .end(function (err, res) {
+                if (err) {
+                  return reject(err);
+                }
 
-              res.body.should.be.an('array').of.length(4);
-              res.body.should.have.deep.property('[0].author.name');
+                res.body.should.be.an('array').of.length(0);
 
-              resolve();
+                resolve();
+              });
             });
-        }),
-        new Promise(function (resolve, reject) {
-          // Test that the escaping works
-          request(app)
-            .get('/api/mentions')
-            .query({ path: ['http://example.org/%h', 'http://example.org/p_th'] })
-            .expect(200)
-            .end(function (err, res) {
-              if (err) {
-                return reject(err);
-              }
-
-              res.body.should.be.an('array').of.length(0);
-
-              resolve();
-            });
-        }),
-      ]);
+        },
+      ], function (result, next) {
+        return result.then(next);
+      }, Promise.resolve());
     });
 
     it('should ignore handle multiple matches', function (done) {
