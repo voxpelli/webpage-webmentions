@@ -686,7 +686,7 @@ describe('WebMentionPing', function () {
         });
     });
 
-    it('should allow matching based on path', function () {
+    it('should sort the result', function () {
       return new Promise(function (resolve, reject) {
         request(app)
           .get('/api/mentions')
