@@ -10,7 +10,6 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "0.12.4",
-    "concat-stream": "^1.5.0",
     "cors": "^2.5.2",
     "ejs": "^1.0.0",
     "express": "^3.4.7",
