@@ -20,7 +20,7 @@
     },
     "name": "Parsing webmentions",
     "published": 1379245765000,
-    "summary": "Thanks to everyone who helped me test webmentions that I hacked together at Indie Web Camp last weekend. Let me explain what web mentions are all about\u2026 Basically, it\u2019s an equivalent to pingback. Let\u2019s say I write something here on adactio.com. Suppose that prompts you to write something in response on your own site. A web mention is a way for you to let me know that your response exists. If you look in the head of any of my journal posts, you\u2019ll see this link element: <link rel=\"webmention\" href=\"http://ad",
+    "summary": "Thanks to everyone who helped me test webmentions that I hacked together at Indie Web Camp last weekend.\n\nLet me explain what web mentions are all about\u2026\n\nBasically, it\u2019s an equivalent to pingback. Let\u2019s say I write something here on adactio.com. Suppose that prompts you to write something in response on your own site. A web mention is a way for you to let me know that your response exists.\n\nIf you look in the head of any of my journal posts, you\u2019ll see this link element:\n\n<link rel=\"webmention\" href=\"http:",
     "url": "http://adactio-com.example.com/"
   },
   "brid-gy": {
@@ -47,7 +47,7 @@
       "url": null
     },
     "name": null,
-    "summary": "This test embeds XSS within the hcard name and time field. Clicking on the name or title should not raise an alert.",
+    "summary": "This test embeds XSS within the hcard name and time field. Clicking on\nthe name or title should not raise an alert.",
     "url": "http://checkmention-hcardxss.example.com/",
     "interactionType": "reply",
     "interactions": ["http://example.org/foo"]
@@ -59,7 +59,7 @@
       "url": "https://checkmention.appspot.com/"
     },
     "name": null,
-    "summary": "Clicking this should not cause an alert. This div should not alert. Try clicking this link <script>alert(\"encoded-xss\")</script> and this too. Mouse over this should not cause an alert. This broken should not throw an alert. alert(\"XSS4\");// Neither should . Please look at the Owasp XSS prevention cheat sheet for more information.",
+    "summary": "Clicking this\nshould not cause an alert.\nThis div\nshould not alert.\nTry clicking this link\n<script>alert(\"encoded-xss\")</script>\nand this too.\nMouse over this\nshould not cause an alert. This broken\n should not throw an alert.\n<alert(\"XSS4\");//\n\nNeither should .\nPlease look at the Owasp XSS prevention cheat sheet for more information.\n\n\nThis note was created on\n\n%%nice_time",
     "url": "http://checkmention-xss.example.com/",
     "interactionType": "reply",
     "interactions": ["http://example.org/foo"]
@@ -72,7 +72,7 @@
     },
     "name": null,
     "published": 1389867086000,
-    "summary": "Bridgy ist ein WebMention Proxy f\u00fcr Twitter, Facebook und Google+. Es sammelt comments, shares, likes und re-tweets und leitet sie an die entsprechenden Links weiter. Bridgy sends webmentions for comments, likes, and reshares on Facebook, Twitter, Google+, and Instagram. Bridgy notices when you post links, watches for activity on those posts, and sends them back to your site as webmentions. It also serves them as microformats2 for webmention targets to read. Gro\u00dfartige Idee! Wer sein eigenes Bridgy betreibe",
+    "summary": "Bridgy ist ein WebMention Proxy für Twitter, Facebook und Google+. Es sammelt comments, shares, likes und re-tweets und leitet sie an die entsprechenden Links weiter.\nBridgy sends webmentions for comments, likes, and reshares on Facebook, Twitter, Google+, and Instagram. Bridgy notices when you post links, watches for activity on those posts, and sends them back to your site as webmentions. It also serves them as microformats2 for webmention targets to read.\nGroßartige Idee!\nWer sein eigenes Bridgy betreibe",
     "url": "https://notizblog.org/2014/01/16/bridgy-webmentions-fuer-twitter-und-facebook/",
     "interactionType": "reply",
     "interactions": ["http://example.org/foo"]
@@ -85,7 +85,7 @@
     },
     "name": null,
     "published": 1372886842000,
-    "summary": "Liked [What idno is](http://werd.io/entry/51d3c98cbed7de6715d8fd15/what-idno-is) #indieweb #idno",
+    "summary": "Liked [What idno is](http://werd.io/entry/51d3c98cbed7de6715d8fd15/what-idno-is)\n#indieweb #idno",
     "url": "http://www.sandeep.io/103"
   },
   "tantek-com": {

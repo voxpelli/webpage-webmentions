@@ -42,7 +42,7 @@ describe('WebMentionPing', function () {
           "value": "W. Developer"
         }],
         "content": [{
-          "html": "<p><a href=\"http://example.org/bar\">Blah</a> blah blah</p>",
+          "html": "    <p><a href=\"http://example.org/bar\">Blah</a> blah blah</p>  ",
           "value": "Blah blah blah"
         }],
         "name": ["Microformats are amazing"],
@@ -52,6 +52,7 @@ describe('WebMentionPing', function () {
       },
       "type": ["h-entry"]
     }],
+    "rel-urls": {},
     "rels": {}
   };
 
