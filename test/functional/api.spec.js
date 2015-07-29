@@ -22,6 +22,7 @@ describe('WebMentionPing', function () {
 
   var app = require('../../lib/main'),
     WebMentionTemplates = require('webmention-testpinger').WebMentionTemplates,
+    microformatsVersion = require('microformat-node/package.json').version,
     templateCollection = new WebMentionTemplates();
 
   beforeEach(function () {
@@ -90,7 +91,7 @@ describe('WebMentionPing', function () {
           return Promise.all(requests);
         })
         .then(function () {
-          return knex('entries').select('url', 'type', 'data', 'raw');
+          return knex('entries').select('url', 'type', 'data', 'raw', 'mfversion');
         })
         .then(function (result) {
           templateMocks.forEach(function (templateMock) {
@@ -117,6 +118,8 @@ describe('WebMentionPing', function () {
               } else {
                 should.not.exist(templateMention.type);
               }
+
+              templateMention.mfversion.should.equal(microformatsVersion);
             } else {
               // Uncomment to inspect new templates to easily add them to ../template-mentions.json
               // console.log(JSON.stringify(templateMention.data));
