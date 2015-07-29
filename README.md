@@ -70,6 +70,14 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.8.0
+
+**Hosts needs to do a database migration**. People not hosting this site themselves don't have to do anything though – embeds etc are working just like before.
+
+* Update: The microformat and HTML parsing libraries has been updated to new version
+* Update: A new column that tracks the version of the microformat library used has been added, makes it easier to migrate and/or update data in the future
+* Fix: By default there's again no longer any throttling when pinging localhost sites to a development instance
+
 ### 0.7.3
 
 * Feature: One can now add a `sort=desc` query parameter when embedding or fetching mentions to reverse the sort order
