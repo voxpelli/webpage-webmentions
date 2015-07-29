@@ -70,6 +70,11 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.7.3
+
+* Feature: One can now add a `sort=desc` query parameter when embedding or fetching mentions to reverse the sort order
+* Fix: Updated lots of dependencies
+
 ### 0.7.2
 
 * Change: Move to iojs as main node runtime
