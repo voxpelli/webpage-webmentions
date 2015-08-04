@@ -70,6 +70,10 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.8.1
+
+* Feature: Multi-URL cutting edge embeds now mentions what URL:s a mention was received for. This is usefull for eg. a Twitter-style mentions page. Possible to opt out of through the new `nocontext` query parameter.
+
 ### 0.8.0
 
 **Hosts needs to do a database migration**. People not hosting this site themselves don't have to do anything though – embeds etc are working just like before.
