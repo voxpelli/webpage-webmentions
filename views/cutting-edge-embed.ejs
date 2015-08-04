@@ -40,6 +40,18 @@
         elem.src = src;
       }
     },
+    addTextList = function (elem, items) {
+      var i, length, list = new DocumentFragment();
+
+      for (i = 0, length = items.length; i < length; i++) {
+        if (i !== 0) {
+          addText(list, i === length -1 ? ' and ' : ', ');
+        }
+        list.appendChild(items[i]);
+      }
+
+      elem.appendChild(list);
+    },
     attr = function (elem, key, value) {
       if (!value) {
         return elem.getAttribute('data-' + key);
@@ -84,7 +96,7 @@
       return elem;
     },
     addMention = function (mention, oldBox) {
-      var box, author, published;
+      var box, author, footer, published, interactions, mentions, targetUrl, target, i, length;
 
       mention.author = mention.author || {};
 
@@ -110,10 +122,39 @@
         addText(createChild(box, 'div', 'summary'), mention.summary);
       }
 
-      published = createChild(box, 'a', 'published');
+      footer = createChild(box, 'div', 'footer');
+
+      published = createChild(footer, 'a', 'published');
       attr(published, 'published', mention.published);
       addText(published, prettyDate(mention.published));
       published.href = mention.url;
+
+      if (options.showContext) {
+        interactions = [];
+        mentions = [];
+
+        for (i = 0, length = mention.targets.length; i < length; i++) {
+          targetUrl = mention.targets[i];
+
+          target = createChild(false, 'a', 'target');
+          addText(target, targetUrl);
+          target.href = targetUrl;
+
+          (mention.interactions.indexOf(targetUrl) === -1 ? mentions : interactions).push(target);
+        }
+
+        if (interactions.length) {
+          addText(footer, ' in response to ');
+          addTextList(footer, interactions);
+          if (mentions.length) {
+            addText(footer, ' and ');
+          }
+        }
+        if (mentions.length) {
+          addText(footer, ' mentioning ');
+          addTextList(footer, mentions);
+        }
+      }
     },
     addInteraction = function (mention, oldBox) {
       var interaction, wrapper, href, text;

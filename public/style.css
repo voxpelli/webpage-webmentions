@@ -33,7 +33,7 @@ textarea:first-of-type{margin-top:0}
 .webmention-author {
   font-size: .9em;
 }
-.webmention-published {
+.webmention-footer {
   display: block;
   font-size: .7em;
   color: inherit;
