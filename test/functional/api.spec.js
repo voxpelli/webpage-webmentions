@@ -1,5 +1,5 @@
 /* jshint nonew:false */
-/* global describe, beforeEach, afterEach, it, -Promise */
+/* global describe, beforeEach, afterEach, it */
 
 "use strict";
 
@@ -7,7 +7,6 @@ var chai = require('chai'),
   chaiAsPromised = require('chai-as-promised'),
   request = require('supertest'),
   nock = require('nock'),
-  Promise = require('promise'),
   _ = require('lodash'),
   mod_url = require('url'),
   knex = require('../../lib/knex'),

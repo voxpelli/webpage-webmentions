@@ -15,5 +15,6 @@
   "newcap": true,
   "noarg": true,
   "undef": true,
-  "node": true
+  "node": true,
+  "esnext": true
 }

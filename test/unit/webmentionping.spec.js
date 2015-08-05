@@ -1,11 +1,10 @@
 /* jshint nonew:false, scripturl:true */
-/* global beforeEach, describe, it, -Promise */
+/* global beforeEach, describe, it */
 
 "use strict";
 
 var chai = require('chai'),
   chaiAsPromised = require('chai-as-promised'),
-  Promise = require('promise'),
   _ = require('lodash'),
   expect;
 

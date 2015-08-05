@@ -1,10 +1,8 @@
 /*jslint node: true */
-/* global -Promise */
 
 "use strict";
 
 var knex = require('../lib/knex'),
-  Promise = require('promise'),
   sampleData = require('../lib/utils/sample-data'),
   urlTools = require('../lib/utils/url-tools'),
   options = require('../lib/config'),
