@@ -1639,62 +1639,17 @@
       }
     },
     "pg-pubsub": {
-      "version": "0.1.1",
-      "from": "pg-pubsub@>=0.1.1 <0.2.0",
-      "resolved": "https://registry.npmjs.org/pg-pubsub/-/pg-pubsub-0.1.1.tgz",
+      "version": "0.2.0",
+      "from": "pg-pubsub@0.2.0",
       "dependencies": {
         "lodash": {
-          "version": "3.10.0",
+          "version": "3.10.1",
           "from": "lodash@>=3.0.0 <4.0.0",
-          "resolved": "https://registry.npmjs.org/lodash/-/lodash-3.10.0.tgz"
-        },
-        "promise": {
-          "version": "6.1.0",
-          "from": "promise@>=6.0.0 <7.0.0",
-          "resolved": "https://registry.npmjs.org/promise/-/promise-6.1.0.tgz",
-          "dependencies": {
-            "asap": {
-              "version": "1.0.0",
-              "from": "asap@>=1.0.0 <1.1.0",
-              "resolved": "https://registry.npmjs.org/asap/-/asap-1.0.0.tgz"
-            }
-          }
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-3.10.1.tgz"
         },
         "promised-retry": {
-          "version": "0.1.0",
-          "from": "promised-retry@>=0.1.0 <0.2.0",
-          "resolved": "https://registry.npmjs.org/promised-retry/-/promised-retry-0.1.0.tgz",
-          "dependencies": {
-            "lodash": {
-              "version": "2.4.2",
-              "from": "lodash@>=2.4.1 <3.0.0",
-              "resolved": "https://registry.npmjs.org/lodash/-/lodash-2.4.2.tgz"
-            },
-            "promise": {
-              "version": "5.0.0",
-              "from": "promise@>=5.0.0 <6.0.0",
-              "resolved": "https://registry.npmjs.org/promise/-/promise-5.0.0.tgz",
-              "dependencies": {
-                "asap": {
-                  "version": "1.0.0",
-                  "from": "asap@>=1.0.0 <1.1.0",
-                  "resolved": "https://registry.npmjs.org/asap/-/asap-1.0.0.tgz"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "promise": {
-      "version": "7.0.4",
-      "from": "promise@7.0.4",
-      "resolved": "https://registry.npmjs.org/promise/-/promise-7.0.4.tgz",
-      "dependencies": {
-        "asap": {
-          "version": "2.0.3",
-          "from": "asap@>=2.0.3 <2.1.0",
-          "resolved": "https://registry.npmjs.org/asap/-/asap-2.0.3.tgz"
+          "version": "0.2.2",
+          "from": "promised-retry@>=0.2.1 <0.3.0"
         }
       }
     },

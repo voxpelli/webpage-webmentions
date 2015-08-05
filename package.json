@@ -24,7 +24,7 @@
     "passport": "~0.2.0",
     "passport-github": "~0.1.5",
     "pg": "^4.1.0",
-    "pg-pubsub": "~0.1.1",
+    "pg-pubsub": "~0.2.0",
     "request": "~2.60.0",
     "verror": "^1.6.0"
   },
@@ -57,7 +57,7 @@
     "grunt-notify": "~0.4.1",
     "istanbul": "^0.3.4",
     "mocha": "^2.1.0",
-    "nock": "~2.9.0",
+    "nock": "~2.10.0",
     "passport-dummy": "0.0.1",
     "supertest": "^1.0.1",
     "webmention-testpinger": "~0.5.0"
