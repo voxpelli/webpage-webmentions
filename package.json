@@ -11,7 +11,6 @@
   "dependencies": {
     "cheerio": "0.19.x",
     "cors": "^2.5.2",
-    "ejs": "^1.0.0",
     "express": "^3.4.7",
     "faker": "^2.1.1",
     "fetch-politely": "~0.7.0",
@@ -26,6 +25,7 @@
     "pg": "^4.1.0",
     "pg-pubsub": "~0.2.0",
     "request": "~2.60.0",
+    "tema": "^0.2.1",
     "verror": "^1.6.0"
   },
   "engines": {

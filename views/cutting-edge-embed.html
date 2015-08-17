@@ -248,4 +248,4 @@
   if (mentions[0] || interactions[0]) {
     locations.parentNode.insertBefore(container, locations);
   }
-}(<%- JSON.stringify(mentions) %>, <%- JSON.stringify(interactions) %>, <%- JSON.stringify(options) %>));
+}(<%= JSON.stringify(mentions) %>, <%= JSON.stringify(interactions) %>, <%= JSON.stringify(options) %>));
