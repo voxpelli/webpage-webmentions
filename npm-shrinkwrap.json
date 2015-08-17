@@ -724,9 +724,9 @@
       "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-2.6.5.tgz"
     },
     "microformat-node": {
-      "version": "0.3.0",
-      "from": "microformat-node@0.3.0",
-      "resolved": "https://registry.npmjs.org/microformat-node/-/microformat-node-0.3.0.tgz",
+      "version": "0.3.1",
+      "from": "microformat-node@0.3.1",
+      "resolved": "https://registry.npmjs.org/microformat-node/-/microformat-node-0.3.1.tgz",
       "dependencies": {
         "entities": {
           "version": "1.1.1",
@@ -762,11 +762,6 @@
                       "version": "0.10.31",
                       "from": "string_decoder@>=0.10.0 <0.11.0",
                       "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
-                    },
-                    "inherits": {
-                      "version": "2.0.1",
-                      "from": "inherits@>=2.0.1 <2.1.0",
-                      "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
                     }
                   }
                 }
@@ -1048,9 +1043,9 @@
       "resolved": "https://registry.npmjs.org/ms/-/ms-0.7.1.tgz"
     },
     "newrelic": {
-      "version": "1.21.1",
-      "from": "newrelic@>=1.14.4 <2.0.0",
-      "resolved": "https://registry.npmjs.org/newrelic/-/newrelic-1.21.1.tgz",
+      "version": "1.21.2",
+      "from": "newrelic@1.21.2",
+      "resolved": "https://registry.npmjs.org/newrelic/-/newrelic-1.21.2.tgz",
       "dependencies": {
         "concat-stream": {
           "version": "1.5.0",
@@ -1063,9 +1058,9 @@
               "resolved": "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
             },
             "readable-stream": {
-              "version": "2.0.1",
+              "version": "2.0.2",
               "from": "readable-stream@>=2.0.0 <2.1.0",
-              "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.0.1.tgz",
+              "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.0.2.tgz",
               "dependencies": {
                 "core-util-is": {
                   "version": "1.0.1",
@@ -1078,9 +1073,9 @@
                   "resolved": "https://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz"
                 },
                 "process-nextick-args": {
-                  "version": "1.0.1",
+                  "version": "1.0.2",
                   "from": "process-nextick-args@>=1.0.0 <1.1.0",
-                  "resolved": "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-1.0.1.tgz"
+                  "resolved": "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-1.0.2.tgz"
                 },
                 "string_decoder": {
                   "version": "0.10.31",
@@ -1291,8 +1286,8 @@
       }
     },
     "pg-pubsub": {
-      "version": "0.2.0",
-      "from": "pg-pubsub@>=0.2.0 <0.3.0",
+      "version": "0.2.1",
+      "from": "pg-pubsub@0.2.1",
       "dependencies": {
         "lodash": {
           "version": "3.10.1",
