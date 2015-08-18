@@ -1,0 +1,92 @@
+<% block('page-class', 'page-mentions') %>
+
+<div>
+  <% if (targets.length > 1) { %>
+    <h2>Mentions</h2>
+    <p>This page contains:</p>
+    <ul>
+      <% _.forEach(targets, function (target) { %>
+        <li><%= target %></li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <h2><%= targets[0] %></h2>
+  <% } %>
+  <% _.forEach(mentions, function (mention) { %>
+    <div class="h-entry">
+      <% if (mention.author.url) { %>
+        <a href="<%- mention.author.url %>" class="p-author h-card">
+      <% } else { %>
+        <span class="p-author h-card">
+      <% } %>
+        <% if (mention.author.url) { %>
+          <img src="<%- mention.author.photo %>" alt="" />
+        <% } %>
+        <%- mention.author.name %>
+      <% if (mention.author.url) { %></a><% } else { %></span><% } %>
+
+      <% if (mention.name) { %>
+        <div class="p-name"><%- mention.name %></div>
+      <% } %>
+      <% if (mention.summary) { %>
+        <div class="p-summary<% if (!mention.name) { %> p-name<% } %>"><%- mention.summary %></div>
+      <% } %>
+
+      <footer>
+        <time class="dt-published" datetime="<%- (new Date(mention.published)).toISOString() %>" pubdate>
+          <a class="u-url u-uid" href="<%- mention.url %>"><%- prettyDate(mention.published) %></a>
+        </time>
+
+        <%
+        if (showContext) {
+          var interactionContext = [];
+          var mentionContext = [];
+          var targetUrl, i, length, interactionClass;
+
+          var printList = function (items) {
+            for (i = 0, length = items.length; i < length; i++) {
+              if (i !== 0) {
+                print(i === length -1 ? ' and ' : ', ');
+              }
+              print(items[i]);
+            }
+          };
+
+          if (mention.type === 'reply') {
+            interactionClass = 'in-reply-to';
+          } else if (mention.type === 'repost') {
+            interactionClass = 'repost-of';
+          } else if (mention.type === 'like') {
+            interactionClass = 'like-of';
+          }
+
+          for (i = 0, length = mention.targets.length; i < length; i++) {
+            targetUrl = mention.targets[i];
+
+            if (mention.interactions.indexOf(targetUrl) === -1) {
+              mentionContext.push(formatLink(targetUrl));
+            } else {
+              interactionContext.push(formatLink(targetUrl, {
+                class: interactionClass
+              }));
+            }
+          }
+
+          if (interactionContext.length) {
+            print(' in response to ');
+            printList(interactionContext)
+            if (mentionContext.length) {
+              print(' and ');
+            }
+          }
+          if (mentionContext.length) {
+            print(' mentioning ');
+            printList(mentionContext)
+          }
+        }
+        %>
+
+      </footer>
+    </div>
+  <% }); %>
+</div>

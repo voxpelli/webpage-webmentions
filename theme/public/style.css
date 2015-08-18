@@ -21,24 +21,26 @@ textarea{width:80%;border-radius:2px;border:1px solid #ccc;background:#eee;paddi
 textarea.webmention-embed{height:14em}
 textarea.webmention-embed-example{height:3em}
 textarea:first-of-type{margin-top:0}
+.page-mentions .h-entry:first-of-type{margin-top:30px}
 
-.webmention-mention {
+.webmention-mention, .page-mentions .h-entry {
   padding-left: 9%;
   position: relative;
   margin-bottom: 20px;
 }
-.webmention-name, .webmention-summary {
+.webmention-name, .webmention-summary,
+.page-mentions .h-entry .p-name, .page-mentions .h-entry .p-summary {
   margin: 10px 0;
 }
-.webmention-author {
+.webmention-author, .page-mentions .h-card {
   font-size: .9em;
 }
-.webmention-footer {
+.webmention-footer, .page-mentions .h-entry footer {
   display: block;
   font-size: .7em;
   color: inherit;
 }
-.webmention-author img {
+.webmention-author img, .page-mentions .h-card img {
   position: absolute;
   top: -5px;
   left: 0;
