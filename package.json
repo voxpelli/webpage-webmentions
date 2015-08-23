@@ -29,7 +29,7 @@
     "verror": "^1.6.0"
   },
   "engines": {
-    "iojs": "2.x"
+    "iojs": "3.x"
   },
   "main": "./lib/main",
   "directories": {
