@@ -71,14 +71,14 @@ var formatLink = function (href, text, attributes) {
   if (!text) {
     text = href;
   }
-  return formatTag('a', text, _.extend({}, attributes, { href }));
+  return formatTag('a', text, _.extend({}, attributes, { href: href }));
 };
 
 var locals = {
-  formatAttributes,
-  formatTag,
-  formatLink,
-  _,
+  formatAttributes: formatAttributes,
+  formatTag: formatTag,
+  formatLink: formatLink,
+  _: _,
 };
 
 theme = {
