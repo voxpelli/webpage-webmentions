@@ -70,9 +70,18 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.9.0
+
+**Breaking change** – now requires Node.js 0.12 or iojs (iojs prefered). This project no longer supports Node.js 0.10.
+
+* Feature: Moving towards fixing the [curlability](https://indiewebcamp.com/curlability) of the endpoint by introducing standalone microformatted HTML-pages for all mentions lists. This makes it possible to eg. subscribe to mentions of a page just like one would subscribe to any [h-feed / h-entry](https://indiewebcamp.com/h-feed) and can also be extended further to enable better integrations with the rest of the community.
+* Refactor: Moved to a full theme system, using [Tema](https://github.com/voxpelli/node-tema), to enable the reuse of layouts between HTML-pages and generally make the HTML output simpler.
+* Refactor: Removed the Promise polyfill. This was also done in some of the dependencies of this project. This means this project now requires a Node.js-version that has Promise support built in and will going forward use any other modern features of these newer versions as well.
+* Fix: Updated lots of dependencies + deduped dependencies
+
 ### 0.8.1
 
-* Feature: Multi-URL cutting edge embeds now mentions what URL:s a mention was received for. This is usefull for eg. a Twitter-style mentions page. Possible to opt out of through the new `nocontext` query parameter.
+* Feature: Multi-URL cutting edge embeds now mentions what URL:s a mention was received for. This is useful for eg. a Twitter-style mentions page. Possible to opt out of through the new `nocontext` query parameter.
 
 ### 0.8.0
 
