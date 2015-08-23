@@ -68,6 +68,7 @@
         <li><strong>url=http://example.com/foo/bar.html</strong> – multiple allowed – includes all WebMentions mentioning the specified URL</li>
         <li><strong>interactions=1</strong> – <em>experimental</em> – set to 1 or 0 to either include only like/repost interactions or only non-like/repost posts. When returning only interactions an interaction is only included if the target of the interaction matches the query. Normally interactions are included also if they just mentioned a page matching the query.</li>
         <li><strong>sort=desc</strong> – if set to "desc" then the returned mentions will be sorted with the newest one on top</li>
+        <li><strong>format=html</strong> – if set to "html" a full microformatted HTML-page will be returned rather than a JSON-response</li>
       </ul>
 
 
@@ -104,7 +105,7 @@
 </script></textarea></p>
 
       <h4>Query parameters</h4>
-      <p>Supports all query paramaters of the <strong>/api/mentions</strong> endpoint as well as the ones below:</p>
+      <p>Supports all query paramaters of the <strong>/api/mentions</strong> endpoint (except for the "format" one) as well as the ones below:</p>
       <ul>
         <li><strong>version</strong> – the version of the embed script to use</li>
       </ul>
