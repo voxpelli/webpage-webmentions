@@ -91,7 +91,14 @@
         elem = facepile.querySelector('.webmention-interaction-presentation[data-url="' + escapedUrl + '"]');
       }
       if (elem) {
-        elem = elem.parentNode;
+        while ((elem = elem.parentNode)) {
+          if (
+            elem.parentNode.className.indexOf('webmention-container') !== -1 ||
+            elem.parentNode.className.indexOf('webmention-facepile') !== -1
+          ) {
+            break;
+          }
+        }
       }
       return elem;
     },
