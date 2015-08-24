@@ -332,6 +332,10 @@ var uResponsesRegexp = /^(https?:\/\/[^\/]+)\/api\/mentions\?/,
 
     var options = {};
 
+    if (query.nocontext || (!query.site && !query.path && (!query.url || !Array.isArray(query.url)))) {
+      options.nocontext = true;
+    }
+
     each(Object.keys(query), function (key) {
       if (['site', 'url', 'path', 'example'].indexOf(key) === -1) {
         options[key] = query[key];
