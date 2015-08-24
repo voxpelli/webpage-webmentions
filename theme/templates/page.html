@@ -5,6 +5,7 @@
   <title>A WebMention Endpoint</title>
   <link href='//fonts.googleapis.com/css?family=Faster+One' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="/style.css" />
+  <%= block('links') %>
   <script type="text/javascript">
     document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
   </script>
@@ -13,6 +14,7 @@
   <div id="header">
     <h1><a href="/">A <em>WebMention</em> Endpoint</a></h1>
     <div class="subtitle">Easily accept and embed WebMentions on all type of sites</div>
+    <%= block('header-extras') %>
   </div>
   <div id="main">
     <%= content %>

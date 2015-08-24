@@ -1,0 +1,104 @@
+<div>
+  <h2>API Documentation</h2>
+
+  <h3>Fetch mentions</h3>
+  <p><strong>Path:</strong> /api/mentions</p>
+  <p>Returns a JSON-encoded array with all posts whose mentions matches the defined query paramaters</p>
+
+  <p>Is <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a>-enabled to enable use by web applications.</p>
+
+  <h4>Example</h4>
+  <p><textarea class="webmention-embed" readonly>[
+{
+    "author": {
+        "name": "Bob Smith",
+        "photo": null,
+        "url": "http://example.com/about"
+    },
+    "name": null,
+    "published": 1378650110000,
+    "summary": "Thats such a great post!",
+    "targets": [
+        "http://example.org/another-post"
+    ],
+    "type": "reply",
+    "interactions": [
+        "http://example.org/another-post"
+    ],
+    "interactionTarget": true,
+    "url": "http://example.com/post"
+}
+]</textarea></p>
+
+  <h4>Response parameters</h4>
+  <p>Apart from the self explanatory ones, here's a description of the response parameters:</p>
+  <ul>
+    <li><strong>type</strong> – the <a href="http://indiewebcamp.com/interactions">interaction</a> type. Currently supported are: like, repost, reply and lastly also "mention" which is really a non-interaction. More may be added in the future.</li>
+    <li><strong>interactions</strong> – all the URL:s interacted with by the post (liked, reposted etc depending on the post type). Interaction URL:s are included even if they don't match the specified query and even if they never were pinged to this WebMention endpoint. Purely mentioned URL:s are never included as mentions are never considered an interaction.</li>
+    <li><strong>targets</strong> – all the target URL:s that were mentioned in the post and which matches the query of request</li>
+    <li><strong>interactionTarget</strong> – available for non-mention interactions and set to "true" or "false" dependening on whether a normalized target URL matched a normalized interaction URL or not. This is to tell whether the interaction is an interaction or just a mention from the perspective of the query.
+    <li><strong>published</strong> – microsecond timestamp – for that special javascript feeling!</li>
+  </ul>
+
+  <h4>Query parameters</h4>
+  <ul>
+    <li><strong>example</strong> – when set returns dummy data rather than real data. Useful for testing. Returns a new random set each time, showing a variety of different possible combinations.</li>
+    <li><strong>path=http://example.com/foo</strong> – multiple allowed – includes all WebMentions that mentions a page on the specified path or below (eg. both WebMentions mentioning http://example.com/foo and http://example.com/foo/bar will be included)</li>
+    <li><strong>site=example.com</strong> – multiple allowed – includes all WebMentions mentioning a page on the specified site</li>
+    <li><strong>url=http://example.com/foo/bar.html</strong> – multiple allowed – includes all WebMentions mentioning the specified URL</li>
+    <li><strong>interactions=1</strong> – <em>experimental</em> – set to 1 or 0 to either include only like/repost interactions or only non-like/repost posts. When returning only interactions an interaction is only included if the target of the interaction matches the query. Normally interactions are included also if they just mentioned a page matching the query.</li>
+    <li><strong>sort=desc</strong> – if set to "desc" then the returned mentions will be sorted with the newest one on top</li>
+    <li><strong>format=html</strong> – if set to "html" a full microformatted HTML-page will be returned rather than a JSON-response</li>
+  </ul>
+
+
+
+  <h3>Realtime mentions</h3>
+  <p><strong>Path:</strong> /api/mentions/live</p>
+  <p>An <a href="https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events">EventSource</a> stream that the browser can subscribe to. The realtime counterpart to the <strong>/api/mentions</strong> endpoint. Sends <em>mention</em> events with the JSON-encoded mention object for all new mentions that would be included in a request to that endpoint.</p>
+
+  <p>Is <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a>-enabled to enable use by web applications.</p>
+
+  <p>Supports the same query parameters as <strong>/api/mentions</strong>, except for the "interactions" one.</p>
+
+
+
+  <h3>HTML Embedding</h3>
+  <p><strong>Path:</strong> /api/embed</p>
+  <p>Returns a javascript that, when included in a page, will add an HTML representation of all the matching WebMentions as well as subscribe to new matching mentions in realtime and add them as they come.</p>
+
+  <h4>Simple example</h4>
+  <p><textarea class="webmention-embed-example" readonly>http://example.com/api/embed?url=http://example.com/foo</textarea></p>
+  <h4>Advanced example</h4>
+  <p><textarea class="webmention-embed-example" readonly>http://example.com/api/embed?url=http://example.com/foo/1&url=http://example.com/foo/2&path=http://example.com/bar</textarea></p>
+
+  <h4>Preferred usage</h4>
+  <p><textarea class="webmention-embed" readonly><script id="webmention-hosted">
+(function () {
+var sn = document.createElement("script"), s = document.getElementsByTagName("script")[0], url;
+url = document.querySelectorAll ? document.querySelectorAll("link[rel~=canonical]") : false;
+url = url && url[0] ? url[0].href : false;
+sn.type = "text/javascript"; sn.async = true;
+sn.src = "//example.com/api/embed?url=" + encodeURIComponent(url || window.location);
+s.parentNode.insertBefore(sn, s);
+}());
+</script></textarea></p>
+
+  <h4>Query parameters</h4>
+  <p>Supports all query paramaters of the <strong>/api/mentions</strong> endpoint (except for the "format" one) as well as the ones below:</p>
+  <ul>
+    <li><strong>version</strong> – the version of the embed script to use</li>
+  </ul>
+
+  <h4>Experimental query parameters</h4>
+  <ul>
+    <li><strong>nofacepile</strong> – <em>only in cutting-edge</em> – disables the facepile that's included by default in the cutting-edge version</li>
+    <li><strong>nocontext</strong> – <em>only in cutting-edge</em> – hides the mentioned URL:s that will otherwise show on embeds that pulls in mentions from multiple URL:s
+  </ul>
+
+  <h4>Currently available versions are</h4>
+  <ul>
+    <li><strong>cutting-edge</strong> – an <strong>unstable, experimental version</strong> where ideas and future features are tested before new versions are released. Do not use in production, but follow updates to the project closely and give feedback! :)</li>
+    <li><strong>none</strong> – the first initial release had no specified version and is thus the default one if no version is defined. This version is stable and will receive no breaking changes. Incpmatible changes will instead be introduced as new versions.</li>
+  </ul>
+</div>
