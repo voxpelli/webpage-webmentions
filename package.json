@@ -39,6 +39,8 @@
     "start": "node .",
     "test": "node -e \"require('grunt').tasks(['test']);\"",
     "travis": "node -e \"require('grunt').tasks(['travis']);\"",
+    "postinstall": "node -e \"require('grunt').tasks(['build']);\"",
+    "build": "node -e \"require('grunt').tasks(['build']);\"",
     "install-schema": "node lib/install-schema.js",
     "migrate-schema": "./node_modules/.bin/knex migrate:latest",
     "rollback-schema": "./node_modules/.bin/knex migrate:rollback"
@@ -50,7 +52,9 @@
     "coveralls": "^2.11.0",
     "dotenv": "^1.0.0",
     "grunt": "~0.4.1",
+    "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-jshint": "~0.11.0",
+    "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-lintspaces": "~0.7.0",
     "grunt-mocha-istanbul": "~2.4.0",

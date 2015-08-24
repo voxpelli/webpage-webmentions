@@ -1,4 +1,6 @@
 (function ($) {
+  /*jslint browser: true */
+  /* global $, confirm */
   "use strict";
 
   var getQueryParams, showErrorMessages, checkLoginStatus, checkSites, removeSite;
@@ -17,7 +19,7 @@
       message,
       $error = $('#main .error');
 
-    switch (queryParams['error']) {
+    switch (queryParams.error) {
       case 'login':
         message = 'Login failed';
         break;
@@ -50,7 +52,7 @@
         $('.receive li.first-step ul').replaceWith($('<p />').text('Done! ').append($('<a />', {
           href : '/user/logout',
           text : 'Log out?'
-        })))
+        })));
         checkSites();
       } else {
         if (data.accountsAvailable !== undefined) {
@@ -77,7 +79,7 @@
         var $listItem = $('<li />').text(', mentioned ' + value.mentions + ' times. ').prepend($('<strong />').text(value.hostname));
         $('<a />').attr('href', '/user/sites/' + encodeURIComponent(value.hostname)).text('Export all mentions').appendTo($listItem);
         $listItem.append(' ');
-        $('<button />').attr('type', 'button').text('Remove site').appendTo($listItem).click(function (e) {
+        $('<button />').attr('type', 'button').text('Remove site').appendTo($listItem).click(function () {
           removeSite.call(this, value.hostname);
         });
         $listItem.appendTo($list);
@@ -113,8 +115,8 @@
       $(this).select();
     }
   }).each(function () {
-    var $this = $(this)
-      , text = $this.val();
+    var $this = $(this),
+      text = $this.val();
     text = text.replace('"http://example.com', '"' + window.location.protocol + '//' + window.location.host);
     text = text.replace('//example.com', '//' + window.location.host);
     $this.val(text);
