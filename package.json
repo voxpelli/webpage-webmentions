@@ -39,7 +39,6 @@
     "start": "node .",
     "test": "node -e \"require('grunt').tasks(['test']);\"",
     "travis": "node -e \"require('grunt').tasks(['travis']);\"",
-    "postinstall": "node -e \"require('grunt').tasks(['build']);\"",
     "build": "node -e \"require('grunt').tasks(['build']);\"",
     "install-schema": "node lib/install-schema.js",
     "migrate-schema": "./node_modules/.bin/knex migrate:latest",

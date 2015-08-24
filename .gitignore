@@ -1,7 +1,5 @@
 /node_modules
 /.env
-/theme/public/js
-# /theme/templates/cutting-edge-embed.html
 
 /newrelic_agent.log
 
