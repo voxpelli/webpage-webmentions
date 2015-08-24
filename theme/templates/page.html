@@ -10,9 +10,9 @@
     document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
   </script>
 </head>
-<body>
+<body <% if (block('frontpage')) { %>class="h-x-app"<% } %>>
   <div id="header">
-    <h1><a href="/">A <em>WebMention</em> Endpoint</a></h1>
+    <h1><a href="/" <% if (block('frontpage')) { %>class="p-name u-url"<% } %>>A <em>WebMention</em> Endpoint</a></h1>
     <div class="subtitle">Easily accept and embed WebMentions on all type of sites</div>
     <%= block('header-extras') %>
   </div>
