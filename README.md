@@ -70,9 +70,16 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 
 ## Changelog
 
+### 0.10.0
+
+* Feature: A new experimental "u-responses" based embed script that progressively enhances "u-responses" that points to the curlable page introduced in `0.9.0` by replacing those links with actual embedded mentions fetched with ajax. This ensures the curlability of the full chain from `h-entry` to received mentions.
+* Fix: Restored realtime functionality of cutting edge embeds.
+* Refactor: Moved all remaining HTML-pages to the new theme system to keep the page layouts more DRY
+* Improvement: All standalone javascripts are now minified
+
 ### 0.9.1
 
-* Fix: Restored node.js 0.12 compaitibility
+* Fix: Restored node.js 0.12 compatibility
 
 ### 0.9.0
 
