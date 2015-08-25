@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash'),
-  WebMentionPing = require('../lib/classes/webmentionping'),
+  Entry = require('../lib/classes/webmentionping'),
   urlTools = require('../lib/utils/url-tools');
 
 exports.up = function (knex, Promise) {
@@ -26,8 +26,8 @@ exports.up = function (knex, Promise) {
 
         entries.forEach(function (entry) {
           var entryUpdate, mentionUpdate, data,
-            ping = new WebMentionPing(entry.url, 'http://example.com/'),
-            newEntry = ping.createMention(entry.raw);
+            entryInstance = new Entry(entry.url, entry.raw),
+            newEntry = entryInstance.getData();
 
           if (!newEntry.type) {
             return;

@@ -7,6 +7,7 @@ var chai = require('chai'),
   chaiAsPromised = require('chai-as-promised'),
   request = require('supertest'),
   nock = require('nock'),
+  sinon = require('sinon'),
   _ = require('lodash'),
   mod_url = require('url'),
   knex = require('../../lib/knex'),
@@ -16,17 +17,48 @@ var chai = require('chai'),
 chai.use(chaiAsPromised);
 should = chai.should();
 
-describe('WebMentionPing', function () {
+describe('WebMention API', function () {
   this.timeout(5000);
 
   var app = require('../../lib/main'),
+    Entry = require('../../lib/classes/entry'),
     WebMentionTemplates = require('webmention-testpinger').WebMentionTemplates,
     microformatsVersion = require('microformat-node/package.json').version,
-    templateCollection = new WebMentionTemplates();
+    templateCollection = new WebMentionTemplates(),
+    waitingForNotifications,
+    waitForNotification = function (limit) {
+      var count = 0, notificationPromise;
+
+      if (!Entry.prototype._notify.restore) {
+        sinon.stub(Entry.prototype, '_notify', function () {
+          count += 1;
+          waitingForNotifications.reduce(function (position, options) {
+            var limit =  position + options.limit;
+            if (count === limit) {
+              options.callback();
+            }
+            return limit;
+          }, 0);
+        });
+      }
+
+      notificationPromise = new Promise(function (resolve) {
+        waitingForNotifications.push({
+          limit: limit === undefined ? 1 : limit,
+          callback: resolve,
+        });
+      });
+
+      return function () {
+        return notificationPromise;
+      };
+    };
 
   beforeEach(function () {
     nock.disableNetConnect();
     nock.enableNetConnect('127.0.0.1');
+
+    waitingForNotifications = [];
 
     return dbUtils.clearDb()
       .then(dbUtils.setupSchema)
@@ -34,6 +66,9 @@ describe('WebMentionPing', function () {
   });
 
   afterEach(function () {
+    if (Entry.prototype._notify.restore) {
+      Entry.prototype._notify.restore();
+    }
     nock.cleanAll();
   });
 
@@ -72,12 +107,12 @@ describe('WebMentionPing', function () {
           templateNames.forEach(function (name) {
             requests.push(new Promise(function (resolve, reject) {
               request(app)
-                .post('/api/webmention?sync')
+                .post('/api/webmention')
                 .send({
                   source: 'http://' + name + '.example.com/',
                   target: 'http://example.org/foo'
                 })
-                .expect(200)
+                .expect(202)
                 .end(function (err) {
                   if (err) {
                     return reject(err);
@@ -87,7 +122,7 @@ describe('WebMentionPing', function () {
             }));
           });
 
-          return Promise.all(requests);
+          return Promise.all(requests).then(waitForNotification(templateNames.length));
         })
         .then(function () {
           return knex('entries').select('url', 'type', 'data', 'raw', 'mfversion');
@@ -164,22 +199,24 @@ describe('WebMentionPing', function () {
               });
           });
         })
+        .then(waitForNotification())
         .then(function () {
-          return new Promise(function (resolve) {
-            setTimeout(resolve, 100);
-          });
-        })
-        .then(function () {
-          return knex('entries').count('id').first();
+          return Promise.all([
+            knex('entries').count('id').first(),
+            knex('mentions').count('eid').first(),
+          ]);
         })
         .then(function (result) {
           templateMock.done();
-          result.count.should.be.a('string').and.equal('1');
+          result.should.deep.equal([
+            {count: '1'},
+            {count: '1'},
+          ]);
         });
     });
 
     it('should send a live update', function (done) {
-      var templateMock;
+      var templateMock, result;
 
       var updates = '';
       request(app)
@@ -192,13 +229,24 @@ describe('WebMentionPing', function () {
             if (data.indexOf('data:') === 0) {
               updates.should.contain('event: mention\ndata: {"url":"');
               res.removeListener('data', listener);
-              done();
+              result
+                .then(function () {
+                  return knex('entries').count('id').first();
+                })
+                .then(function (result) {
+                  templateMock.done();
+                  result.count.should.be.a('string').and.equal('1');
+                })
+                .then(function () {
+                  done();
+                })
+                .catch(done);
             }
           };
           res.on('data', listener);
         });
 
-      templateCollection.getTemplateNames()
+      result = templateCollection.getTemplateNames()
         .then(function (templateNames) {
           return templateNames[0];
         })
@@ -217,7 +265,7 @@ describe('WebMentionPing', function () {
 
           return new Promise(function (resolve, reject) {
             request(app)
-              .post('/api/webmention?sync')
+              .post('/api/webmention')
               .send({
                 source: 'http://example.com/',
                 target: 'http://example.org/foo'
@@ -230,13 +278,6 @@ describe('WebMentionPing', function () {
                 resolve();
               });
           });
-        })
-        .then(function () {
-          return knex('entries').count('id').first();
-        })
-        .then(function (result) {
-          templateMock.done();
-          result.count.should.be.a('string').and.equal('1');
         });
     });
 
@@ -260,19 +301,19 @@ describe('WebMentionPing', function () {
         ].map(function (target) {
           return new Promise(function (resolve, reject) {
             request(app)
-              .post('/api/webmention?sync')
+              .post('/api/webmention')
               .send({
                 source: 'http://example.com/',
                 target: target
               })
-              .expect(200)
+              .expect(202)
               .end(function (err) {
                 if (err) {
                   return reject(err);
                 }
                 resolve();
               });
-          });
+          }).then(waitForNotification());
         })
       )
       .then(function () {
@@ -285,21 +326,19 @@ describe('WebMentionPing', function () {
     });
 
     it('should update all existing source mentions on valid ping', function () {
-      var templateMock1, templateMock2;
+      var templateMock;
 
-      templateMock1 = nock('http://example.com')
+      templateMock = nock('http://example.com')
         .get('/')
-        .times(1)
+        .once()
         .reply(200, function() {
           return '<div class="h-entry">' +
             '<a href="http://example.org/foo">First</a>' +
             '<a href="http://example.org/bar">second</a>' +
           '</div>';
-        });
-
-      templateMock2 = nock('http://example.com')
+        })
         .get('/')
-        .times(1)
+        .once()
         .reply(200, function() {
           return '<div class="h-entry">' +
             '<a class="u-like-of" href="http://example.org/foo">First</a>' +
@@ -316,12 +355,12 @@ describe('WebMentionPing', function () {
           return promiseChain.then(function () {
             return new Promise(function (resolve, reject) {
               request(app)
-                .post('/api/webmention?sync')
+                .post('/api/webmention')
                 .send({
                   source: 'http://example.com/',
                   target: target
                 })
-                .expect(200)
+                .expect(202)
                 .end(function (err) {
                   if (err) {
                     return reject(err);
@@ -329,13 +368,12 @@ describe('WebMentionPing', function () {
                   resolve();
                 });
             });
-          });
+          }).then(waitForNotification());
         },
         Promise.resolve()
       )
       .then(function () {
-        templateMock1.done();
-        templateMock2.done();
+        templateMock.done();
       })
       .then(function () {
         return knex('mentions').select().orderBy('url', 'desc');
@@ -391,12 +429,12 @@ describe('WebMentionPing', function () {
 
       return new Promise(function (resolve, reject) {
         request(app)
-          .post('/api/webmention?sync')
+          .post('/api/webmention')
           .send({
             source: 'http://example.com/',
             target: 'http://example.org/foo'
           })
-          .expect(200)
+          .expect(202)
           .end(function (err) {
             if (err) {
               return reject(err);
@@ -404,6 +442,7 @@ describe('WebMentionPing', function () {
             resolve();
           });
       })
+      .then(waitForNotification())
       .then(function () {
         templateMock1.done();
         return knex('entries').select();
@@ -419,12 +458,12 @@ describe('WebMentionPing', function () {
       .then(function () {
         return new Promise(function (resolve, reject) {
           request(app)
-            .post('/api/webmention?sync')
+            .post('/api/webmention')
             .send({
               source: 'http://example.com/',
               target: 'http://example.org/foo'
             })
-            .expect(200)
+            .expect(202)
             .end(function (err) {
               if (err) {
                 return reject(err);
@@ -433,6 +472,7 @@ describe('WebMentionPing', function () {
             });
         });
       })
+      .then(waitForNotification())
       .then(function () {
         templateMock2.done();
         return knex('entries').select();
@@ -478,12 +518,12 @@ describe('WebMentionPing', function () {
           return promiseChain.then(function () {
             return new Promise(function (resolve, reject) {
               request(app)
-                .post('/api/webmention?sync')
+                .post('/api/webmention')
                 .send({
                   source: 'http://example.com/',
                   target: target
                 })
-                .expect(200)
+                .expect(202)
                 .end(function (err) {
                   if (err) {
                     return reject(err);
@@ -491,7 +531,7 @@ describe('WebMentionPing', function () {
                   resolve();
                 });
             });
-          });
+          }).then(waitForNotification());
         },
         Promise.resolve()
       )
@@ -515,6 +555,8 @@ describe('WebMentionPing', function () {
         result.should.have.deep.property('[1].removed', false);
       });
     });
+
+    it('should properly handle pings of site that returns 404:s');
   });
 
   describe('fetch mentions', function () {

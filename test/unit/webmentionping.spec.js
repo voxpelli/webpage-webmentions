@@ -1,4 +1,4 @@
-/* jshint nonew:false, scripturl:true */
+/* jshint nonew:false, scripturl:true, expr: true */
 /* global beforeEach, describe, it */
 
 "use strict";
@@ -12,9 +12,11 @@ chai.use(chaiAsPromised);
 chai.should();
 expect = chai.expect;
 
-describe('WebMentionPing', function () {
-  var WebMentionPing = require('../../lib/classes/webmentionping'),
-    ping, exampleHtml, parsedExample, xssExample;
+describe('MetaDataParser', function () {
+  var Entry = require('../../lib/classes/entry'),
+    MetaDataParser = require('../../lib/classes/metadataparser'),
+    parser, sourceUrl, targetUrl, exampleHtml, parsedExample, xssExample,
+    getEntry, matchTarget;
 
   // Taken from the h-entry Microformats wiki page
   exampleHtml = '<article class="h-entry">' +
@@ -82,170 +84,165 @@ describe('WebMentionPing', function () {
     "rels": {}
   };
 
+  getEntry = function (html) {
+    return parser.extract(sourceUrl, html).then(function (metadata) {
+      return new Entry(sourceUrl, metadata);
+    });
+  };
+
+  matchTarget = function (html, target) {
+    return getEntry(html).then(function (entry) {
+      return entry.hasTarget(target);
+    });
+  };
+
   beforeEach(function () {
-    ping = new WebMentionPing('http://example.com/foo', 'http://example.org/bar');
+    parser = new MetaDataParser();
+
+    sourceUrl = 'http://example.com/foo';
+    targetUrl =  'http://example.org/bar';
   });
 
-  describe('parseSourcePage', function () {
+  describe('extract', function () {
 
     it('should fulfill if target is linked', function () {
-      return ping.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled;
+      return matchTarget('<a href="http://example.org/bar">Bar</a>', targetUrl).should.eventually.be.ok;
     });
 
     it('should reject if no link to target linked', function () {
-      return ping.parseSourcePage('<a href="http://example.com/elsewhere">123</a>').should.be.rejectedWith("Couldn't find a link");
+      return matchTarget('<a href="http://example.com/elsewhere">123</a>', targetUrl).should.eventually.not.be.ok;
     });
 
     it('should not choke on non-http URL:s', function () {
-      return ping.parseSourcePage('<a href="mailto:foo@example.com">Mail</a> <a href="http://example.org/bar">Bar</a>').should.be.fulfilled;
+      return matchTarget('<a href="mailto:foo@example.com">Mail</a> <a href="http://example.org/bar">Bar</a>', targetUrl).should.eventually.be.ok;
     });
 
     it('should parse the microformats data', function () {
-      return ping.parseSourcePage(exampleHtml)
+      return parser.extract(sourceUrl, exampleHtml)
         .should.eventually.be.an('object')
-        .should.eventually.contain.keys('items', 'rels')
-        .should.eventually.have.deep.property('items[0].properties')
+        .that.has.property('microformats')
+        .that.contain.keys('items', 'rels')
+        .and.has.deep.property('items[0].properties')
           .that.is.an('object')
           .that.contain.keys('author', 'name', 'published', 'summary')
           .that.have.deep.property('author[0].properties.name[0]', 'W. Developer');
     });
 
     it('should ensure that there is always a path component', function () {
-      var altPing1, altPing2;
-
-      altPing1 = new WebMentionPing('http://example.com/foo', 'http://example.org');
-      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/');
+      var altPing1 = 'http://example.org';
+      var altPing2 = 'http://example.org/';
 
       return Promise.all([
-        altPing1.parseSourcePage('<a href="http://example.org/">Bar</a>').should.be.fulfilled,
-        altPing1.parseSourcePage('<a href="http://example.org">Bar</a>').should.be.fulfilled,
-        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
-        altPing1.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
-        altPing2.parseSourcePage('<a href="http://example.org/">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://example.org">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://example.org/">Bar</a>',     altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org">Bar</a>',      altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing1).should.eventually.not.be.ok,
+        matchTarget('<a href="http://example.org/bar/">Bar</a>', altPing1).should.eventually.not.be.ok,
+
+        matchTarget('<a href="http://example.org/">Bar</a>',    altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org">Bar</a>',     altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing2).should.eventually.not.be.ok,
       ]);
     });
 
     it('should ignore trailing slashes when looking for target', function () {
-      var altPing1, altPing2, altPing3, altPing4;
-
-      altPing1 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar/');
-      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar');
-      altPing3 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar/?bar=1');
-      altPing4 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar?bar=1');
+      var altPing1 = 'http://example.org/bar/';
+      var altPing2 = 'http://example.org/bar';
+      var altPing3 = 'http://example.org/bar/?bar=1';
+      var altPing4 = 'http://example.org/bar?bar=1';
 
       return Promise.all([
-        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing1.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.fulfilled,
-        altPing1.parseSourcePage('<a href="http://example.org/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar/">Bar</a>', altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/">Bar</a>',     altPing1).should.eventually.not.be.ok,
 
-        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://example.org/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar/">Bar</a>', altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/">Bar</a>',     altPing2).should.eventually.not.be.ok,
 
-        altPing3.parseSourcePage('<a href="http://example.org/bar?bar=1">Bar</a>').should.be.fulfilled,
-        altPing3.parseSourcePage('<a href="http://example.org/bar/?bar=1">Bar</a>').should.be.fulfilled,
-        altPing3.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://example.org/bar?bar=1">Bar</a>',  altPing3).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar/?bar=1">Bar</a>', altPing3).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar/">Bar</a>',       altPing3).should.eventually.not.be.ok,
 
-        altPing4.parseSourcePage('<a href="http://example.org/bar?bar=1">Bar</a>').should.be.fulfilled,
-        altPing4.parseSourcePage('<a href="http://example.org/bar/?bar=1">Bar</a>').should.be.fulfilled,
-        altPing4.parseSourcePage('<a href="http://example.org/bar/">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://example.org/bar?bar=1">Bar</a>',  altPing4).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar/?bar=1">Bar</a>', altPing4).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar/">Bar</a>',       altPing4).should.eventually.not.be.ok,
       ]);
     });
 
     it('should ignore double slashes when looking for target', function () {
-      var altPing1, altPing2, altPing3;
-
-      altPing1 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar/');
-      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar//foo');
-      altPing3 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar/?bar=1//2');
+      var altPing1 = 'http://example.org/bar/';
+      var altPing2 = 'http://example.org/bar//foo';
+      var altPing3 = 'http://example.org/bar/?bar=1//2';
 
       return Promise.all([
-        altPing1.parseSourcePage('<a href="http://example.org/bar//">Bar</a>').should.be.fulfilled,
+        matchTarget('<a href="http://example.org/bar//">Bar</a>', altPing1).should.eventually.be.ok,
 
-        altPing2.parseSourcePage('<a href="http://example.org/bar/foo">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://example.org/bar//foo">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://example.org/bar///foo///">Bar</a>').should.be.fulfilled,
+        matchTarget('<a href="http://example.org/bar/foo">Bar</a>',      altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar//foo">Bar</a>',     altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar///foo///">Bar</a>', altPing2).should.eventually.be.ok,
 
-        altPing3.parseSourcePage('<a href="http://example.org/bar/?bar=1//2">Bar</a>').should.be.fulfilled,
-        altPing3.parseSourcePage('<a href="http://example.org/bar/?bar=1/2">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://example.org/bar/?bar=1//2">Bar</a>', altPing3).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar/?bar=1/2">Bar</a>',  altPing3).should.eventually.not.be.ok,
       ]);
     });
 
     it('should ignore whether it is http, https or no protocol when looking for target', function () {
-      var altPing1, altPing2, altPing3;
-
-      altPing1 = new WebMentionPing('http://example.com/foo', 'https://example.org/bar');
-      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar');
-      altPing3 = new WebMentionPing('http://example.com/foo', '//example.org/bar');
-
-      expect(function () {
-        new WebMentionPing('http://example.com/foo', '/bar');
-      }).to.throw();
+      var altPing1 = 'https://example.org/bar';
+      var altPing2 = 'http://example.org/bar';
+      var altPing3 = '//example.org/bar';
 
       return Promise.all([
-        altPing1.parseSourcePage('<a href="https://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing1.parseSourcePage('<a href="//example.org/bar">Bar</a>').should.be.fulfilled,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', '/bar').should.be.rejected,
 
-        altPing2.parseSourcePage('<a href="https://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="//example.org/bar">Bar</a>').should.be.fulfilled,
+        matchTarget('<a href="https://example.org/bar">Bar</a>', altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing1).should.eventually.be.ok,
+        matchTarget('<a href="//example.org/bar">Bar</a>',       altPing1).should.eventually.be.ok,
 
-        altPing3.parseSourcePage('<a href="https://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing3.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing3.parseSourcePage('<a href="//example.org/bar">Bar</a>').should.be.fulfilled,
+        matchTarget('<a href="https://example.org/bar">Bar</a>', altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing2).should.eventually.be.ok,
+        matchTarget('<a href="//example.org/bar">Bar</a>',       altPing2).should.eventually.be.ok,
+
+        matchTarget('<a href="https://example.org/bar">Bar</a>', altPing3).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing3).should.eventually.be.ok,
+        matchTarget('<a href="//example.org/bar">Bar</a>',       altPing3).should.eventually.be.ok,
       ]);
     });
 
     it('should ignore www subdomains', function () {
-      var altPing1, altPing2, altPing3, altPing4;
-
-      altPing1 = new WebMentionPing('http://example.com/foo', 'http://www.example.org/bar');
-      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar');
-      altPing3 = new WebMentionPing('http://example.com/foo', 'http://foo.example.org/bar');
-      altPing4 = new WebMentionPing('http://example.com/foo', 'http://www.foo.example.org/bar');
-
-      expect(function () {
-        new WebMentionPing('http://example.com/foo', '/bar');
-      }).to.throw();
+      var altPing1 = 'http://www.example.org/bar';
+      var altPing2 = 'http://example.org/bar';
+      var altPing3 = 'http://foo.example.org/bar';
+      var altPing4 = 'http://www.foo.example.org/bar';
 
       return Promise.all([
-        altPing1.parseSourcePage('<a href="http://www.example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing1.parseSourcePage('<a href="http://foo.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
-        altPing1.parseSourcePage('<a href="http://www.www.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://www.example.org/bar">Bar</a>',     altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>',         altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://foo.example.org/bar">Bar</a>',     altPing1).should.eventually.not.be.ok,
+        matchTarget('<a href="http://www.www.example.org/bar">Bar</a>', altPing1).should.eventually.not.be.ok,
 
-        altPing2.parseSourcePage('<a href="http://www.example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://foo.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://www.example.org/bar">Bar</a>', altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>',     altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://foo.example.org/bar">Bar</a>', altPing2).should.eventually.not.be.ok,
 
-        altPing3.parseSourcePage('<a href="http://foo.example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing3.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
-        altPing3.parseSourcePage('<a href="http://www.foo.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://foo.example.org/bar">Bar</a>',     altPing3).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>',         altPing3).should.eventually.not.be.ok,
+        matchTarget('<a href="http://www.foo.example.org/bar">Bar</a>', altPing3).should.eventually.not.be.ok,
 
-        altPing4.parseSourcePage('<a href="http://www.foo.example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing4.parseSourcePage('<a href="http://foo.example.org/bar">Bar</a>').should.be.rejectedWith("Couldn't find a link"),
+        matchTarget('<a href="http://www.foo.example.org/bar">Bar</a>', altPing4).should.eventually.be.ok,
+        matchTarget('<a href="http://foo.example.org/bar">Bar</a>',     altPing4).should.eventually.not.be.ok,
       ]);
     });
 
     it('should ignore fragments', function () {
-      var altPing1, altPing2;
-
-      altPing1 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar#foo');
-      altPing2 = new WebMentionPing('http://example.com/foo', 'http://example.org/bar');
-
-      expect(function () {
-        new WebMentionPing('http://example.com/foo', '/bar');
-      }).to.throw();
+      var altPing1 = 'http://example.org/bar#foo';
+      var altPing2 = 'http://example.org/bar';
 
       return Promise.all([
-        altPing1.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing1.parseSourcePage('<a href="http://example.org/bar#foo">Bar</a>').should.be.fulfilled,
+        matchTarget('<a href="http://example.org/bar">Bar</a>',     altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar#foo">Bar</a>', altPing1).should.eventually.be.ok,
 
-        altPing2.parseSourcePage('<a href="http://example.org/bar">Bar</a>').should.be.fulfilled,
-        altPing2.parseSourcePage('<a href="http://example.org/bar#foo">Bar</a>').should.be.fulfilled,
+        matchTarget('<a href="http://example.org/bar">Bar</a>',     altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar#foo">Bar</a>', altPing2).should.eventually.be.ok,
       ]);
     });
 
@@ -254,29 +251,30 @@ describe('WebMentionPing', function () {
   describe('createMention', function () {
 
     it('should give reasonable defaults when given empty data', function () {
-      var input, mention;
-
-      input = {
+      var input = {
         items: [],
         rels: {}
       };
 
-      mention = ping.createMention(input);
+      var metadata = { microformats: input };
+
+      var mention = new Entry(sourceUrl, metadata).getData();
 
       mention.should.have.deep.property('data.published')
         .that.is.a('number')
         .that.is.closeTo(Date.now(), 2000);
 
-      mention.should.have.property('raw', input);
-      mention.should.have.property('url', 'http://example.com/foo');
+      mention.should.have.property('raw', metadata);
+      mention.should.have.property('url', sourceUrl);
     });
 
     it('should use input data', function () {
-      var mention = ping.createMention(parsedExample);
+      var metadata = { microformats: parsedExample };
+      var mention = new Entry(sourceUrl, metadata).getData();
 
       mention.should.have.property('url', 'http://example.com/foo');
       mention.should.have.property('normalizedUrl', 'http://example.com/foo/');
-      mention.should.have.property('raw', parsedExample);
+      mention.should.have.property('raw', metadata);
 
       mention.should.have.deep.property('data.url', 'http://example.net/abc');
       mention.should.have.deep.property('data.name', 'Microformats are amazing');
@@ -287,7 +285,7 @@ describe('WebMentionPing', function () {
     });
 
     it('should filter non-http(s) urls', function () {
-      var mention = ping.createMention(xssExample);
+      var mention = new Entry(sourceUrl, { microformats: xssExample }).getData();
 
       mention.should.have.property('url', 'http://example.com/foo');
       mention.should.have.deep.property('data.url', 'http://example.com/foo');
@@ -301,7 +299,8 @@ describe('WebMentionPing', function () {
       }, function (timestamp, publishDate) {
         var alternateExample = _.cloneDeep(parsedExample);
         alternateExample.items[0].properties.published[0] = publishDate;
-        ping.createMention(alternateExample).should.have.deep.property('data.published', timestamp);
+
+        new Entry(sourceUrl, { microformats: alternateExample }).getData().should.have.deep.property('data.published', timestamp);
       });
     });
 
@@ -310,10 +309,12 @@ describe('WebMentionPing', function () {
   describe('parseSourcePage and createMention', function () {
 
     it('should create a correct mention from a basic page', function () {
-      return ping.parseSourcePage(exampleHtml).then(ping.createMention.bind(ping)).then(function (mention) {
+      return getEntry(exampleHtml).then(function (entry) {
+        return entry.getData();
+      }).then(function (mention) {
         mention.should.have.property('url', 'http://example.com/foo');
         mention.should.have.property('normalizedUrl', 'http://example.com/foo/');
-        mention.should.have.property('raw').that.deep.equals(parsedExample);
+        mention.should.have.deep.property('raw.microformats').that.deep.equals(parsedExample);
 
         mention.should.have.deep.property('data.url', 'http://example.net/abc');
         mention.should.have.deep.property('data.name', 'Microformats are amazing');
@@ -332,7 +333,9 @@ describe('WebMentionPing', function () {
           '<a class="p-author h-card" href="bar.html"><img src="abc.png" alt="" /> W. Developer</a>'
         );
 
-      return ping.parseSourcePage(relativeHtml).then(ping.createMention.bind(ping)).then(function (mention) {
+      return getEntry(relativeHtml).then(function (entry) {
+        return entry.getData();
+      }).then(function (mention) {
         mention.should.have.deep.property('data.url', 'http://example.com/abc/123');
         mention.should.have.deep.property('data.author.url', 'http://example.com/bar.html');
         mention.should.have.deep.property('data.author.photo', 'http://example.com/abc.png');

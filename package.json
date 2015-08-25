@@ -17,6 +17,7 @@
     "knex": "^0.7.3",
     "lodash": "^2.4.1",
     "lru-cache": "^2.5.0",
+    "metadataparser": "voxpelli/metadataparser#master",
     "microformat-node": "~0.3.0",
     "moment": "^2.8.4",
     "newrelic": "^1.14.4",
@@ -62,6 +63,7 @@
     "mocha": "^2.1.0",
     "nock": "~2.10.0",
     "passport-dummy": "0.0.1",
+    "sinon": "^1.16.1",
     "supertest": "^1.0.1",
     "webmention-testpinger": "~0.5.0"
   }
