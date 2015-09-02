@@ -557,6 +557,116 @@ describe('WebMention API', function () {
     });
 
     it('should properly handle pings of site that returns 404:s');
+
+    it('should fetch comments found on mentions', function () {
+      var templateMock;
+
+      templateMock = nock('http://example.com')
+        .get('/')
+        .once()
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.org/foo">First</a>' +
+            '<a class="u-comment" href="http://example.com/foo">First</a>' +
+          '</div>';
+        })
+        .get('/foo')
+        .once()
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.com/">First</a>' +
+          '</div>';
+        });
+
+      return new Promise(function (resolve, reject) {
+        request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'http://example.com/',
+            target: 'http://example.org/foo',
+          })
+          .expect(202)
+          .end(function (err) {
+            if (err) {
+              return reject(err);
+            }
+            resolve();
+          });
+      })
+      .then(waitForNotification(2))
+      .then(function () {
+        return Promise.all([
+          knex('entries').count('id').first(),
+          knex('mentions').count('eid').first(),
+        ]);
+      })
+      .then(function (result) {
+        templateMock.done();
+        result.should.deep.equal([
+          {count: '2'},
+          {count: '2'},
+        ]);
+      });
+    });
+
+    it('should fetch responses-links found on mentions', function () {
+      var templateMock;
+
+      templateMock = nock('http://example.com')
+        .get('/')
+        .once()
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.org/foo">First</a>' +
+            '<a class="u-responses" href="http://example.com/bar">First</a>' +
+          '</div>';
+        })
+        .get('/bar')
+        .once()
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a class="u-url" href="http://example.com/foo">First</a>' +
+          '</div>';
+        })
+        .get('/foo')
+        .once()
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.com/">First</a>' +
+          '</div>';
+        });
+
+      return new Promise(function (resolve, reject) {
+        request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'http://example.com/',
+            target: 'http://example.org/foo',
+          })
+          .expect(202)
+          .end(function (err) {
+            if (err) {
+              return reject(err);
+            }
+            resolve();
+          });
+      })
+      .then(waitForNotification(2))
+      .then(function () {
+        return Promise.all([
+          knex('entries').count('id').first(),
+          knex('mentions').count('eid').first(),
+        ]);
+      })
+      .then(function (result) {
+        templateMock.done();
+        result.should.deep.equal([
+          {count: '2'},
+          {count: '2'},
+        ]);
+      });
+    });
+
   });
 
   describe('fetch mentions', function () {
