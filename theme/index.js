@@ -11,18 +11,49 @@ var interactionPresentation = {
   'repost': 'reposted',
 };
 
+preprocessors.mention = function (data, callback) {
+  var self = this;
+  var mention = data.mention;
+
+  data.comment = data.comment || false;
+
+  if (interactionPresentation[mention.type]) {
+    mention.author.name = mention.author.name || 'Someone';
+    mention.name = null;
+    mention.summary = interactionPresentation[mention.type] + (mention.interactionTarget ? ' this' : ' something');
+    mention.includeAuthorInSummary = true;
+  } else {
+    mention.author.name = mention.author.name || 'Anonymous';
+  }
+
+  return Promise.all((mention.mentions || []).map(function (mention) {
+    //TODO: Should render as a u-comment, not an h-entry!
+    return self.render('mention', {
+      mention: mention,
+      singleTarget: data.singleTarget,
+      showContext: data.showContext,
+      comment: true,
+    });
+  })).then(function (mentions) {
+    mention.mentions = mentions;
+
+    data.mention = mention;
+
+    return data
+  });
+};
+
 preprocessors.mentions = function (data, callback) {
+  var self = this;
   var locals = this.getLocals(theme);
 
-  data.mentions.forEach(function (mention) {
-    if (interactionPresentation[mention.type]) {
-      mention.author.name = mention.author.name || 'Someone';
-      mention.name = null;
-      mention.summary = interactionPresentation[mention.type] + (mention.interactionTarget ? ' this' : ' something');
-    } else {
-      mention.author.name = mention.author.name || 'Anonymous';
-    }
-  });
+  var mentions = Promise.all(data.mentions.map(function (mention) {
+    return self.render('mention', {
+      mention: mention,
+      singleTarget: data.singleTarget,
+      showContext: data.showContext,
+    });
+  }));
 
   var targets;
 
@@ -45,7 +76,10 @@ preprocessors.mentions = function (data, callback) {
   data.targets = targets;
   delete data.mentionsArguments;
 
-  callback(null, data);
+  return mentions.then(function (mentions) {
+    data.mentions = mentions;
+    return data;
+  });
 };
 
 var formatAttributes = function (attributes) {

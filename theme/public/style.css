@@ -22,20 +22,22 @@ textarea.webmention-embed{height:14em}
 textarea.webmention-embed-example{height:3em}
 textarea:first-of-type{margin-top:0}
 .page-mentions .h-entry:first-of-type{margin-top:30px}
+.page-mentions .h-entry .u-comment:first-of-type{margin-top:20px}
 
-.webmention-mention, .page-mentions .h-entry {
+.webmention-mention, .page-mentions .h-entry, .page-mentions .u-comment {
   padding-left: 9%;
   position: relative;
   margin-bottom: 20px;
 }
 .webmention-name, .webmention-summary,
-.page-mentions .h-entry .p-name, .page-mentions .h-entry .p-summary {
+.page-mentions .h-entry .p-name, .page-mentions .h-entry .p-summary,
+.page-mentions .u-comment .p-name, .page-mentions .u-comment .p-summary {
   margin: 10px 0;
 }
 .webmention-author, .page-mentions .h-card {
   font-size: .9em;
 }
-.webmention-footer, .page-mentions .h-entry footer {
+.webmention-footer, .page-mentions .h-entry footer, .page-mentions .u-comment footer {
   display: block;
   font-size: .7em;
   color: inherit;
@@ -46,6 +48,13 @@ textarea:first-of-type{margin-top:0}
   left: 0;
   width: 7%;
   border-radius: 240px;
+}
+.page-mentions .h-entry .u-comment {
+  margin-left: -9%;
+  padding-left: 13.5%;
+}
+.page-mentions .u-comment .h-card img {
+  left: 3.5%;
 }
 img.webmention-error {display: none;}
 .webmention-facepile {
