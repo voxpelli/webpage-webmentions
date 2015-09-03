@@ -11,7 +11,7 @@ var interactionPresentation = {
   'repost': 'reposted',
 };
 
-preprocessors.mention = function (data, callback) {
+preprocessors.mention = function (data) {
   var self = this;
   var mention = data.mention;
 
@@ -39,11 +39,11 @@ preprocessors.mention = function (data, callback) {
 
     data.mention = mention;
 
-    return data
+    return data;
   });
 };
 
-preprocessors.mentions = function (data, callback) {
+preprocessors.mentions = function (data) {
   var self = this;
   var locals = this.getLocals(theme);
 
