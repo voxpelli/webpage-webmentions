@@ -37,6 +37,12 @@ module.exports = {
         aid: 1,
         hostname: 'example.org',
         created: knex.raw('NOW()')
+      }),
+      knex('sites').insert({
+        aid: 1,
+        hostname: 'example.net',
+        created: knex.raw('NOW()'),
+        salmentions: true
       })
     ]);
   },

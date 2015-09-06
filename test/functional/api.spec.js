@@ -667,6 +667,81 @@ describe('WebMention API', function () {
       });
     });
 
+    it('should fetch and ping upstream salmention targets of mention', function () {
+      var templateMock = nock('http://example.com')
+        .get('/')
+        .once()
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a href="http://example.net/foo">First</a>' +
+          '</div>';
+        });
+
+      var targetMock = nock('http://example.net')
+        .get('/foo')
+        .once()
+        .reply(200, function() {
+          return '<div class="h-entry">' +
+            '<a class="u-in-reply-to" href="http://example.net/bar">First</a>' +
+          '</div>';
+        })
+        .get('/bar')
+        .once()
+        .reply(200, function() {
+          return '<html><head>' +
+            '<link rel="webmention" href="http://webmention.example.com/ping" />' +
+          '</head><body>' +
+              '<div class="h-entry">a simple linkless entry</div>' +
+          '</html>';
+        });
+
+      var pingMock = nock('http://webmention.example.com')
+        .post('/ping', {
+          source: 'http://example.net/foo',
+          target: 'http://example.net/bar',
+        })
+        .once()
+        .reply(202);
+
+      return new Promise(function (resolve, reject) {
+        request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'http://example.com/',
+            target: 'http://example.net/foo',
+          })
+          .expect(202)
+          .end(function (err) {
+            if (err) {
+              return reject(err);
+            }
+            resolve();
+          });
+      })
+      .then(waitForNotification(3))
+      .then(function () {
+        //TODO: Improve – relyng on timers in tests are pretty fragile
+        return new Promise(function (resolve) {
+          setTimeout(resolve, 300);
+        });
+      })
+      .then(function () {
+        return Promise.all([
+          knex('entries').count('id').first(),
+          knex('mentions').count('eid').first(),
+        ]);
+      })
+      .then(function (result) {
+        templateMock.done();
+        targetMock.done();
+        pingMock.done();
+        result.should.deep.equal([
+          {count: '3'},
+          {count: '1'},
+        ]);
+      });
+    });
+
   });
 
   describe('fetch mentions', function () {
