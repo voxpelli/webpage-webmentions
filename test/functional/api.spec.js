@@ -19,7 +19,7 @@ describe('WebMention API', function () {
   const app = require('../../lib/main');
   const Entry = require('../../lib/classes/entry');
   const WebMentionTemplates = require('webmention-testpinger').WebMentionTemplates;
-  const microformatsVersion = require('microformat-node/package.json').version;
+  const microformatsVersion = require('metadataparser-mf2').versions.microformatsVersion;
   const templateCollection = new WebMentionTemplates();
 
   let waitingForNotifications;

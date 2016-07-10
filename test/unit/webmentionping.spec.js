@@ -9,7 +9,8 @@ chai.should();
 
 describe('MetaDataParser', function () {
   const Entry = require('../../lib/classes/entry');
-  const MetaDataParser = require('../../lib/classes/metadataparser');
+  const MetaDataParser = require('metadataparser').MetaDataParser;
+  const MetaDataParserMf2 = require('metadataparser-mf2');
   let parser, sourceUrl, targetUrl, exampleHtml, parsedExample, xssExample,
     getEntry, matchTarget;
 
@@ -42,7 +43,7 @@ describe('MetaDataParser', function () {
           'value': 'Blah blah blah'
         }],
         'name': ['Microformats are amazing'],
-        'published': ['2013-06-13 12:00:00'],
+        'published': ['2013-06-13T12:00:00'],
         'summary': ['In which I extoll the virtues of using microformats.'],
         'url': ['http://example.net/abc']
       },
@@ -92,7 +93,7 @@ describe('MetaDataParser', function () {
   };
 
   beforeEach(function () {
-    parser = new MetaDataParser();
+    parser = MetaDataParserMf2.addToParser(new MetaDataParser());
 
     sourceUrl = 'http://example.com/foo';
     targetUrl = 'http://example.org/bar';
