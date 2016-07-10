@@ -19,7 +19,7 @@ describe('WebMention API', function () {
   const app = require('../../lib/main');
   const Entry = require('../../lib/classes/entry');
   const WebMentionTemplates = require('webmention-testpinger').WebMentionTemplates;
-  const microformatsVersion = require('metadataparser-mf2').versions.microformatsVersion;
+  const microformatsVersion = require('metadataparser-mf2').versions;
   const templateCollection = new WebMentionTemplates();
 
   let waitingForNotifications;
@@ -152,7 +152,7 @@ describe('WebMention API', function () {
                 should.not.exist(templateMention.type);
               }
 
-              templateMention.mfversion.should.equal(microformatsVersion);
+              templateMention.mfversion.should.equal('mf2::' + microformatsVersion.version + '::' + microformatsVersion.microformatsVersion);
             } else {
               // Uncomment to inspect new templates to easily add them to ../template-mentions.json
               // console.log(JSON.stringify(templateMention.data));
