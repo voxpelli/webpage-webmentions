@@ -1,7 +1,7 @@
 (function ($) {
-  /*jslint browser: true */
+  /* jslint browser: true */
   /* global $, confirm */
-  "use strict";
+  'use strict';
 
   var getQueryParams, showErrorMessages, checkLoginStatus, checkSites, removeSite;
 
@@ -50,22 +50,22 @@
       }
       if (data.loggedin) {
         $('.receive li.first-step ul').replaceWith($('<p />').text('Done! ').append($('<a />', {
-          href : '/user/logout',
-          text : 'Log out?'
+          href: '/user/logout',
+          text: 'Log out?'
         })));
         checkSites();
       } else {
         if (data.accountsAvailable !== undefined) {
           $('<p />', {
-            "class": "accounts-available",
-            text : '(' + data.accountsAvailable + ' of ' + data.accountsTotal + ' accounts left at the moment – more will be released as development goes on)'
+            'class': 'accounts-available',
+            text: '(' + data.accountsAvailable + ' of ' + data.accountsTotal + ' accounts left at the moment – more will be released as development goes on)'
           }).insertAfter('.receive li.first-step > ul');
         }
         $('.receive li.second-step form').remove();
         if (data.dev) {
           $('<a />', {
-            href : '/user/auth/dummy',
-            text : "Since you're in a dev environment you can bypass online sign ins here!"
+            href: '/user/auth/dummy',
+            text: "Since you're in a dev environment you can bypass online sign ins here!"
           }).appendTo('.receive li.first-step ul').wrap('<li />');
         }
       }
@@ -93,8 +93,8 @@
     if (confirm('Do you really want to remove ' + site + '?')) {
       $this.text('Removing...');
       $.post('/user/sites', {
-        action : 'delete',
-        hostname : site
+        action: 'delete',
+        hostname: site
       }, function () {
         $this.parent().slideUp(function () {
           $this.remove();

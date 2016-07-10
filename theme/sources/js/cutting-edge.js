@@ -1,8 +1,8 @@
-/*jslint browser: true */
+/* jslint browser: true */
 /* global EventSource */
 'use strict';
 
-//TODO: Allow an embed that's simply a number of responses – for use in lists
+// TODO: Allow an embed that's simply a number of responses – for use in lists
 
 // Utility methods
 
@@ -73,7 +73,7 @@ var classPrefix = 'webmention-',
   },
   interactionPresentation = {
     'like': 'liked',
-    'repost': 'reposted',
+    'repost': 'reposted'
   },
   addText = function (tag, text) {
     appendChild(tag, document.createTextNode(text));
@@ -92,7 +92,7 @@ var classPrefix = 'webmention-',
 
     for (i = 0, length = items.length; i < length; i++) {
       if (i !== 0) {
-        addText(list, i === length -1 ? ' and ' : ', ');
+        addText(list, i === length - 1 ? ' and ' : ', ');
       }
       appendChild(list, items[i]);
     }
@@ -121,15 +121,15 @@ var classPrefix = 'webmention-',
     if (day_diff < 0) { return date.toLocaleString(); }
 
     return (day_diff === 0 && (
-        (diff < 60 && "just now") ||
-        (diff < 120 && "1 minute ago") ||
-        (diff < 3600 && floor( diff / 60 ) + " minutes ago") ||
-        (diff < 7200 && "1 hour ago") ||
-        (diff < 86400 && floor( diff / 3600 ) + " hours ago"))) ||
-      (day_diff === 1 && "Yesterday") ||
-      (day_diff < 7 && day_diff + " days ago") ||
-      (day_diff < 365 && Math.ceil( day_diff / 7 ) + " weeks ago") ||
-      Math.ceil( day_diff / 365 ) + " years ago";
+        (diff < 60 && 'just now') ||
+        (diff < 120 && '1 minute ago') ||
+        (diff < 3600 && floor(diff / 60) + ' minutes ago') ||
+        (diff < 7200 && '1 hour ago') ||
+        (diff < 86400 && floor(diff / 3600) + ' hours ago'))) ||
+      (day_diff === 1 && 'Yesterday') ||
+      (day_diff < 7 && day_diff + ' days ago') ||
+      (day_diff < 365 && Math.ceil(day_diff / 7) + ' weeks ago') ||
+      Math.ceil(day_diff / 365) + ' years ago';
   };
 
 // Embed specific methods
@@ -368,5 +368,5 @@ var uResponsesRegexp = /^(https?:\/\/[^\/]+)\/api\/mentions\?/,
   },
   publicMethods = { // jshint ignore:line
     loadMentions: loadMentions,
-    findNewInjectionPoints: findNewInjectionPoints,
+    findNewInjectionPoints: findNewInjectionPoints
   };

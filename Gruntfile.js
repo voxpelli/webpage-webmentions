@@ -1,6 +1,6 @@
-/*jslint node: true, white: true, indent: 2 */
+/* jslint node: true, white: true, indent: 2 */
 
-"use strict";
+'use strict';
 
 module.exports = function (grunt) {
   var indentLines = function (src) {
@@ -52,7 +52,7 @@ module.exports = function (grunt) {
       web: {
         src: [
           'theme/sources/js/vendor/jquery.js',
-          'theme/sources/js/script.js',
+          'theme/sources/js/script.js'
         ],
         dest: 'theme/public/js/script.js'
       },
@@ -60,11 +60,11 @@ module.exports = function (grunt) {
         options: {
           banner: '(function () {\n',
           footer: '\n  window.VPWebMentionEndpoint = publicMethods;\n  findNewInjectionPoints();\n}());\n',
-          process: indentLines,
+          process: indentLines
         },
         src: ['theme/sources/js/cutting-edge.js'],
         dest: 'theme/public/js/cutting-edge.js'
-      },
+      }
       // cuttingEdgeTemplate: {
       //   options: {
       //     banner: '(function (mentions, interactions, options) {\n',
@@ -79,14 +79,14 @@ module.exports = function (grunt) {
       dist: {
         files: {
           'theme/public/js/script.js': ['theme/public/js/script.js'],
-          'theme/public/js/cutting-edge.js': ['theme/public/js/cutting-edge.js'],
+          'theme/public/js/cutting-edge.js': ['theme/public/js/cutting-edge.js']
         }
       }
     },
     watch: {
-      eslint : {
+      eslint: {
         files: ['<%= eslint.src %>'],
-        tasks: ['default'],
+        tasks: ['default']
       }
     }
   });
@@ -104,17 +104,16 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build-dev', ['concat']);
-  grunt.registerTask('build',     ['concat', 'uglify']);
+  grunt.registerTask('build', ['concat', 'uglify']);
 
-  grunt.registerTask('travis',    ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:coveralls']);
-  grunt.registerTask('test',      ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:basic']);
+  grunt.registerTask('travis', ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:coveralls']);
+  grunt.registerTask('test', ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:basic']);
   grunt.registerTask('fast-test', ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:unit']);
 
-  grunt.registerTask('default',   ['build-dev', 'test']);
+  grunt.registerTask('default', ['build-dev', 'test']);
 
-
-  grunt.event.on('coverage', function(lcov, done){
-    require('coveralls').handleInput(lcov, function(err){
+  grunt.event.on('coverage', function (lcov, done) {
+    require('coveralls').handleInput(lcov, function (err) {
       if (err) {
         return done(err);
       }

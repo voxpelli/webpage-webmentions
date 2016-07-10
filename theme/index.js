@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _ = require('lodash');
 
@@ -8,7 +8,7 @@ var theme;
 
 var interactionPresentation = {
   'like': 'liked',
-  'repost': 'reposted',
+  'repost': 'reposted'
 };
 
 preprocessors.mention = function (data) {
@@ -27,12 +27,12 @@ preprocessors.mention = function (data) {
   }
 
   return Promise.all((mention.mentions || []).map(function (mention) {
-    //TODO: Should render as a u-comment, not an h-entry!
+    // TODO: Should render as a u-comment, not an h-entry!
     return self.render('mention', {
       mention: mention,
       singleTarget: data.singleTarget,
       showContext: data.showContext,
-      comment: true,
+      comment: true
     });
   })).then(function (mentions) {
     mention.mentions = mentions;
@@ -51,7 +51,7 @@ preprocessors.mentions = function (data) {
     return self.render('mention', {
       mention: mention,
       singleTarget: data.singleTarget,
-      showContext: data.showContext,
+      showContext: data.showContext
     });
   }));
 
@@ -112,15 +112,15 @@ var locals = {
   formatAttributes: formatAttributes,
   formatTag: formatTag,
   formatLink: formatLink,
-  _: _,
+  _: _
 };
 
 theme = {
-  templatePath : __dirname + '/templates/',
-  publicPath : __dirname + '/public/',
-  preprocessors : preprocessors,
+  templatePath: __dirname + '/templates/',
+  publicPath: __dirname + '/public/',
+  preprocessors: preprocessors,
   templates: templates,
-  locals: locals,
+  locals: locals
 };
 
 module.exports = theme;

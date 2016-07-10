@@ -1,7 +1,7 @@
 /* jshint nonew:false, scripturl:true, expr: true */
 /* global beforeEach, describe, it */
 
-"use strict";
+'use strict';
 
 var chai = require('chai'),
   chaiAsPromised = require('chai-as-promised'),
@@ -30,58 +30,58 @@ describe('MetaDataParser', function () {
     '</article>';
 
   parsedExample = {
-    "items": [{
-      "properties": {
-        "author": [{
-          "properties": {
-            "name": ["W. Developer"],
-            "url": ["http://example.com"]
+    'items': [{
+      'properties': {
+        'author': [{
+          'properties': {
+            'name': ['W. Developer'],
+            'url': ['http://example.com']
           },
-          "type": [
-            "h-card"
+          'type': [
+            'h-card'
           ],
-          "value": "W. Developer"
+          'value': 'W. Developer'
         }],
-        "content": [{
-          "html": "    <p><a href=\"http://example.org/bar\">Blah</a> blah blah</p>  ",
-          "value": "Blah blah blah"
+        'content': [{
+          'html': '    <p><a href="http://example.org/bar">Blah</a> blah blah</p>  ',
+          'value': 'Blah blah blah'
         }],
-        "name": ["Microformats are amazing"],
-        "published": ["2013-06-13 12:00:00"],
-        "summary": ["In which I extoll the virtues of using microformats."],
-        "url": ["http://example.net/abc"],
+        'name': ['Microformats are amazing'],
+        'published': ['2013-06-13 12:00:00'],
+        'summary': ['In which I extoll the virtues of using microformats.'],
+        'url': ['http://example.net/abc']
       },
-      "type": ["h-entry"]
+      'type': ['h-entry']
     }],
-    "rel-urls": {},
-    "rels": {}
+    'rel-urls': {},
+    'rels': {}
   };
 
   xssExample = {
-    "items": [{
-      "properties": {
-        "author": [{
-          "properties": {
-            "name": ["W. Developer"],
-            "url": ["javascript:alert('hcard')"]
+    'items': [{
+      'properties': {
+        'author': [{
+          'properties': {
+            'name': ['W. Developer'],
+            'url': ["javascript:alert('hcard')"]
           },
-          "type": [
-            "h-card"
+          'type': [
+            'h-card'
           ],
-          "value": "W. Developer"
+          'value': 'W. Developer'
         }],
-        "content": [{
-          "html": "<p><a href=\"http://example.org/bar\">Blah</a> blah blah</p>  ",
-          "value": "Blah blah blah"
+        'content': [{
+          'html': '<p><a href="http://example.org/bar">Blah</a> blah blah</p>  ',
+          'value': 'Blah blah blah'
         }],
-        "name": ["Microformats are amazing"],
-        "published": ["2013-12-18T22:45:00Z"],
-        "summary": ["In which I extoll the virtues of using microformats."],
-        "url": ["javascript:alert('hentry')"],
+        'name': ['Microformats are amazing'],
+        'published': ['2013-12-18T22:45:00Z'],
+        'summary': ['In which I extoll the virtues of using microformats.'],
+        'url': ["javascript:alert('hentry')"]
       },
-      "type": ["h-entry"]
+      'type': ['h-entry']
     }],
-    "rels": {}
+    'rels': {}
   };
 
   getEntry = function (html) {
@@ -100,11 +100,10 @@ describe('MetaDataParser', function () {
     parser = new MetaDataParser();
 
     sourceUrl = 'http://example.com/foo';
-    targetUrl =  'http://example.org/bar';
+    targetUrl = 'http://example.org/bar';
   });
 
   describe('extract', function () {
-
     it('should fulfill if target is linked', function () {
       return matchTarget('<a href="http://example.org/bar">Bar</a>', targetUrl).should.eventually.be.ok;
     });
@@ -133,14 +132,14 @@ describe('MetaDataParser', function () {
       var altPing2 = 'http://example.org/';
 
       return Promise.all([
-        matchTarget('<a href="http://example.org/">Bar</a>',     altPing1).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org">Bar</a>',      altPing1).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing1).should.eventually.not.be.ok,
+        matchTarget('<a href="http://example.org/">Bar</a>', altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org">Bar</a>', altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing1).should.eventually.not.be.ok,
         matchTarget('<a href="http://example.org/bar/">Bar</a>', altPing1).should.eventually.not.be.ok,
 
-        matchTarget('<a href="http://example.org/">Bar</a>',    altPing2).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org">Bar</a>',     altPing2).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing2).should.eventually.not.be.ok,
+        matchTarget('<a href="http://example.org/">Bar</a>', altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org">Bar</a>', altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing2).should.eventually.not.be.ok
       ]);
     });
 
@@ -151,21 +150,21 @@ describe('MetaDataParser', function () {
       var altPing4 = 'http://example.org/bar?bar=1';
 
       return Promise.all([
-        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing1).should.eventually.be.ok,
         matchTarget('<a href="http://example.org/bar/">Bar</a>', altPing1).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/">Bar</a>',     altPing1).should.eventually.not.be.ok,
+        matchTarget('<a href="http://example.org/">Bar</a>', altPing1).should.eventually.not.be.ok,
 
-        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing2).should.eventually.be.ok,
         matchTarget('<a href="http://example.org/bar/">Bar</a>', altPing2).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/">Bar</a>',     altPing2).should.eventually.not.be.ok,
+        matchTarget('<a href="http://example.org/">Bar</a>', altPing2).should.eventually.not.be.ok,
 
-        matchTarget('<a href="http://example.org/bar?bar=1">Bar</a>',  altPing3).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar?bar=1">Bar</a>', altPing3).should.eventually.be.ok,
         matchTarget('<a href="http://example.org/bar/?bar=1">Bar</a>', altPing3).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar/">Bar</a>',       altPing3).should.eventually.not.be.ok,
+        matchTarget('<a href="http://example.org/bar/">Bar</a>', altPing3).should.eventually.not.be.ok,
 
-        matchTarget('<a href="http://example.org/bar?bar=1">Bar</a>',  altPing4).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar?bar=1">Bar</a>', altPing4).should.eventually.be.ok,
         matchTarget('<a href="http://example.org/bar/?bar=1">Bar</a>', altPing4).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar/">Bar</a>',       altPing4).should.eventually.not.be.ok,
+        matchTarget('<a href="http://example.org/bar/">Bar</a>', altPing4).should.eventually.not.be.ok
       ]);
     });
 
@@ -177,12 +176,12 @@ describe('MetaDataParser', function () {
       return Promise.all([
         matchTarget('<a href="http://example.org/bar//">Bar</a>', altPing1).should.eventually.be.ok,
 
-        matchTarget('<a href="http://example.org/bar/foo">Bar</a>',      altPing2).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar//foo">Bar</a>',     altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar/foo">Bar</a>', altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar//foo">Bar</a>', altPing2).should.eventually.be.ok,
         matchTarget('<a href="http://example.org/bar///foo///">Bar</a>', altPing2).should.eventually.be.ok,
 
         matchTarget('<a href="http://example.org/bar/?bar=1//2">Bar</a>', altPing3).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar/?bar=1/2">Bar</a>',  altPing3).should.eventually.not.be.ok,
+        matchTarget('<a href="http://example.org/bar/?bar=1/2">Bar</a>', altPing3).should.eventually.not.be.ok
       ]);
     });
 
@@ -195,16 +194,16 @@ describe('MetaDataParser', function () {
         matchTarget('<a href="http://example.org/bar">Bar</a>', '/bar').should.be.rejected,
 
         matchTarget('<a href="https://example.org/bar">Bar</a>', altPing1).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing1).should.eventually.be.ok,
-        matchTarget('<a href="//example.org/bar">Bar</a>',       altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing1).should.eventually.be.ok,
+        matchTarget('<a href="//example.org/bar">Bar</a>', altPing1).should.eventually.be.ok,
 
         matchTarget('<a href="https://example.org/bar">Bar</a>', altPing2).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing2).should.eventually.be.ok,
-        matchTarget('<a href="//example.org/bar">Bar</a>',       altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing2).should.eventually.be.ok,
+        matchTarget('<a href="//example.org/bar">Bar</a>', altPing2).should.eventually.be.ok,
 
         matchTarget('<a href="https://example.org/bar">Bar</a>', altPing3).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar">Bar</a>',  altPing3).should.eventually.be.ok,
-        matchTarget('<a href="//example.org/bar">Bar</a>',       altPing3).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing3).should.eventually.be.ok,
+        matchTarget('<a href="//example.org/bar">Bar</a>', altPing3).should.eventually.be.ok
       ]);
     });
 
@@ -215,21 +214,21 @@ describe('MetaDataParser', function () {
       var altPing4 = 'http://www.foo.example.org/bar';
 
       return Promise.all([
-        matchTarget('<a href="http://www.example.org/bar">Bar</a>',     altPing1).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar">Bar</a>',         altPing1).should.eventually.be.ok,
-        matchTarget('<a href="http://foo.example.org/bar">Bar</a>',     altPing1).should.eventually.not.be.ok,
+        matchTarget('<a href="http://www.example.org/bar">Bar</a>', altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://foo.example.org/bar">Bar</a>', altPing1).should.eventually.not.be.ok,
         matchTarget('<a href="http://www.www.example.org/bar">Bar</a>', altPing1).should.eventually.not.be.ok,
 
         matchTarget('<a href="http://www.example.org/bar">Bar</a>', altPing2).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar">Bar</a>',     altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing2).should.eventually.be.ok,
         matchTarget('<a href="http://foo.example.org/bar">Bar</a>', altPing2).should.eventually.not.be.ok,
 
-        matchTarget('<a href="http://foo.example.org/bar">Bar</a>',     altPing3).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar">Bar</a>',         altPing3).should.eventually.not.be.ok,
+        matchTarget('<a href="http://foo.example.org/bar">Bar</a>', altPing3).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing3).should.eventually.not.be.ok,
         matchTarget('<a href="http://www.foo.example.org/bar">Bar</a>', altPing3).should.eventually.not.be.ok,
 
         matchTarget('<a href="http://www.foo.example.org/bar">Bar</a>', altPing4).should.eventually.be.ok,
-        matchTarget('<a href="http://foo.example.org/bar">Bar</a>',     altPing4).should.eventually.not.be.ok,
+        matchTarget('<a href="http://foo.example.org/bar">Bar</a>', altPing4).should.eventually.not.be.ok
       ]);
     });
 
@@ -238,18 +237,16 @@ describe('MetaDataParser', function () {
       var altPing2 = 'http://example.org/bar';
 
       return Promise.all([
-        matchTarget('<a href="http://example.org/bar">Bar</a>',     altPing1).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing1).should.eventually.be.ok,
         matchTarget('<a href="http://example.org/bar#foo">Bar</a>', altPing1).should.eventually.be.ok,
 
-        matchTarget('<a href="http://example.org/bar">Bar</a>',     altPing2).should.eventually.be.ok,
-        matchTarget('<a href="http://example.org/bar#foo">Bar</a>', altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar">Bar</a>', altPing2).should.eventually.be.ok,
+        matchTarget('<a href="http://example.org/bar#foo">Bar</a>', altPing2).should.eventually.be.ok
       ]);
     });
-
   });
 
   describe('createMention', function () {
-
     it('should give reasonable defaults when given empty data', function () {
       var input = {
         items: [],
@@ -295,7 +292,7 @@ describe('MetaDataParser', function () {
     it('should parse dates correctly', function () {
       _.each({
         '2013-12-18T22:45:00Z': 1387406700000,
-        '2013-09-08T07:21:50-07:00': 1378650110000,
+        '2013-09-08T07:21:50-07:00': 1378650110000
       }, function (timestamp, publishDate) {
         var alternateExample = _.cloneDeep(parsedExample);
         alternateExample.items[0].properties.published[0] = publishDate;
@@ -303,11 +300,9 @@ describe('MetaDataParser', function () {
         new Entry(sourceUrl, { microformats: alternateExample }).getData().should.have.deep.property('data.published', timestamp);
       });
     });
-
   });
 
   describe('parseSourcePage and createMention', function () {
-
     it('should create a correct mention from a basic page', function () {
       return getEntry(exampleHtml).then(function (entry) {
         return entry.getData();
@@ -341,6 +336,5 @@ describe('MetaDataParser', function () {
         mention.should.have.deep.property('data.author.photo', 'http://example.com/abc.png');
       });
     });
-
   });
 });

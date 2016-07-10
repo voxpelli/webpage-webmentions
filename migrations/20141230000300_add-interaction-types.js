@@ -7,12 +7,12 @@ var _ = require('lodash'),
 exports.up = function (knex, Promise) {
   return knex.transaction(function (trx) {
     return trx.schema.table('entries', function (table) {
-        table.enum('type', [
-          'reply',
-          'like',
-          'repost',
-        ]).nullable();
-      })
+      table.enum('type', [
+        'reply',
+        'like',
+        'repost'
+      ]).nullable();
+    })
       .then(function () {
         return trx.schema.table('mentions', function (table) {
           table.boolean('interaction').notNullable().defaultTo(false);
@@ -41,7 +41,7 @@ exports.up = function (knex, Promise) {
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
               type: newEntry.type,
-              data: data,
+              data: data
             });
 
           updates.push(entryUpdate);
@@ -58,7 +58,7 @@ exports.up = function (knex, Promise) {
 
         return Promise.all(updates);
       });
-    });
+  });
 };
 
 exports.down = function (knex) {

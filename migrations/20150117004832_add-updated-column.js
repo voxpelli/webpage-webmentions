@@ -3,14 +3,14 @@
 exports.up = function (knex, Promise) {
   return knex.transaction(function (trx) {
     return Promise.all([
-        trx.schema.table('entries', function (table) {
-          table.timestamp('updated', true);
-        }),
-        trx.schema.table('mentions', function (table) {
-          table.timestamp('updated', true);
-          table.boolean('removed').notNullable().defaultTo(false);
-        })
-      ])
+      trx.schema.table('entries', function (table) {
+        table.timestamp('updated', true);
+      }),
+      trx.schema.table('mentions', function (table) {
+        table.timestamp('updated', true);
+        table.boolean('removed').notNullable().defaultTo(false);
+      })
+    ])
       .then(function () {
         return trx.from('entries');
       })
@@ -21,7 +21,7 @@ exports.up = function (knex, Promise) {
           var update = trx.table('entries')
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
-              updated: entry.fetched,
+              updated: entry.fetched
             });
 
           updates.push(update);
@@ -29,7 +29,7 @@ exports.up = function (knex, Promise) {
 
         return Promise.all(updates);
       });
-    })
+  })
     .then(function () {
       return knex.raw('ALTER TABLE "entries" ALTER COLUMN "updated" SET NOT NULL');
     });
@@ -44,7 +44,7 @@ exports.down = function (knex, Promise) {
       trx.schema.table('mentions', function (table) {
         table.dropColumn('updated');
         table.dropColumn('removed');
-      }),
+      })
     ]);
   });
 };

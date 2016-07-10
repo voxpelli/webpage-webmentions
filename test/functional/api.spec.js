@@ -1,7 +1,7 @@
 /* jshint nonew:false */
 /* global describe, beforeEach, afterEach, it */
 
-"use strict";
+'use strict';
 
 var chai = require('chai'),
   chaiAsPromised = require('chai-as-promised'),
@@ -33,7 +33,7 @@ describe('WebMention API', function () {
         sinon.stub(Entry.prototype, '_notify', function () {
           count += 1;
           waitingForNotifications.reduce(function (position, options) {
-            var limit =  position + options.limit;
+            var limit = position + options.limit;
             if (count === limit) {
               options.callback();
             }
@@ -45,7 +45,7 @@ describe('WebMention API', function () {
       notificationPromise = new Promise(function (resolve) {
         waitingForNotifications.push({
           limit: limit === undefined ? 1 : limit,
-          callback: resolve,
+          callback: resolve
         });
       });
 
@@ -89,7 +89,7 @@ describe('WebMention API', function () {
               templateMocks.push(
                 nock('http://' + name + '.example.com')
                   .get('/')
-                  .reply(200, function() {
+                  .reply(200, function () {
                     return template;
                   })
               );
@@ -176,7 +176,7 @@ describe('WebMention API', function () {
         .then(function (template) {
           return nock('http://example.com/')
             .get('/')
-            .reply(200, function() {
+            .reply(200, function () {
               return template;
             });
         })
@@ -203,14 +203,14 @@ describe('WebMention API', function () {
         .then(function () {
           return Promise.all([
             knex('entries').count('id').first(),
-            knex('mentions').count('eid').first(),
+            knex('mentions').count('eid').first()
           ]);
         })
         .then(function (result) {
           templateMock.done();
           result.should.deep.equal([
             {count: '1'},
-            {count: '1'},
+            {count: '1'}
           ]);
         });
     });
@@ -223,7 +223,7 @@ describe('WebMention API', function () {
         .get('/api/mentions/live?site=example.org')
         .query({ site: 'example.org' })
         .buffer(false)
-        .end().req.on('response', function(res){
+        .end().req.on('response', function (res) {
           var listener = function (data) {
             updates += data;
             if (data.indexOf('data:') === 0) {
@@ -256,7 +256,7 @@ describe('WebMention API', function () {
         .then(function (template) {
           return nock('http://example.com/')
             .get('/')
-            .reply(200, function() {
+            .reply(200, function () {
               return template;
             });
         })
@@ -287,7 +287,7 @@ describe('WebMention API', function () {
       templateMock = nock('http://example.com')
         .get('/')
         .times(2)
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.org/foo">First</a>' +
             '<a href="http://example.org/bar">second</a>' +
@@ -331,7 +331,7 @@ describe('WebMention API', function () {
       templateMock = nock('http://example.com')
         .get('/')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.org/foo">First</a>' +
             '<a href="http://example.org/bar">second</a>' +
@@ -339,7 +339,7 @@ describe('WebMention API', function () {
         })
         .get('/')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a class="u-like-of" href="http://example.org/foo">First</a>' +
             '<a href="http://example.org/bar">second</a>' +
@@ -349,7 +349,7 @@ describe('WebMention API', function () {
       return _.reduce(
         [
           'http://example.org/foo',
-          'http://example.org/bar',
+          'http://example.org/bar'
         ],
         function (promiseChain, target) {
           return promiseChain.then(function () {
@@ -412,7 +412,7 @@ describe('WebMention API', function () {
       templateMock1 = nock('http://example.com')
         .get('/')
         .times(1)
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.org/foo">First</a>' +
           '</div>';
@@ -421,7 +421,7 @@ describe('WebMention API', function () {
       templateMock2 = nock('http://example.com')
         .get('/')
         .times(1)
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a class="u-like-of" href="http://example.org/foo">First</a>' +
           '</div>';
@@ -493,7 +493,7 @@ describe('WebMention API', function () {
       templateMock1 = nock('http://example.com')
         .get('/')
         .times(1)
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.org/foo">First</a>' +
           '</div>';
@@ -502,17 +502,16 @@ describe('WebMention API', function () {
       templateMock2 = nock('http://example.com')
         .get('/')
         .times(1)
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.org/bar">second</a>' +
           '</div>';
         });
 
-
       return _.reduce(
         [
           'http://example.org/foo',
-          'http://example.org/bar',
+          'http://example.org/bar'
         ],
         function (promiseChain, target) {
           return promiseChain.then(function () {
@@ -564,7 +563,7 @@ describe('WebMention API', function () {
       templateMock = nock('http://example.com')
         .get('/')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.org/foo">First</a>' +
             '<a class="u-comment" href="http://example.com/foo">First</a>' +
@@ -572,7 +571,7 @@ describe('WebMention API', function () {
         })
         .get('/foo')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.com/">First</a>' +
           '</div>';
@@ -583,7 +582,7 @@ describe('WebMention API', function () {
           .post('/api/webmention')
           .send({
             source: 'http://example.com/',
-            target: 'http://example.org/foo',
+            target: 'http://example.org/foo'
           })
           .expect(202)
           .end(function (err) {
@@ -597,14 +596,14 @@ describe('WebMention API', function () {
       .then(function () {
         return Promise.all([
           knex('entries').count('id').first(),
-          knex('mentions').count('eid').first(),
+          knex('mentions').count('eid').first()
         ]);
       })
       .then(function (result) {
         templateMock.done();
         result.should.deep.equal([
           {count: '2'},
-          {count: '2'},
+          {count: '2'}
         ]);
       });
     });
@@ -615,7 +614,7 @@ describe('WebMention API', function () {
       templateMock = nock('http://example.com')
         .get('/')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.org/foo">First</a>' +
             '<a class="u-responses" href="http://example.com/bar">First</a>' +
@@ -623,14 +622,14 @@ describe('WebMention API', function () {
         })
         .get('/bar')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a class="u-url" href="http://example.com/foo">First</a>' +
           '</div>';
         })
         .get('/foo')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.com/">First</a>' +
           '</div>';
@@ -641,7 +640,7 @@ describe('WebMention API', function () {
           .post('/api/webmention')
           .send({
             source: 'http://example.com/',
-            target: 'http://example.org/foo',
+            target: 'http://example.org/foo'
           })
           .expect(202)
           .end(function (err) {
@@ -655,14 +654,14 @@ describe('WebMention API', function () {
       .then(function () {
         return Promise.all([
           knex('entries').count('id').first(),
-          knex('mentions').count('eid').first(),
+          knex('mentions').count('eid').first()
         ]);
       })
       .then(function (result) {
         templateMock.done();
         result.should.deep.equal([
           {count: '2'},
-          {count: '2'},
+          {count: '2'}
         ]);
       });
     });
@@ -671,7 +670,7 @@ describe('WebMention API', function () {
       var templateMock = nock('http://example.com')
         .get('/')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.net/foo">First</a>' +
           '</div>';
@@ -680,14 +679,14 @@ describe('WebMention API', function () {
       var targetMock = nock('http://example.net')
         .get('/foo')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a class="u-in-reply-to" href="http://example.net/bar">First</a>' +
           '</div>';
         })
         .get('/bar')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<html><head>' +
             '<link rel="webmention" href="http://webmention.example.com/ping" />' +
           '</head><body>' +
@@ -698,7 +697,7 @@ describe('WebMention API', function () {
       var pingMock = nock('http://webmention.example.com')
         .post('/ping', {
           source: 'http://example.net/foo',
-          target: 'http://example.net/bar',
+          target: 'http://example.net/bar'
         })
         .once()
         .reply(202);
@@ -708,7 +707,7 @@ describe('WebMention API', function () {
           .post('/api/webmention')
           .send({
             source: 'http://example.com/',
-            target: 'http://example.net/foo',
+            target: 'http://example.net/foo'
           })
           .expect(202)
           .end(function (err) {
@@ -720,7 +719,7 @@ describe('WebMention API', function () {
       })
       .then(waitForNotification(3))
       .then(function () {
-        //TODO: Improve – relyng on timers in tests are pretty fragile
+        // TODO: Improve – relyng on timers in tests are pretty fragile
         return new Promise(function (resolve) {
           setTimeout(resolve, 300);
         });
@@ -728,7 +727,7 @@ describe('WebMention API', function () {
       .then(function () {
         return Promise.all([
           knex('entries').count('id').first(),
-          knex('mentions').count('eid').first(),
+          knex('mentions').count('eid').first()
         ]);
       })
       .then(function (result) {
@@ -737,7 +736,7 @@ describe('WebMention API', function () {
         pingMock.done();
         result.should.deep.equal([
           {count: '3'},
-          {count: '1'},
+          {count: '1'}
         ]);
       });
     });
@@ -746,7 +745,7 @@ describe('WebMention API', function () {
       var templateMock = nock('http://example.com')
         .get('/')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.net/foo">First</a>' +
             '<a class="u-comment" href="http://example.com/foo">First</a>' +
@@ -754,7 +753,7 @@ describe('WebMention API', function () {
         })
         .get('/foo')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.com/">First</a>' +
           '</div>';
@@ -762,15 +761,15 @@ describe('WebMention API', function () {
 
       var targetMock = nock('http://example.net')
         .get('/foo')
-        .twice() //TODO: Should be .once() really
-        .reply(200, function() {
+        .twice() // TODO: Should be .once() really
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a class="u-in-reply-to" href="http://example.net/bar">First</a>' +
           '</div>';
         })
         .get('/bar')
-        .twice() //TODO: Should be .once() really
-        .reply(200, function() {
+        .twice() // TODO: Should be .once() really
+        .reply(200, function () {
           return '<html><head>' +
             '<link rel="webmention" href="http://webmention.example.com/ping" />' +
           '</head><body>' +
@@ -781,9 +780,9 @@ describe('WebMention API', function () {
       var pingMock = nock('http://webmention.example.com')
         .post('/ping', {
           source: 'http://example.net/foo',
-          target: 'http://example.net/bar',
+          target: 'http://example.net/bar'
         })
-        .twice() //TODO: Should be .once() really
+        .twice() // TODO: Should be .once() really
         .reply(202);
 
       return new Promise(function (resolve, reject) {
@@ -791,7 +790,7 @@ describe('WebMention API', function () {
           .post('/api/webmention')
           .send({
             source: 'http://example.com/',
-            target: 'http://example.net/foo',
+            target: 'http://example.net/foo'
           })
           .expect(202)
           .end(function (err) {
@@ -803,7 +802,7 @@ describe('WebMention API', function () {
       })
       .then(waitForNotification(4))
       .then(function () {
-        //TODO: Improve – relyng on timers in tests are pretty fragile
+        // TODO: Improve – relyng on timers in tests are pretty fragile
         return new Promise(function (resolve) {
           setTimeout(resolve, 300);
         });
@@ -811,7 +810,7 @@ describe('WebMention API', function () {
       .then(function () {
         return Promise.all([
           knex('entries').count('id').first(),
-          knex('mentions').count('eid').first(),
+          knex('mentions').count('eid').first()
         ]);
       })
       .then(function (result) {
@@ -820,7 +819,7 @@ describe('WebMention API', function () {
         pingMock.done();
         result.should.deep.equal([
           {count: '4'},
-          {count: '2'},
+          {count: '2'}
         ]);
       });
     });
@@ -829,7 +828,7 @@ describe('WebMention API', function () {
       var templateMock = nock('http://example.com')
         .get('/')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.net/foo">First</a>' +
           '</div>';
@@ -838,14 +837,14 @@ describe('WebMention API', function () {
       var targetMock = nock('http://example.net')
         .get('/foo')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<div class="h-entry">' +
             '<a href="http://example.net/bar" class="u-category h-card">Bob Smith</a>' +
           '</div>';
         })
         .get('/bar')
         .once()
-        .reply(200, function() {
+        .reply(200, function () {
           return '<html><head>' +
             '<link rel="webmention" href="http://webmention.example.com/ping" />' +
           '</head><body>' +
@@ -856,7 +855,7 @@ describe('WebMention API', function () {
       var pingMock = nock('http://webmention.example.com')
         .post('/ping', {
           source: 'http://example.net/foo',
-          target: 'http://example.net/bar',
+          target: 'http://example.net/bar'
         })
         .once()
         .reply(202);
@@ -866,7 +865,7 @@ describe('WebMention API', function () {
           .post('/api/webmention')
           .send({
             source: 'http://example.com/',
-            target: 'http://example.net/foo',
+            target: 'http://example.net/foo'
           })
           .expect(202)
           .end(function (err) {
@@ -878,7 +877,7 @@ describe('WebMention API', function () {
       })
       .then(waitForNotification(3))
       .then(function () {
-        //TODO: Improve – relyng on timers in tests are pretty fragile
+        // TODO: Improve – relyng on timers in tests are pretty fragile
         return new Promise(function (resolve) {
           setTimeout(resolve, 300);
         });
@@ -886,7 +885,7 @@ describe('WebMention API', function () {
       .then(function () {
         return Promise.all([
           knex('entries').count('id').first(),
-          knex('mentions').count('eid').first(),
+          knex('mentions').count('eid').first()
         ]);
       })
       .then(function (result) {
@@ -895,11 +894,10 @@ describe('WebMention API', function () {
         pingMock.done();
         result.should.deep.equal([
           {count: '3'},
-          {count: '1'},
+          {count: '1'}
         ]);
       });
     });
-
   });
 
   describe('fetch mentions', function () {
@@ -1033,7 +1031,7 @@ describe('WebMention API', function () {
 
                 resolve();
               });
-            });
+          });
         },
         function () {
           return new Promise(function (resolve, reject) {
@@ -1051,8 +1049,8 @@ describe('WebMention API', function () {
 
                 resolve();
               });
-            });
-        },
+          });
+        }
       ], function (result, next) {
         return result.then(next);
       }, Promise.resolve());
@@ -1064,7 +1062,7 @@ describe('WebMention API', function () {
         .query({
           url: [
             'http://example.org/path/2',
-            'http://example.org/path/4',
+            'http://example.org/path/4'
           ],
           path: 'http://example.org/foo'
         })
@@ -1132,8 +1130,6 @@ describe('WebMention API', function () {
           });
       });
     });
-
-
   });
 
   describe('live updates', function () {
@@ -1142,5 +1138,4 @@ describe('WebMention API', function () {
     // Test the resolveDerivedData() method and use
     it.skip('should derive interaction target status correctly');
   });
-
 });

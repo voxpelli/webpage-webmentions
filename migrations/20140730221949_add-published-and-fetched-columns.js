@@ -3,9 +3,9 @@
 exports.up = function (knex, Promise) {
   return knex.transaction(function (trx) {
     return trx.schema.table('entries', function (table) {
-        table.timestamp('published', true);
-        table.timestamp('fetched', true);
-      })
+      table.timestamp('published', true);
+      table.timestamp('fetched', true);
+    })
       .then(function () {
         return trx.from('entries');
       })
@@ -21,7 +21,7 @@ exports.up = function (knex, Promise) {
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
               published: published,
-              fetched: published,
+              fetched: published
             });
 
           updates.push(update);
@@ -29,11 +29,11 @@ exports.up = function (knex, Promise) {
 
         return Promise.all(updates);
       });
-    })
+  })
     .then(function () {
       return Promise.all([
         knex.raw('ALTER TABLE "entries" ALTER COLUMN "published" SET NOT NULL'),
-        knex.raw('ALTER TABLE "entries" ALTER COLUMN "fetched" SET NOT NULL'),
+        knex.raw('ALTER TABLE "entries" ALTER COLUMN "fetched" SET NOT NULL')
       ]);
     });
 };

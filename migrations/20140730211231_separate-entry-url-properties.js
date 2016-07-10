@@ -5,8 +5,8 @@ var urlTools = require('../lib/utils/url-tools');
 exports.up = function (knex, Promise) {
   return knex.transaction(function (trx) {
     return trx.schema.table('entries', function (table) {
-        table.renameColumn('url', 'normalizedUrl');
-      })
+      table.renameColumn('url', 'normalizedUrl');
+    })
       .then(function () {
         return trx.schema.table('entries', function (table) {
           table.string('url');
@@ -23,7 +23,7 @@ exports.up = function (knex, Promise) {
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
               url: entry.normalizedUrl,
-              normalizedUrl: urlTools.normalizeUrl(entry.normalizedUrl),
+              normalizedUrl: urlTools.normalizeUrl(entry.normalizedUrl)
             });
 
           updates.push(update);
@@ -31,7 +31,7 @@ exports.up = function (knex, Promise) {
 
         return Promise.all(updates);
       });
-    })
+  })
     .then(function () {
       return knex.raw('ALTER TABLE "entries" ALTER COLUMN "url" SET NOT NULL');
     });
