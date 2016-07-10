@@ -50,6 +50,7 @@
     "chai": "^3.0.0",
     "chai-as-promised": "^5.1.0",
     "coveralls": "^2.11.0",
+    "dependency-check": "^2.5.2",
     "dotenv": "^2.0.0",
     "eslint-config-semistandard": "^6.0.2",
     "eslint-config-standard": "^5.3.1",

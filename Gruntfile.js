@@ -43,6 +43,13 @@ module.exports = function (grunt) {
         }
       }
     },
+    'dependency-check': {
+      files: ['<%= eslint.src %>'],
+      options: {
+        excludeUnusedDev: true,
+        ignoreUnused: ['pg']
+      }
+    },
     concat: {
       options: {
         separator: ';'
@@ -96,6 +103,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-istanbul');
+  grunt.loadNpmTasks('dependency-check');
 
   grunt.registerTask('setTestEnv', 'Ensure that environment (database etc) is set up for testing', function () {
     process.env.NODE_ENV = 'test';
@@ -104,9 +112,10 @@ module.exports = function (grunt) {
   grunt.registerTask('build-dev', ['concat']);
   grunt.registerTask('build', ['concat', 'uglify']);
 
-  grunt.registerTask('travis', ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:coveralls']);
-  grunt.registerTask('test', ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:basic']);
-  grunt.registerTask('fast-test', ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:unit']);
+  grunt.registerTask('basic-test', ['lintspaces', 'eslint', 'dependency-check', 'setTestEnv']);
+  grunt.registerTask('travis', ['basic-test', 'mocha_istanbul:coveralls']);
+  grunt.registerTask('test', ['basic-test', 'mocha_istanbul:basic']);
+  grunt.registerTask('fast-test', ['basic-test', 'mocha_istanbul:unit']);
 
   grunt.registerTask('default', ['build-dev', 'test']);
 
