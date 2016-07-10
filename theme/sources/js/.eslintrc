@@ -1,0 +1,10 @@
+{
+  "extends": "semistandard",
+  "root": true,
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": false,
+    "node": false
+  }
+}

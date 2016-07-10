@@ -11,8 +11,8 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    jshint: {
-      files: [
+    eslint: {
+      src: [
         'Gruntfile.js',
         'lib/**/*.js',
         'migrations/**/*.js',
@@ -20,11 +20,10 @@ module.exports = function (grunt) {
         'theme/sources/js/**/*.js',
         '!theme/sources/js/vendor/**/*.js',
         'test/**/*.js'
-      ],
-      options: { jshintrc: '.jshintrc' }
+      ]
     },
     lintspaces: {
-      files: ['<%= jshint.files %>'],
+      files: ['<%= eslint.src %>'],
       options: { editorconfig: '.editorconfig' }
     },
     mocha_istanbul: {
@@ -85,8 +84,8 @@ module.exports = function (grunt) {
       }
     },
     watch: {
-      jshint : {
-        files: ['<%= jshint.files %>'],
+      eslint : {
+        files: ['<%= eslint.src %>'],
         tasks: ['default'],
       }
     }
@@ -94,7 +93,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-lintspaces');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -107,9 +106,9 @@ module.exports = function (grunt) {
   grunt.registerTask('build-dev', ['concat']);
   grunt.registerTask('build',     ['concat', 'uglify']);
 
-  grunt.registerTask('travis',    ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:coveralls']);
-  grunt.registerTask('test',      ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:basic']);
-  grunt.registerTask('fast-test', ['lintspaces', 'jshint', 'setTestEnv', 'mocha_istanbul:unit']);
+  grunt.registerTask('travis',    ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:coveralls']);
+  grunt.registerTask('test',      ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:basic']);
+  grunt.registerTask('fast-test', ['lintspaces', 'eslint', 'setTestEnv', 'mocha_istanbul:unit']);
 
   grunt.registerTask('default',   ['build-dev', 'test']);
 
