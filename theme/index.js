@@ -1,15 +1,15 @@
 'use strict';
 
-var _ = require('lodash');
+const _ = require('lodash');
+const pathModule = require('path');
 
-var preprocessors = {};
-var templates = {};
-var theme;
-
-var interactionPresentation = {
+const interactionPresentation = {
   'like': 'liked',
   'repost': 'reposted'
 };
+
+const templates = {};
+const preprocessors = {};
 
 preprocessors.mention = function (data) {
   var self = this;
@@ -82,14 +82,14 @@ preprocessors.mentions = function (data) {
   });
 };
 
-var formatAttributes = function (attributes) {
+const formatAttributes = function (attributes) {
   return _.map(attributes, function (value, key) {
     if (!value) { return ''; }
     return _.escape(key) + '="' + _.escape(_.isArray(value) ? value.join(' ') : value) + '"';
   }).join(' ');
 };
 
-var formatTag = function (tag, text, attributes) {
+const formatTag = function (tag, text, attributes) {
   if (!_.isString(text)) {
     attributes = text;
     text = '';
@@ -97,7 +97,7 @@ var formatTag = function (tag, text, attributes) {
   return '<' + tag + (attributes ? ' ' + formatAttributes(attributes) : '') + '>' + _.escape(text) + '</' + tag + '>';
 };
 
-var formatLink = function (href, text, attributes) {
+const formatLink = function (href, text, attributes) {
   if (text && !_.isString(text)) {
     attributes = text;
     text = undefined;
@@ -108,19 +108,19 @@ var formatLink = function (href, text, attributes) {
   return formatTag('a', text, _.extend({}, attributes, { href: href }));
 };
 
-var locals = {
-  formatAttributes: formatAttributes,
-  formatTag: formatTag,
-  formatLink: formatLink,
-  _: _
+const locals = {
+  formatAttributes,
+  formatTag,
+  formatLink,
+  _
 };
 
-theme = {
-  templatePath: __dirname + '/templates/',
-  publicPath: __dirname + '/public/',
-  preprocessors: preprocessors,
-  templates: templates,
-  locals: locals
+const theme = {
+  templatePath: pathModule.join(__dirname, '/templates/'),
+  publicPath: pathModule.join(__dirname, '/public/'),
+  preprocessors,
+  templates,
+  locals
 };
 
 module.exports = theme;
