@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const Entry = require('../lib/classes/webmentionping');
+const Entry = require('../lib/classes/entry');
 const urlTools = require('../lib/utils/url-tools');
 
 exports.up = function (knex, Promise) {
