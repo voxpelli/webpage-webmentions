@@ -1,21 +1,19 @@
-/*jslint node: true */
+'use strict';
 
-"use strict";
-
-var knex = require('../lib/knex'),
-  sampleData = require('../lib/utils/sample-data'),
-  urlTools = require('../lib/utils/url-tools'),
-  options = require('../lib/config'),
-  installSchema = require('../lib/install-schema'),
-  tables = installSchema.tables;
+const knex = require('../lib/knex');
+const sampleData = require('../lib/utils/sample-data');
+const urlTools = require('../lib/utils/url-tools');
+const options = require('../lib/config');
+const installSchema = require('../lib/install-schema');
+const tables = installSchema.tables;
 
 // Avoid running tests in non-test environments
 if (options.env !== 'test') {
-  return;
+  throw new Error('Can only be run in a test environment (when NODE_ENV=test)');
 }
 
 module.exports = {
-  clearDb : function () {
+  clearDb: function () {
     var lastDeleted = Promise.resolve(true);
 
     tables.forEach(function (table) {
@@ -27,11 +25,11 @@ module.exports = {
     return lastDeleted;
   },
 
-  setupSchema : function () {
+  setupSchema: function () {
     return installSchema();
   },
 
-  setupSampleData : function () {
+  setupSampleData: function () {
     return Promise.all([
       knex('sites').insert({
         aid: 1,
@@ -47,14 +45,13 @@ module.exports = {
     ]);
   },
 
-  setupSampleMentions : function (count, options) {
+  setupSampleMentions: function (count, options) {
     count = count || 10;
 
-    var entries = [], i, now;
+    const entries = [];
+    const now = Date.now() - count * 1000;
 
-    now = Date.now() - count * 1000;
-
-    for (i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
       entries.push(sampleData.mentions(1, options)[0]);
     }
 
@@ -85,26 +82,26 @@ module.exports = {
       var mentions = [];
 
       ids.forEach(function (id, i) {
-        var target = 'http://example.org/path/' + i,
-          normalizedTarget = urlTools.normalizeUrl(target);
+        const target = 'http://example.org/path/' + i;
+        const normalizedTarget = urlTools.normalizeUrl(target);
 
         // Let one mention only have the foo path
         if (i !== 9) {
           mentions.push(knex('mentions').insert({
-            url : target,
-            normalizedUrl : normalizedTarget,
-            eid : id[0],
-            hostname : 'example.org'
+            url: target,
+            normalizedUrl: normalizedTarget,
+            eid: id[0],
+            hostname: 'example.org'
           }));
         }
 
         // Let four of the entries mention the very same page
         if (i % 3 === 0) {
           mentions.push(knex('mentions').insert({
-            url : 'http://example.org/foo/',
-            normalizedUrl : 'http://example.org/foo/',
-            eid : id[0],
-            hostname : 'example.org'
+            url: 'http://example.org/foo/',
+            normalizedUrl: 'http://example.org/foo/',
+            eid: id[0],
+            hostname: 'example.org'
           }));
         }
       });
