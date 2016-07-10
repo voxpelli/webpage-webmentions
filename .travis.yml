@@ -1,7 +1,8 @@
 language: node_js
 node_js:
-  - "0.12"
-  - "iojs"
+  - "node"
+  - "6"
+  - "5"
 before_script:
   - psql -c 'create database webmention_test;' -U postgres
 script: npm run travis
