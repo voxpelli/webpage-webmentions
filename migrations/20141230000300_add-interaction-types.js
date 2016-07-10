@@ -1,8 +1,8 @@
 'use strict';
 
-var _ = require('lodash'),
-  Entry = require('../lib/classes/webmentionping'),
-  urlTools = require('../lib/utils/url-tools');
+const _ = require('lodash');
+const Entry = require('../lib/classes/webmentionping');
+const urlTools = require('../lib/utils/url-tools');
 
 exports.up = function (knex, Promise) {
   return knex.transaction(function (trx) {
@@ -25,9 +25,9 @@ exports.up = function (knex, Promise) {
         var updates = [];
 
         entries.forEach(function (entry) {
-          var entryUpdate, mentionUpdate, data,
-            entryInstance = new Entry(entry.url, entry.raw),
-            newEntry = entryInstance.getData();
+          const entryInstance = new Entry(entry.url, entry.raw);
+          const newEntry = entryInstance.getData();
+          let entryUpdate, mentionUpdate, data;
 
           if (!newEntry.type) {
             return;

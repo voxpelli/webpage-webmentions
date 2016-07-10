@@ -1,5 +1,3 @@
-/* jslint browser: true */
-/* global EventSource */
 'use strict';
 
 // TODO: Allow an embed that's simply a number of responses – for use in lists
@@ -9,7 +7,7 @@
 var classPrefix = 'webmention-',
   each = function (collection, callback) {
     for (var i = 0, length = collection.length; i < length; i++) {
-      callback.call(undefined, collection[i]);
+      callback(collection[i]);
     }
   },
   constructQuery = function (query) {
@@ -115,21 +113,21 @@ var classPrefix = 'webmention-',
     time = typeof time === 'string' ? parseInt(time, 10) : time;
     var date = new Date(time),
       diff = (((new Date()).getTime() - date.getTime()) / 1000),
-      day_diff = floor(diff / 86400);
+      dayDiff = floor(diff / 86400);
 
-    if (isNaN(day_diff)) { return ''; }
-    if (day_diff < 0) { return date.toLocaleString(); }
+    if (isNaN(dayDiff)) { return ''; }
+    if (dayDiff < 0) { return date.toLocaleString(); }
 
-    return (day_diff === 0 && (
+    return (dayDiff === 0 && (
         (diff < 60 && 'just now') ||
         (diff < 120 && '1 minute ago') ||
         (diff < 3600 && floor(diff / 60) + ' minutes ago') ||
         (diff < 7200 && '1 hour ago') ||
         (diff < 86400 && floor(diff / 3600) + ' hours ago'))) ||
-      (day_diff === 1 && 'Yesterday') ||
-      (day_diff < 7 && day_diff + ' days ago') ||
-      (day_diff < 365 && Math.ceil(day_diff / 7) + ' weeks ago') ||
-      Math.ceil(day_diff / 365) + ' years ago';
+      (dayDiff === 1 && 'Yesterday') ||
+      (dayDiff < 7 && dayDiff + ' days ago') ||
+      (dayDiff < 365 && Math.ceil(dayDiff / 7) + ' weeks ago') ||
+      Math.ceil(dayDiff / 365) + ' years ago';
   };
 
 // Embed specific methods
@@ -366,7 +364,7 @@ var uResponsesRegexp = /^(https?:\/\/[^\/]+)\/api\/mentions\?/,
       });
     });
   },
-  publicMethods = { // jshint ignore:line
+  publicMethods = { // eslint-disable-line no-unused-vars
     loadMentions: loadMentions,
     findNewInjectionPoints: findNewInjectionPoints
   };

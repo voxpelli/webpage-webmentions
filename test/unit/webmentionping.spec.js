@@ -1,21 +1,16 @@
-/* jshint nonew:false, scripturl:true, expr: true */
-/* global beforeEach, describe, it */
-
 'use strict';
 
-var chai = require('chai'),
-  chaiAsPromised = require('chai-as-promised'),
-  _ = require('lodash'),
-  expect;
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+const _ = require('lodash');
 
 chai.use(chaiAsPromised);
 chai.should();
-expect = chai.expect;
 
 describe('MetaDataParser', function () {
-  var Entry = require('../../lib/classes/entry'),
-    MetaDataParser = require('../../lib/classes/metadataparser'),
-    parser, sourceUrl, targetUrl, exampleHtml, parsedExample, xssExample,
+  const Entry = require('../../lib/classes/entry');
+  const MetaDataParser = require('../../lib/classes/metadataparser');
+  let parser, sourceUrl, targetUrl, exampleHtml, parsedExample, xssExample,
     getEntry, matchTarget;
 
   // Taken from the h-entry Microformats wiki page

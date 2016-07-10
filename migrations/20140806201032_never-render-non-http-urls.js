@@ -1,7 +1,7 @@
 'use strict';
 
-var _ = require('lodash'),
-  urlTools = require('../lib/utils/url-tools');
+const _ = require('lodash');
+const urlTools = require('../lib/utils/url-tools');
 
 exports.up = function (knex, Promise) {
   return knex.from('entries').then(function (entries) {

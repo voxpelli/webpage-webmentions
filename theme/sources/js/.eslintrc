@@ -1,6 +1,9 @@
 {
   "extends": "semistandard",
   "root": true,
+  "rules": {
+    "one-var": 0
+  },
   "env": {
     "browser": true,
     "commonjs": true,

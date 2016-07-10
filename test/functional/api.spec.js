@@ -1,58 +1,56 @@
-/* jshint nonew:false */
-/* global describe, beforeEach, afterEach, it */
-
 'use strict';
 
-var chai = require('chai'),
-  chaiAsPromised = require('chai-as-promised'),
-  request = require('supertest'),
-  nock = require('nock'),
-  sinon = require('sinon'),
-  _ = require('lodash'),
-  mod_url = require('url'),
-  knex = require('../../lib/knex'),
-  dbUtils = require('../db-utils'),
-  should;
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+const request = require('supertest');
+const nock = require('nock');
+const sinon = require('sinon');
+const _ = require('lodash');
+const urlModule = require('url');
+const knex = require('../../lib/knex');
+const dbUtils = require('../db-utils');
 
 chai.use(chaiAsPromised);
-should = chai.should();
+const should = chai.should();
 
 describe('WebMention API', function () {
   this.timeout(5000);
 
-  var app = require('../../lib/main'),
-    Entry = require('../../lib/classes/entry'),
-    WebMentionTemplates = require('webmention-testpinger').WebMentionTemplates,
-    microformatsVersion = require('microformat-node/package.json').version,
-    templateCollection = new WebMentionTemplates(),
-    waitingForNotifications,
-    waitForNotification = function (limit) {
-      var count = 0, notificationPromise;
+  const app = require('../../lib/main');
+  const Entry = require('../../lib/classes/entry');
+  const WebMentionTemplates = require('webmention-testpinger').WebMentionTemplates;
+  const microformatsVersion = require('microformat-node/package.json').version;
+  const templateCollection = new WebMentionTemplates();
 
-      if (!Entry.prototype._notify.restore) {
-        sinon.stub(Entry.prototype, '_notify', function () {
-          count += 1;
-          waitingForNotifications.reduce(function (position, options) {
-            var limit = position + options.limit;
-            if (count === limit) {
-              options.callback();
-            }
-            return limit;
-          }, 0);
-        });
-      }
+  let waitingForNotifications;
 
-      notificationPromise = new Promise(function (resolve) {
-        waitingForNotifications.push({
-          limit: limit === undefined ? 1 : limit,
-          callback: resolve
-        });
+  const waitForNotification = function (limit) {
+    if (!Entry.prototype._notify.restore) {
+      let count = 0;
+
+      sinon.stub(Entry.prototype, '_notify', function () {
+        count += 1;
+        waitingForNotifications.reduce(function (position, options) {
+          var limit = position + options.limit;
+          if (count === limit) {
+            options.callback();
+          }
+          return limit;
+        }, 0);
       });
+    }
 
-      return function () {
-        return notificationPromise;
-      };
+    const notificationPromise = new Promise(function (resolve) {
+      waitingForNotifications.push({
+        limit: limit === undefined ? 1 : limit,
+        callback: resolve
+      });
+    });
+
+    return function () {
+      return notificationPromise;
     };
+  };
 
   beforeEach(function () {
     nock.disableNetConnect();
@@ -74,9 +72,9 @@ describe('WebMention API', function () {
 
   describe('parseSourcePage', function () {
     it('should handle the templates alright', function () {
-      var templateCount,
-        templateMocks = [],
-        mentionTargets = require('../template-mentions.json');
+      const mentionTargets = require('../template-mentions.json');
+      const templateMocks = [];
+      let templateCount;
 
       return templateCollection.getTemplateNames()
         .then(function (templateNames) {
@@ -135,9 +133,10 @@ describe('WebMention API', function () {
           result.should.be.an('array').be.of.length(templateCount);
 
           result.forEach(function (templateMention) {
-            var target, name = mod_url.parse(templateMention.url).hostname.replace('.example.com', '');
+            const name = urlModule.parse(templateMention.url).hostname.replace('.example.com', '');
+
             if (name && mentionTargets[name]) {
-              target = _.cloneDeep(mentionTargets[name]);
+              let target = _.cloneDeep(mentionTargets[name]);
 
               // Some templates don't have a published date, falling back to
               // Date.now() which messes up the deepEqual(). Working around it.
@@ -1091,13 +1090,13 @@ describe('WebMention API', function () {
             }
 
             res.body.should.be.an('array').and.satisfy(function (entries) {
-              return false !== entries.reduce(function (previousValue, currentValue) {
+              return entries.reduce(function (previousValue, currentValue) {
                 previousValue = previousValue.published || previousValue;
                 if (previousValue === false || previousValue >= currentValue.published) {
                   return false;
                 }
                 return currentValue.published;
-              });
+              }) !== false;
             }, 'Should sort by publish date, starting with the oldest one');
 
             resolve();
@@ -1117,13 +1116,13 @@ describe('WebMention API', function () {
             }
 
             res.body.should.be.an('array').and.satisfy(function (entries) {
-              return false !== entries.reduce(function (previousValue, currentValue) {
+              return entries.reduce(function (previousValue, currentValue) {
                 previousValue = previousValue.published || previousValue;
                 if (previousValue !== undefined && (previousValue === false || previousValue <= currentValue.published)) {
                   return false;
                 }
                 return currentValue.published;
-              });
+              }) !== false;
             }, 'Should sort by publish date, starting with the newest one');
 
             resolve();
