@@ -1,5 +1,16 @@
 ## Changelog
 
+### 0.11.0
+
+**Breaking change** – now requires Node.js 5.x or newer
+
+* Fix: Make compatible with Node.js 5 and newer
+* Fix: Use latest version of the [microformat parser](https://github.com/glennjones/microformat-node)
+* Refactor: Large refactoring of the code base to be split up into smaller parts
+* Refactor: Extracted the parsing into a [standalone module](https://github.com/voxpelli/metadataparser-mf2) that sits on top of [metadataparser](https://github.com/voxpelli/metadataparser/)
+* Change: Updated the dev tools. Now eg. use [ESLint](http://eslint.org/) and [Semistandard](https://github.com/Flet/semistandard) to enforce coding standards.
+* Sneak peek: Basic work done for [Salmention](https://indieweb.org/salmention) support. Still not ready for full release though. Progress is tracked in the [Salmention issue](https://github.com/voxpelli/webpage-webmentions/issues/21).
+
 ### 0.10.0
 
 * Feature: A new experimental "u-responses" based embed script that progressively enhances "u-responses" that points to the curlable page introduced in `0.9.0` by replacing those links with actual embedded mentions fetched with ajax. This ensures the curlability of the full chain from `h-entry` to received mentions.
