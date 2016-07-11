@@ -59,7 +59,7 @@
       "url": "https://checkmention.appspot.com/"
     },
     "name": null,
-    "summary": "Clicking this\nshould not cause an alert.\nThis div\nshould not alert.\nTry clicking this link\n<script>alert(\"encoded-xss\")</script>\nand this too.\nMouse over this\nshould not cause an alert. This broken\n should not throw an alert.\n<alert(\"XSS4\");//\n\nNeither should .\nPlease look at the Owasp XSS prevention cheat sheet for more information.\n\n\nThis note was created on\n\n%%nice_time",
+    "summary": "Clicking this\nshould not cause an alert.\nThis div\nshould not alert.\nTry clicking this link\n<script>alert(\"encoded-xss\")</script>\nand this too.\nMouse over this\nshould not cause an alert. This broken\n should not throw an alert.\n<",
     "url": "http://checkmention-xss.example.com/",
     "interactionType": "reply",
     "interactions": ["http://example.org/foo"]
