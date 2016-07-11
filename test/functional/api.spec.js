@@ -1,5 +1,13 @@
 'use strict';
 
+const mochaList = require('mocha').reporters.Base.list;
+const mochaErrorLog = function (err, title) {
+  mochaList([{
+    err,
+    fullTitle: () => title || 'Untitled'
+  }]);
+};
+
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const request = require('supertest');
@@ -132,7 +140,7 @@ describe('WebMention API', function () {
 
           result.should.be.an('array').be.of.length(templateCount);
 
-          result.forEach(function (templateMention) {
+          return Promise.all(result.map(templateMention => Promise.resolve().then(() => {
             const name = urlModule.parse(templateMention.url).hostname.replace('.example.com', '');
 
             if (name && mentionTargets[name]) {
@@ -158,7 +166,10 @@ describe('WebMention API', function () {
               // console.log(JSON.stringify(templateMention.data));
               // console.log(JSON.stringify(templateMention.raw));
             }
-          });
+          }).catch(err => {
+            mochaErrorLog(err, 'Template error');
+            throw err;
+          })));
         });
     });
 
