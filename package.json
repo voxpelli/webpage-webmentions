@@ -15,7 +15,6 @@
     "fetch-politely": "~0.7.0",
     "knex": "^0.7.3",
     "lodash": "^2.4.1",
-    "lru-cache": "^2.5.0",
     "metadataparser": "voxpelli/metadataparser#1.x",
     "metadataparser-mf2": "github:voxpelli/metadataparser-mf2#1.x",
     "moment": "^2.8.4",
