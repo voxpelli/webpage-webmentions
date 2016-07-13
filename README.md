@@ -67,3 +67,11 @@ You can set these up locally by simply copying `sample.env` to `.env` and changi
 * Node.js
 * PostgreSQL (or possibly any other Knex-compatible database like MySQL/MariaDB, SQLite)
 * ([Foreman](http://ddollar.github.io/foreman/) – optional, but recommended in a development environment as this project is built around the `Procfile` and `.env` files that it and Heroku uses. Currently only one process is used though and a backup `.env` parser is provided so not needed.)
+
+## Try it out locally
+
+Install [webmention-testpinger](https://github.com/voxpelli/node-webmention-testpinger) then do:
+
+```bash
+webmention-testpinger --endpoint=http://127.0.0.1:5000/api/webmention --target=http://127.0.0.1:5000/
+```
