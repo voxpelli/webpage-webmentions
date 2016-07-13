@@ -1,10 +1,16 @@
 ## Changelog
 
+### 0.11.1
+
+* Fix: Noted in changelog that 0.11.0 needed a database migration
+* Fix: Restored graceful shutdown
+
 ### 0.11.0
 
 **Breaking change** – now requires Node.js 5.x or newer
+**Hosts needs to do a database migration**.
 
-* Fix: Make compatible with Node.js 5 and newer
+* Fix: Make compatible with Node.js 5.x and newer
 * Fix: Use latest version of the [microformat parser](https://github.com/glennjones/microformat-node)
 * Refactor: Large refactoring of the code base to be split up into smaller parts
 * Refactor: Extracted the parsing into a [standalone module](https://github.com/voxpelli/metadataparser-mf2) that sits on top of [metadataparser](https://github.com/voxpelli/metadataparser/)
