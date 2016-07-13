@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.11.2
+
+* Fix: Removed caching of query responses meant to avoid errors on database outages. Caused bugs and didn't work as intended.
+
 ### 0.11.1
 
 * Fix: Noted in changelog that 0.11.0 needed a database migration
