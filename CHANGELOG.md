@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.11.3
+
+* Fix: Hardened the app
+
 ### 0.11.2
 
 * Fix: Removed caching of query responses meant to avoid errors on database outages. Caused bugs and didn't work as intended.
