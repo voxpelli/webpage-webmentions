@@ -1,6 +1,12 @@
 ## Changelog
 
+### 0.12.0
+
+**Breaking change** – now requires Node.js 6.x or newer
+
 ### 0.11.4
+
+** NOTE: Might require Node 6 **
 
 * Fix: Updated dependencies, mainly moved away from Lodash 2 to built in ES6 methods in combination with standalone Lodash methods (which will likely be phased out one by one later on)
 
