@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.11.4
+
+* Fix: Updated dependencies, mainly moved away from Lodash 2 to built in ES6 methods in combination with standalone Lodash methods (which will likely be phased out one by one later on)
+
 ### 0.11.3
 
 * Fix: Hardened the app
