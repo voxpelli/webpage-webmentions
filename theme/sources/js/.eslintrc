@@ -1,13 +1,11 @@
 {
-  "extends": "semistandard",
+  "extends": "../env-less-semistandard.js",
   "root": true,
-  "rules": {
-    "one-var": 0
-  },
   "env": {
     "browser": true,
-    "commonjs": true,
-    "es6": false,
-    "node": false
+    "commonjs": true
+  },
+  "rules": {
+    "no-unused-vars": 2
   }
 }
