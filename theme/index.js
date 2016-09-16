@@ -1,6 +1,6 @@
 'use strict';
 
-const _ = require('lodash');
+const escape = require('lodash.escape');
 const pathModule = require('path');
 
 const interactionPresentation = {
@@ -68,7 +68,7 @@ preprocessors.mentions = function (data) {
         return 'All mentions from site ' + locals.formatLink('http://' + value + '/', value);
       }),
       [].concat(data.mentionsArguments.path || []).map(function (value) {
-        return 'All mentions matching path ' + _.escape(value);
+        return 'All mentions matching path ' + escape(value);
       })
     );
   }
@@ -83,36 +83,36 @@ preprocessors.mentions = function (data) {
 };
 
 const formatAttributes = function (attributes) {
-  return _.map(attributes, function (value, key) {
+  return Object.keys(attributes).map(key => {
+    const value = attributes[key];
     if (!value) { return ''; }
-    return _.escape(key) + '="' + _.escape(_.isArray(value) ? value.join(' ') : value) + '"';
+    return escape(key) + '="' + escape(Array.isArray(value) ? value.join(' ') : value) + '"';
   }).join(' ');
 };
 
 const formatTag = function (tag, text, attributes) {
-  if (!_.isString(text)) {
+  if (typeof text !== 'string') {
     attributes = text;
     text = '';
   }
-  return '<' + tag + (attributes ? ' ' + formatAttributes(attributes) : '') + '>' + _.escape(text) + '</' + tag + '>';
+  return '<' + tag + (attributes ? ' ' + formatAttributes(attributes) : '') + '>' + escape(text) + '</' + tag + '>';
 };
 
 const formatLink = function (href, text, attributes) {
-  if (text && !_.isString(text)) {
+  if (text && typeof text !== 'string') {
     attributes = text;
     text = undefined;
   }
   if (!text) {
     text = href;
   }
-  return formatTag('a', text, _.extend({}, attributes, { href: href }));
+  return formatTag('a', text, Object.assign({}, attributes, { href: href }));
 };
 
 const locals = {
   formatAttributes,
   formatTag,
-  formatLink,
-  _
+  formatLink
 };
 
 const theme = {

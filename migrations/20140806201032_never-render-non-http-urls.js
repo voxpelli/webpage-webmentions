@@ -1,11 +1,10 @@
 'use strict';
 
-const _ = require('lodash');
 const urlTools = require('../lib/utils/url-tools');
 
 exports.up = function (knex, Promise) {
   return knex.from('entries').then(function (entries) {
-    return Promise.all(_.map(entries, function (entry) {
+    return Promise.all(entries.map(entry => {
       var data = entry.data;
 
       if (!urlTools.isHttpUrl.test(data.url)) {

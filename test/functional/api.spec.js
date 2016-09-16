@@ -13,7 +13,7 @@ const chaiAsPromised = require('chai-as-promised');
 const request = require('supertest');
 const nock = require('nock');
 const sinon = require('sinon');
-const _ = require('lodash');
+const cloneDeep = require('lodash.clonedeep');
 const urlModule = require('url');
 const knex = require('../../lib/knex');
 const dbUtils = require('../db-utils');
@@ -144,7 +144,7 @@ describe('WebMention API', function () {
             const name = urlModule.parse(templateMention.url).hostname.replace('.example.com', '');
 
             if (name && mentionTargets[name]) {
-              let target = _.cloneDeep(mentionTargets[name]);
+              let target = cloneDeep(mentionTargets[name]);
 
               // Some templates don't have a published date, falling back to
               // Date.now() which messes up the deepEqual(). Working around it.
@@ -356,39 +356,30 @@ describe('WebMention API', function () {
           '</div>';
         });
 
-      return _.reduce(
-        [
-          'http://example.org/foo',
-          'http://example.org/bar'
-        ],
-        function (promiseChain, target) {
-          return promiseChain.then(function () {
-            return new Promise(function (resolve, reject) {
-              request(app)
-                .post('/api/webmention')
-                .send({
-                  source: 'http://example.com/',
-                  target: target
-                })
-                .expect(202)
-                .end(function (err) {
-                  if (err) {
-                    return reject(err);
-                  }
-                  resolve();
-                });
-            });
-          }).then(waitForNotification());
-        },
+      return [
+        'http://example.org/foo',
+        'http://example.org/bar'
+      ].reduce(
+        (promiseChain, target) => promiseChain.then(() =>
+          new Promise((resolve, reject) => {
+            request(app)
+              .post('/api/webmention')
+              .send({
+                source: 'http://example.com/',
+                target: target
+              })
+              .expect(202)
+              .end(err => {
+                if (err) { return reject(err); }
+                resolve();
+              });
+          })
+        ).then(waitForNotification()),
         Promise.resolve()
       )
-      .then(function () {
-        templateMock.done();
-      })
-      .then(function () {
-        return knex('mentions').select().orderBy('url', 'desc');
-      })
-      .then(function (result) {
+      .then(() => { templateMock.done(); })
+      .then(() => knex('mentions').select().orderBy('url', 'desc'))
+      .then(result => {
         result.should.be.an('array').with.a.lengthOf(2);
 
         result.should.have.deep.property('[0].url', 'http://example.org/foo');
@@ -401,10 +392,8 @@ describe('WebMention API', function () {
         result.should.have.deep.property('[1].updated', null);
         result.should.have.deep.property('[1].removed', false);
       })
-      .then(function () {
-        return knex('entries').select();
-      })
-      .then(function (result) {
+      .then(() => knex('entries').select())
+      .then(result => {
         result.should.be.an('array').with.a.lengthOf(1);
 
         result.should.have.deep.property('[0].url', 'http://example.com/');
@@ -518,36 +507,29 @@ describe('WebMention API', function () {
           '</div>';
         });
 
-      return _.reduce(
-        [
-          'http://example.org/foo',
-          'http://example.org/bar'
-        ],
-        function (promiseChain, target) {
-          return promiseChain.then(function () {
-            return new Promise(function (resolve, reject) {
-              request(app)
-                .post('/api/webmention')
-                .send({
-                  source: 'http://example.com/',
-                  target: target
-                })
-                .expect(202)
-                .end(function (err) {
-                  if (err) {
-                    return reject(err);
-                  }
-                  resolve();
-                });
-            });
-          }).then(waitForNotification());
-        },
+      return [
+        'http://example.org/foo',
+        'http://example.org/bar'
+      ].reduce(
+        (promiseChain, target) => promiseChain.then(() =>
+          new Promise((resolve, reject) => {
+            request(app)
+              .post('/api/webmention')
+              .send({
+                source: 'http://example.com/',
+                target: target
+              })
+              .expect(202)
+              .end(err => {
+                if (err) { return reject(err); }
+                resolve();
+              });
+          })
+        ).then(waitForNotification()),
         Promise.resolve()
       )
-      .then(function () {
-        return knex('mentions').select().orderBy('url', 'desc');
-      })
-      .then(function (result) {
+      .then(() => knex('mentions').select().orderBy('url', 'desc'))
+      .then(result => {
         templateMock1.done();
         templateMock2.done();
 
@@ -1006,7 +988,7 @@ describe('WebMention API', function () {
     });
 
     it('should allow matching based on path', function () {
-      return _.reduce([
+      return [
         function () {
           return new Promise(function (resolve, reject) {
             request(app)
@@ -1061,9 +1043,7 @@ describe('WebMention API', function () {
               });
           });
         }
-      ], function (result, next) {
-        return result.then(next);
-      }, Promise.resolve());
+      ].reduce((result, next) => result.then(next), Promise.resolve());
     });
 
     it('should ignore handle multiple matches', function (done) {

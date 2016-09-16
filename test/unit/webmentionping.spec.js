@@ -2,7 +2,7 @@
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
-const _ = require('lodash');
+const cloneDeep = require('lodash.clonedeep');
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -286,11 +286,13 @@ describe('MetaDataParser', function () {
     });
 
     it('should parse dates correctly', function () {
-      _.each({
+      const values = {
         '2013-12-18T22:45:00Z': 1387406700000,
         '2013-09-08T07:21:50-07:00': 1378650110000
-      }, function (timestamp, publishDate) {
-        var alternateExample = _.cloneDeep(parsedExample);
+      };
+      Object.keys(values).forEach(publishDate => {
+        const timestamp = values[publishDate];
+        const alternateExample = cloneDeep(parsedExample);
         alternateExample.items[0].properties.published[0] = publishDate;
 
         new Entry(sourceUrl, { microformats: alternateExample }).getData().should.have.deep.property('data.published', timestamp);

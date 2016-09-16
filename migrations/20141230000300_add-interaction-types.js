@@ -1,6 +1,6 @@
 'use strict';
 
-const _ = require('lodash');
+const cloneDeep = require('lodash.clonedeep');
 const Entry = require('../lib/classes/entry');
 const urlTools = require('../lib/utils/url-tools');
 
@@ -33,7 +33,7 @@ exports.up = function (knex, Promise) {
             return;
           }
 
-          data = _.cloneDeep(entry.data);
+          data = cloneDeep(entry.data);
           data.interactionType = newEntry.data.interactionType;
           data.interactions = newEntry.data.interactions;
 
@@ -48,9 +48,7 @@ exports.up = function (knex, Promise) {
 
           mentionUpdate = trx.table('mentions')
             .where('eid', entry.id)
-            .whereIn('normalizedUrl', _.map(data.interactions, function (target) {
-              return urlTools.normalizeUrl(target, { relativeTo: entry.normalizedUrl });
-            }))
+            .whereIn('normalizedUrl', data.interactions.map(target => urlTools.normalizeUrl(target, { relativeTo: entry.normalizedUrl })))
             .update({ interaction: true });
 
           updates.push(mentionUpdate);
