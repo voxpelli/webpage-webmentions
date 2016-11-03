@@ -9,8 +9,8 @@ chai.should();
 
 describe('MetaDataParser', function () {
   const Entry = require('../../lib/classes/entry');
-  const MetaDataParser = require('metadataparser').MetaDataParser;
-  const MetaDataParserMf2 = require('metadataparser-mf2');
+  const MetaDataParser = require('@voxpelli/metadataparser').MetaDataParser;
+  const MetaDataParserMf2 = require('@voxpelli/metadataparser-mf2');
   let parser, sourceUrl, targetUrl, exampleHtml, parsedExample, xssExample,
     getEntry, matchTarget;
 

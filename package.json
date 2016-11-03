@@ -9,6 +9,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@voxpelli/metadataparser": "^2.0.0",
+    "@voxpelli/metadataparser-mf2": "^0.3.0",
     "cors": "^2.5.2",
     "express": "^3.4.7",
     "faker": "^2.1.1",
@@ -24,8 +26,6 @@
     "lodash.union": "^4.6.0",
     "lodash.uniq": "^4.5.0",
     "lodash.values": "^4.3.0",
-    "metadataparser": "voxpelli/metadataparser#1.x",
-    "metadataparser-mf2": "github:voxpelli/metadataparser-mf2#1.x",
     "moment": "^2.8.4",
     "newrelic": "^1.14.4",
     "passport": "~0.2.0",
