@@ -74,7 +74,7 @@
     "grunt-notify": "~0.4.1",
     "istanbul": "~0.4.5",
     "mocha": "^3.0.0",
-    "nock": "~2.10.0",
+    "nock": "^9.0.0",
     "passport-dummy": "0.0.1",
     "sinon": "^1.16.1",
     "supertest": "^2.0.1",
