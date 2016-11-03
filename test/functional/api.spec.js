@@ -22,7 +22,7 @@ chai.use(chaiAsPromised);
 const should = chai.should();
 
 describe('WebMention API', function () {
-  this.timeout(5000);
+  this.timeout(7000);
 
   const app = require('../../lib/main');
   const Entry = require('../../lib/classes/entry');
