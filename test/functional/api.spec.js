@@ -905,16 +905,16 @@ describe('WebMention API', function () {
       res.body.should.be.an('array').of.length(count);
 
       res.body.should.have.deep.property('[0].name', null);
-      res.body.should.have.deep.property('[0].url').that.match(/^https?:\/\/[^\/]+\//);
+      res.body.should.have.deep.property('[0].url').that.match(/^https?:\/\/[^/]+\//);
       res.body.should.have.deep.property('[0].author.name').that.is.a('string');
 
       res.body.should.have.deep.property('[0].author.photo')
         .that.is.a('string')
-        .that.match(/^https?:\/\/[^\/]+\//);
+        .that.match(/^https?:\/\/[^/]+\//);
 
       res.body.should.have.deep.property('[0].author.url')
         .that.is.a('string')
-        .that.match(/^https?:\/\/[^\/]+\//);
+        .that.match(/^https?:\/\/[^/]+\//);
 
       res.body.should.have.deep.property('[0].published')
         .that.is.a('number')

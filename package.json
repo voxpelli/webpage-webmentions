@@ -55,13 +55,14 @@
   "private": true,
   "devDependencies": {
     "chai": "^3.0.0",
-    "chai-as-promised": "^5.1.0",
+    "chai-as-promised": "^6.0.0",
     "coveralls": "^2.11.0",
     "dependency-check": "^2.5.2",
     "dotenv": "^2.0.0",
+    "eslint": "^3.4.0",
     "eslint-config-semistandard": "^7.0.0",
     "eslint-config-standard": "^6.0.0",
-    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-promise": "^3.0.0",
     "eslint-plugin-standard": "^2.0.0",
     "grunt": "^1.0.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -76,7 +77,7 @@
     "nock": "~2.10.0",
     "passport-dummy": "0.0.1",
     "sinon": "^1.16.1",
-    "supertest": "^1.0.1",
-    "webmention-testpinger": "~0.5.0"
+    "supertest": "^2.0.1",
+    "webmention-testpinger": "~0.6.0"
   }
 }
