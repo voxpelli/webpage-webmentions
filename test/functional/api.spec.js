@@ -890,6 +890,32 @@ describe('WebMention API', function () {
         ]);
       });
     });
+
+    it('should reject malformed source URL:s', function () {
+      return new Promise(function (resolve, reject) {
+        request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'invalid',
+            target: 'http://example.org/foo'
+          })
+          .expect(400)
+          .end(err => err ? reject(err) : resolve());
+      });
+    });
+
+    it('should reject malformed target URL:s', function () {
+      return new Promise(function (resolve, reject) {
+        request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'http://example.org/foo',
+            target: 'invalid'
+          })
+          .expect(400)
+          .end(err => err ? reject(err) : resolve());
+      });
+    });
   });
 
   describe('fetch mentions', function () {
