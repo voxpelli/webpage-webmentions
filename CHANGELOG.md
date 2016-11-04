@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.12.1
+
+* Fixed some bugs
+* Updated some dependencies
+* Added a Yarn lock file
+
 ### 0.12.0
 
 **Breaking change** – now requires Node.js 6.x or newer
