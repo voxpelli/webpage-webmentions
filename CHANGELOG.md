@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.12.2
+
+* **Bug fix:** Avoid circular loops when looking up comments that are comments of each other
+* **Improvement:** Never queue up more than a single instance of each message per URL
+
 ### 0.12.1
 
 * Fixed some bugs
