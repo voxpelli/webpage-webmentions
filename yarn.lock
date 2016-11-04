@@ -975,8 +975,8 @@ eslint-config-standard@^6.0.0:
   resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-6.2.1.tgz#d3a68aafc7191639e7ee441e7348739026354292"
 
 eslint-plugin-promise@^3.0.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-3.3.0.tgz#20a1ef58b4243ffdaef82ee9360a02353a7cca89"
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-3.3.1.tgz#c1e980cf7c3cac3300731450fb31d2bb843eb226"
 
 eslint-plugin-standard@^2.0.0:
   version "2.0.1"
@@ -1179,9 +1179,9 @@ faye-websocket@~0.10.0:
   dependencies:
     websocket-driver ">=0.5.1"
 
-fetch-politely@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/fetch-politely/-/fetch-politely-1.0.1.tgz#8403e78e3a4b38fa6ccb7846b9ae62aa939e5707"
+fetch-politely@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/fetch-politely/-/fetch-politely-1.1.0.tgz#857ed1c594108061b30eb21611ff754d24dc98ac"
   dependencies:
     bunyan-adaptor "^1.1.0"
     lodash.isequal "^4.4.0"
