@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.12.3
+
+* **Bug fix:** Reject invalid source and target URL:s
+
 ### 0.12.2
 
 * **Bug fix:** Avoid circular loops when looking up comments that are comments of each other
