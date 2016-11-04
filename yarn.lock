@@ -132,10 +132,6 @@ arrify@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
 
-asap@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/asap/-/asap-1.0.0.tgz#b2a45da5fdfa20b0496fc3768cc27c12fa916a7d"
-
 asap@~2.0.3:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.5.tgz#522765b50c3510490e52d7dcfe085ef9ba96958f"
@@ -336,9 +332,9 @@ builtins@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
 
-bunyan-duckling@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/bunyan-duckling/-/bunyan-duckling-1.0.2.tgz#81bb1b7840e3fe1981d9656566312f631efec82e"
+bunyan-adaptor@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/bunyan-adaptor/-/bunyan-adaptor-1.1.0.tgz#d1f5caa39f771a81ed2762824a9da29c9af31f36"
 
 bytes@2.1.0:
   version "2.1.0"
@@ -1183,14 +1179,14 @@ faye-websocket@~0.10.0:
   dependencies:
     websocket-driver ">=0.5.1"
 
-fetch-politely@~0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/fetch-politely/-/fetch-politely-0.7.0.tgz#74387802a1588b823c11557494690756b99872d4"
+fetch-politely@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/fetch-politely/-/fetch-politely-1.0.1.tgz#8403e78e3a4b38fa6ccb7846b9ae62aa939e5707"
   dependencies:
-    bunyan-duckling "^1.0.0"
-    lodash "^2.4.1"
-    lru-cache "^2.5.0"
-    promise "^6.0.0"
+    bunyan-adaptor "^1.1.0"
+    lodash.isequal "^4.4.0"
+    lodash.pull "^4.1.0"
+    lru-cache "^4.0.0"
     request "^2.51.0"
     robots "^0.9.4"
     verror "^1.6.0"
@@ -2129,6 +2125,10 @@ lodash.isempty@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.isempty/-/lodash.isempty-4.4.0.tgz#6f86cbedd8be4ec987be9aaf33c9684db1b31e7e"
 
+lodash.isequal@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.4.0.tgz#6295768e98e14dc15ce8d362ef6340db82852031"
+
 lodash.isplainobject@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
@@ -2156,6 +2156,10 @@ lodash.omit@^4.5.0:
 lodash.pick@^4.2.1, lodash.pick@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
+
+lodash.pull@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/lodash.pull/-/lodash.pull-4.1.0.tgz#60060cc6bd625b4d4567ec27dc45cd1be9eec012"
 
 lodash.reduce@^4.4.0:
   version "4.6.0"
@@ -2185,10 +2189,6 @@ lodash.values@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-4.3.0.tgz#a3a6c2b0ebecc5c2cba1c17e6e620fe81b53d347"
 
-lodash@^2.4.1, lodash@~2.4.0, lodash@~2.4.1:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-2.4.2.tgz#fadd834b9683073da179b3eae6d9c0d15053f73e"
-
 lodash@^3.10.1, lodash@~3.10.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
@@ -2196,6 +2196,10 @@ lodash@^3.10.1, lodash@~3.10.1:
 lodash@^4.0.0, lodash@^4.0.1, lodash@^4.14.0, lodash@^4.3.0, lodash@~4.16.4:
   version "4.16.6"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.16.6.tgz#d22c9ac660288f3843e16ba7d2b5d06cca27d777"
+
+lodash@~2.4.0, lodash@~2.4.1:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-2.4.2.tgz#fadd834b9683073da179b3eae6d9c0d15053f73e"
 
 lodash@~3.5.0:
   version "3.5.0"
@@ -2228,15 +2232,22 @@ loud-rejection@^1.0.0:
     currently-unhandled "^0.4.1"
     signal-exit "^3.0.0"
 
-lru-cache@^2.5.0, lru-cache@2:
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-2.7.3.tgz#6d4524e8b955f95d4f5b58851ce21dd72fb4e952"
-
 "lru-cache@^2.5.0 || ^3.0.0", lru-cache@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-3.2.0.tgz#71789b3b7f5399bec8565dda38aa30d2a097efee"
   dependencies:
     pseudomap "^1.0.1"
+
+lru-cache@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.0.1.tgz#1343955edaf2e37d9b9e7ee7241e27c4b9fb72be"
+  dependencies:
+    pseudomap "^1.0.1"
+    yallist "^2.0.0"
+
+lru-cache@2:
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-2.7.3.tgz#6d4524e8b955f95d4f5b58851ce21dd72fb4e952"
 
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
@@ -2744,12 +2755,6 @@ progress@^1.1.8:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/progress/-/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
 
-promise@^6.0.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/promise/-/promise-6.1.0.tgz#2ce729f6b94b45c26891ad0602c5c90e04c6eef6"
-  dependencies:
-    asap "~1.0.0"
-
 promise@^7.0.0:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.1.1.tgz#489654c692616b8aa55b0724fa809bb7db49c5bf"
@@ -3019,8 +3024,8 @@ request@~2.75.0, request@2.75.0:
     tunnel-agent "~0.4.1"
 
 require-uncached@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/require-uncached/-/require-uncached-1.0.2.tgz#67dad3b733089e77030124678a459589faf6a7ec"
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/require-uncached/-/require-uncached-1.0.3.tgz#4e0d56d6c9662fd31e43011c4b95aa49955421d3"
   dependencies:
     caller-path "^0.1.0"
     resolve-from "^1.0.0"
@@ -3690,6 +3695,10 @@ xtend@^4.0.0:
 yakaa@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/yakaa/-/yakaa-1.0.1.tgz#3ecaae72f3d089da58089403126204cec772e60a"
+
+yallist@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/yallist/-/yallist-2.0.0.tgz#306c543835f09ee1a4cb23b7bce9ab341c91cdd4"
 
 yargs@~3.10.0:
   version "3.10.0"
