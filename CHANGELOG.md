@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.12.4
+
+* **Bug fix:** Updated `pg` module to fix possible security issue
+* **Misc:** Updated a dev dependency
+
 ### 0.12.3
 
 * **Bug fix:** Reject invalid source and target URL:s
