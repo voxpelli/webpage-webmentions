@@ -386,19 +386,30 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-chai-as-promised@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/chai-as-promised/-/chai-as-promised-6.0.0.tgz#1a02a433a6f24dafac63b9c96fa1684db1aa8da6"
+chai-as-promised@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/chai-as-promised/-/chai-as-promised-7.1.1.tgz#08645d825deb8696ee61725dbf590c012eb00ca0"
   dependencies:
     check-error "^1.0.2"
 
-"chai@>=1.9.2 <4.0.0", chai@^3.0.0:
+"chai@>=1.9.2 <4.0.0":
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/chai/-/chai-3.5.0.tgz#4d02637b067fe958bdbfdd3a40ec56fef7373247"
   dependencies:
     assertion-error "^1.0.1"
     deep-eql "^0.1.3"
     type-detect "^1.0.0"
+
+chai@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/chai/-/chai-4.1.2.tgz#0f64584ba642f0f2ace2806279f4f06ca23ad73c"
+  dependencies:
+    assertion-error "^1.0.1"
+    check-error "^1.0.1"
+    deep-eql "^3.0.0"
+    get-func-name "^2.0.0"
+    pathval "^1.0.0"
+    type-detect "^4.0.0"
 
 chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3, chalk@~1.1.1:
   version "1.1.3"
@@ -420,7 +431,7 @@ chalk@~0.5.1:
     strip-ansi "^0.3.0"
     supports-color "^0.2.0"
 
-check-error@^1.0.2:
+check-error@^1.0.1, check-error@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/check-error/-/check-error-1.0.2.tgz#574d312edd88bb5dd8912e9286dd6c0aed4aac82"
 
@@ -736,6 +747,12 @@ deep-eql@^0.1.3:
   resolved "https://registry.yarnpkg.com/deep-eql/-/deep-eql-0.1.3.tgz#ef558acab8de25206cd713906d74e56930eb69f2"
   dependencies:
     type-detect "0.1.1"
+
+deep-eql@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/deep-eql/-/deep-eql-3.0.1.tgz#dfc9404400ad1c8fe023e7da1df1c147c4b444df"
+  dependencies:
+    type-detect "^4.0.0"
 
 deep-equal@^1.0.0:
   version "1.0.1"
@@ -1356,6 +1373,10 @@ generic-pool-redux@~0.1.0:
 generic-pool@2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/generic-pool/-/generic-pool-2.4.2.tgz#886bc5bf0beb7db96e81bcbba078818de5a62683"
+
+get-func-name@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/get-func-name/-/get-func-name-2.0.0.tgz#ead774abee72e20409433a066366023dd6887a41"
 
 get-stdin@*:
   version "5.0.1"
@@ -2707,6 +2728,10 @@ path-type@^1.0.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
+pathval@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/pathval/-/pathval-1.1.0.tgz#b942e6d4bde653005ef6b71361def8727d0645e0"
+
 pause@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/pause/-/pause-0.0.1.tgz#1d408b3fdb76923b9543d96fb4c9dfd535d9cb5d"
@@ -3582,7 +3607,7 @@ type-detect@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-1.0.0.tgz#762217cc06db258ec48908a1298e8b95121e8ea2"
 
-type-detect@^4.0.5:
+type-detect@^4.0.0, type-detect@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.5.tgz#d70e5bc81db6de2a381bcaca0c6e0cbdc7635de2"
 

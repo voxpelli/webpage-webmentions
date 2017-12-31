@@ -117,10 +117,10 @@ describe('MetaDataParser', function () {
         .should.eventually.be.an('object')
         .that.has.property('microformats')
         .that.contain.keys('items', 'rels')
-        .and.has.deep.property('items[0].properties')
+        .and.has.nested.property('items[0].properties')
           .that.is.an('object')
           .that.contain.keys('author', 'name', 'published', 'summary')
-          .that.have.deep.property('author[0].properties.name[0]', 'W. Developer');
+          .that.have.nested.property('author[0].properties.name[0]', 'W. Developer');
     });
 
     it('should ensure that there is always a path component', function () {
@@ -253,7 +253,7 @@ describe('MetaDataParser', function () {
 
       var mention = new Entry(sourceUrl, metadata).getData();
 
-      mention.should.have.deep.property('data.published')
+      mention.should.have.nested.property('data.published')
         .that.is.a('number')
         .that.is.closeTo(Date.now(), 2000);
 
@@ -269,20 +269,20 @@ describe('MetaDataParser', function () {
       mention.should.have.property('normalizedUrl', 'http://example.com/foo/');
       mention.should.have.property('raw', metadata);
 
-      mention.should.have.deep.property('data.url', 'http://example.net/abc');
-      mention.should.have.deep.property('data.name', 'Microformats are amazing');
-      mention.should.have.deep.property('data.summary', 'In which I extoll the virtues of using microformats.');
-      mention.should.have.deep.property('data.published', 1371124800000);
-      mention.should.have.deep.property('data.author.name', 'W. Developer');
-      mention.should.have.deep.property('data.author.url', 'http://example.com/');
+      mention.should.have.nested.property('data.url', 'http://example.net/abc');
+      mention.should.have.nested.property('data.name', 'Microformats are amazing');
+      mention.should.have.nested.property('data.summary', 'In which I extoll the virtues of using microformats.');
+      mention.should.have.nested.property('data.published', 1371124800000);
+      mention.should.have.nested.property('data.author.name', 'W. Developer');
+      mention.should.have.nested.property('data.author.url', 'http://example.com/');
     });
 
     it('should filter non-http(s) urls', function () {
       var mention = new Entry(sourceUrl, { microformats: xssExample }).getData();
 
       mention.should.have.property('url', 'http://example.com/foo');
-      mention.should.have.deep.property('data.url', 'http://example.com/foo');
-      mention.should.have.deep.property('data.author.url', null);
+      mention.should.have.nested.property('data.url', 'http://example.com/foo');
+      mention.should.have.nested.property('data.author.url', null);
     });
 
     it('should parse dates correctly', function () {
@@ -295,7 +295,7 @@ describe('MetaDataParser', function () {
         const alternateExample = cloneDeep(parsedExample);
         alternateExample.items[0].properties.published[0] = publishDate;
 
-        new Entry(sourceUrl, { microformats: alternateExample }).getData().should.have.deep.property('data.published', timestamp);
+        new Entry(sourceUrl, { microformats: alternateExample }).getData().should.have.nested.property('data.published', timestamp);
       });
     });
   });
@@ -307,14 +307,14 @@ describe('MetaDataParser', function () {
       }).then(function (mention) {
         mention.should.have.property('url', 'http://example.com/foo');
         mention.should.have.property('normalizedUrl', 'http://example.com/foo/');
-        mention.should.have.deep.property('raw.microformats').that.deep.equals(parsedExample);
+        mention.should.have.nested.property('raw.microformats').that.deep.equals(parsedExample);
 
-        mention.should.have.deep.property('data.url', 'http://example.net/abc');
-        mention.should.have.deep.property('data.name', 'Microformats are amazing');
-        mention.should.have.deep.property('data.summary', 'In which I extoll the virtues of using microformats.');
-        mention.should.have.deep.property('data.published', 1371124800000);
-        mention.should.have.deep.property('data.author.name', 'W. Developer');
-        mention.should.have.deep.property('data.author.url', 'http://example.com/');
+        mention.should.have.nested.property('data.url', 'http://example.net/abc');
+        mention.should.have.nested.property('data.name', 'Microformats are amazing');
+        mention.should.have.nested.property('data.summary', 'In which I extoll the virtues of using microformats.');
+        mention.should.have.nested.property('data.published', 1371124800000);
+        mention.should.have.nested.property('data.author.name', 'W. Developer');
+        mention.should.have.nested.property('data.author.url', 'http://example.com/');
       });
     });
 
@@ -329,9 +329,9 @@ describe('MetaDataParser', function () {
       return getEntry(relativeHtml).then(function (entry) {
         return entry.getData();
       }).then(function (mention) {
-        mention.should.have.deep.property('data.url', 'http://example.com/abc/123');
-        mention.should.have.deep.property('data.author.url', 'http://example.com/bar.html');
-        mention.should.have.deep.property('data.author.photo', 'http://example.com/abc.png');
+        mention.should.have.nested.property('data.url', 'http://example.com/abc/123');
+        mention.should.have.nested.property('data.author.url', 'http://example.com/bar.html');
+        mention.should.have.nested.property('data.author.photo', 'http://example.com/abc.png');
       });
     });
   });

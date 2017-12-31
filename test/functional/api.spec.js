@@ -386,26 +386,26 @@ describe('WebMention API', function () {
       .then(result => {
         result.should.be.an('array').with.a.lengthOf(2);
 
-        result.should.have.deep.property('[0].url', 'http://example.org/foo');
-        result.should.have.deep.property('[0].interaction', true);
-        result.should.not.have.deep.property('[0].updated', null);
-        result.should.have.deep.property('[0].removed', false);
+        result.should.have.nested.property('[0].url', 'http://example.org/foo');
+        result.should.have.nested.property('[0].interaction', true);
+        result.should.not.have.nested.property('[0].updated', null);
+        result.should.have.nested.property('[0].removed', false);
 
-        result.should.have.deep.property('[1].url', 'http://example.org/bar');
-        result.should.have.deep.property('[1].interaction', false);
-        result.should.have.deep.property('[1].updated', null);
-        result.should.have.deep.property('[1].removed', false);
+        result.should.have.nested.property('[1].url', 'http://example.org/bar');
+        result.should.have.nested.property('[1].interaction', false);
+        result.should.have.nested.property('[1].updated', null);
+        result.should.have.nested.property('[1].removed', false);
       })
       .then(() => knex('entries').select())
       .then(result => {
         result.should.be.an('array').with.a.lengthOf(1);
 
-        result.should.have.deep.property('[0].url', 'http://example.com/');
-        result.should.have.deep.property('[0].published').that.is.a('date');
-        result.should.have.deep.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
-        result.should.have.deep.property('[0].type', 'like');
-        result.should.have.deep.property('[0].data.interactionType', 'like');
-        result.should.have.deep.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
+        result.should.have.nested.property('[0].url', 'http://example.com/');
+        result.should.have.nested.property('[0].published').that.is.a('date');
+        result.should.have.nested.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
+        result.should.have.nested.property('[0].type', 'like');
+        result.should.have.nested.property('[0].data.interactionType', 'like');
+        result.should.have.nested.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
       });
     });
 
@@ -452,11 +452,14 @@ describe('WebMention API', function () {
       })
       .then(function (result) {
         result.should.be.an('array').with.a.lengthOf(1);
-        result.should.have.deep.property('[0].published').that.is.a('date');
-        result.should.have.deep.property('[0].updated').that.is.a('date').that.equals(result[0].published);
-        result.should.have.deep.property('[0].type', null);
-        result.should.not.have.deep.property('[0].data.interactionType');
-        result.should.not.have.deep.property('[0].data.interactions');
+        result.should.have.nested.property('[0].published').that.is.a('date');
+        result.should.have.nested.property('[0].updated').that.is.a('date');
+        result.should.have.nested.property('[0].type', null);
+        result.should.not.have.nested.property('[0].data.interactionType');
+        result.should.not.have.nested.property('[0].data.interactions');
+
+        result[0].published.valueOf()
+          .should.equal(result[0].updated.valueOf());
       })
       .then(function () {
         return new Promise(function (resolve, reject) {
@@ -482,11 +485,11 @@ describe('WebMention API', function () {
       })
       .then(function (result) {
         result.should.be.an('array').with.a.lengthOf(1);
-        result.should.have.deep.property('[0].published').that.is.a('date');
-        result.should.have.deep.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
-        result.should.have.deep.property('[0].type', 'like');
-        result.should.have.deep.property('[0].data.interactionType', 'like');
-        result.should.have.deep.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
+        result.should.have.nested.property('[0].published').that.is.a('date');
+        result.should.have.nested.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
+        result.should.have.nested.property('[0].type', 'like');
+        result.should.have.nested.property('[0].data.interactionType', 'like');
+        result.should.have.nested.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
       });
     });
 
@@ -539,15 +542,15 @@ describe('WebMention API', function () {
 
         result.should.be.an('array').with.a.lengthOf(2);
 
-        result.should.have.deep.property('[0].url', 'http://example.org/foo');
-        result.should.have.deep.property('[0].interaction', false);
-        result.should.not.have.deep.property('[0].updated', null);
-        result.should.have.deep.property('[0].removed', true);
+        result.should.have.nested.property('[0].url', 'http://example.org/foo');
+        result.should.have.nested.property('[0].interaction', false);
+        result.should.not.have.nested.property('[0].updated', null);
+        result.should.have.nested.property('[0].removed', true);
 
-        result.should.have.deep.property('[1].url', 'http://example.org/bar');
-        result.should.have.deep.property('[1].interaction', false);
-        result.should.have.deep.property('[1].updated', null);
-        result.should.have.deep.property('[1].removed', false);
+        result.should.have.nested.property('[1].url', 'http://example.org/bar');
+        result.should.have.nested.property('[1].interaction', false);
+        result.should.have.nested.property('[1].updated', null);
+        result.should.have.nested.property('[1].removed', false);
       });
     });
 
@@ -934,31 +937,31 @@ describe('WebMention API', function () {
 
       res.body.should.be.an('array').of.length(count);
 
-      res.body.should.have.deep.property('[0].name', null);
-      res.body.should.have.deep.property('[0].url').that.match(/^https?:\/\/[^/]+\//);
-      res.body.should.have.deep.property('[0].author.name').that.is.a('string');
+      res.body.should.have.nested.property('[0].name', null);
+      res.body.should.have.nested.property('[0].url').that.match(/^https?:\/\/[^/]+\//);
+      res.body.should.have.nested.property('[0].author.name').that.is.a('string');
 
-      res.body.should.have.deep.property('[0].author.photo')
+      res.body.should.have.nested.property('[0].author.photo')
         .that.is.a('string')
         .that.match(/^https?:\/\/[^/]+\//);
 
-      res.body.should.have.deep.property('[0].author.url')
+      res.body.should.have.nested.property('[0].author.url')
         .that.is.a('string')
         .that.match(/^https?:\/\/[^/]+\//);
 
-      res.body.should.have.deep.property('[0].published')
+      res.body.should.have.nested.property('[0].published')
         .that.is.a('number')
         .that.is.closeTo(Date.now(), 31 * 24 * 60 * 60 * 1000);
 
-      res.body.should.have.deep.property('[0].targets')
+      res.body.should.have.nested.property('[0].targets')
         .that.is.an('array')
         .of.length.above(0);
 
-      res.body.should.have.deep.property('[0].type')
+      res.body.should.have.nested.property('[0].type')
         .that.is.a('string')
         .that.match(/^(like|repost|reply|mention)$/);
 
-      res.body.should.have.deep.property('[0].interactions')
+      res.body.should.have.nested.property('[0].interactions')
         .that.is.an('array');
 
       done();
@@ -994,7 +997,7 @@ describe('WebMention API', function () {
           }
 
           res.body.should.be.an('array').of.length(10);
-          res.body.should.have.deep.property('[0].author.name');
+          res.body.should.have.nested.property('[0].author.name');
 
           done();
         });
@@ -1011,7 +1014,7 @@ describe('WebMention API', function () {
           }
 
           res.body.should.be.an('array').of.length(10);
-          res.body.should.have.deep.property('[0].author.name');
+          res.body.should.have.nested.property('[0].author.name');
 
           done();
         });
@@ -1031,7 +1034,7 @@ describe('WebMention API', function () {
                 }
 
                 res.body.should.be.an('array').of.length(9);
-                res.body.should.have.deep.property('[0].author.name');
+                res.body.should.have.nested.property('[0].author.name');
 
                 resolve();
               });
@@ -1049,7 +1052,7 @@ describe('WebMention API', function () {
                 }
 
                 res.body.should.be.an('array').of.length(4);
-                res.body.should.have.deep.property('[0].author.name');
+                res.body.should.have.nested.property('[0].author.name');
 
                 resolve();
               });
@@ -1093,7 +1096,7 @@ describe('WebMention API', function () {
           }
 
           res.body.should.be.an('array').of.length(6);
-          res.body.should.have.deep.property('[0].author.name');
+          res.body.should.have.nested.property('[0].author.name');
 
           done();
         });
