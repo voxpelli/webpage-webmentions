@@ -76,8 +76,8 @@
     "mocha": "^3.0.0",
     "nock": "^9.0.0",
     "passport-dummy": "0.0.1",
-    "sinon": "^1.16.1",
-    "supertest": "^2.0.1",
+    "sinon": "^4.1.3",
+    "supertest": "^3.0.0",
     "webmention-testpinger": "~0.6.0"
   }
 }

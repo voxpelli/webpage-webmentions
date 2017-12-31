@@ -12,7 +12,7 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const request = require('supertest');
 const nock = require('nock');
-const sinon = require('sinon');
+const { createSandbox } = require('sinon');
 const cloneDeep = require('lodash.clonedeep');
 const urlModule = require('url');
 const knex = require('../../lib/knex');
@@ -30,13 +30,13 @@ describe('WebMention API', function () {
   const microformatsVersion = require('@voxpelli/metadataparser-mf2').versions;
   const templateCollection = new WebMentionTemplates();
 
-  let waitingForNotifications;
+  let waitingForNotifications, sandbox;
 
   const waitForNotification = function (limit) {
     if (!Entry.prototype._notify.restore) {
       let count = 0;
 
-      sinon.stub(Entry.prototype, '_notify', function () {
+      sandbox.stub(Entry.prototype, '_notify').callsFake(() => {
         count += 1;
         waitingForNotifications.reduce(function (position, options) {
           var limit = position + options.limit;
@@ -66,6 +66,8 @@ describe('WebMention API', function () {
 
     waitingForNotifications = [];
 
+    sandbox = createSandbox();
+
     return dbUtils.clearDb()
       .then(dbUtils.setupSchema)
       .then(dbUtils.setupSampleData);
@@ -75,7 +77,9 @@ describe('WebMention API', function () {
     if (Entry.prototype._notify.restore) {
       Entry.prototype._notify.restore();
     }
+    nock.isDone().should.be.ok;
     nock.cleanAll();
+    sandbox.verifyAndRestore();
   });
 
   describe('parseSourcePage', function () {
