@@ -1,4 +1,6 @@
 # A WebMention Endpoint
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions?ref=badge_shield)
+
 
 A site that receives and embeds [WebMentions](http://indiewebcamp.com/webmention) for other sites. makes the WebMentions embeddable through a javascript, similar to how eg. Disqus works.
 
@@ -75,3 +77,7 @@ Install [webmention-testpinger](https://github.com/voxpelli/node-webmention-test
 ```bash
 webmention-testpinger --endpoint=http://127.0.0.1:5000/api/webmention --target=http://127.0.0.1:5000/
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions?ref=badge_large)
