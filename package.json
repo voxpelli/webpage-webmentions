@@ -37,7 +37,7 @@
     "verror": "^1.6.0"
   },
   "engines": {
-    "node": "6.x.x"
+    "node": "^8.0.0"
   },
   "main": "./lib/main",
   "directories": {
