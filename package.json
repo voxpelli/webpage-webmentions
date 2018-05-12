@@ -58,8 +58,8 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "concurrently": "^3.5.1",
-    "coveralls": "^3.0.0",
-    "dependency-check": "2.6.0",
+    "coveralls": "^3.0.1",
+    "dependency-check": "^3.1.0",
     "dotenv": "^2.0.0",
     "eslint": "^4.19.1",
     "eslint-config-semistandard": "^12.0.1",
@@ -74,10 +74,10 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-notify": "~0.4.1",
     "mocha": "^3.0.0",
-    "nock": "^9.2.3",
+    "nock": "^9.2.5",
     "nyc": "^11.7.3",
     "passport-dummy": "0.0.1",
-    "sinon": "^4.4.8",
+    "sinon": "^5.0.7",
     "supertest": "^3.0.0",
     "webmention-testpinger": "~0.6.0"
   }
