@@ -118,9 +118,9 @@ describe('MetaDataParser', function () {
         .that.has.property('microformats')
         .that.contain.keys('items', 'rels')
         .and.has.nested.property('items[0].properties')
-          .that.is.an('object')
-          .that.contain.keys('author', 'name', 'published', 'summary')
-          .that.have.nested.property('author[0].properties.name[0]', 'W. Developer');
+        .that.is.an('object')
+        .that.contain.keys('author', 'name', 'published', 'summary')
+        .that.have.nested.property('author[0].properties.name[0]', 'W. Developer');
     });
 
     it('should ensure that there is always a path component', function () {

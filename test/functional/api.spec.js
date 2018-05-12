@@ -330,13 +330,13 @@ describe('WebMention API', function () {
           }).then(waitForNotification());
         })
       )
-      .then(function () {
-        return knex('mentions').count('url').first();
-      })
-      .then(function (result) {
-        templateMock.done();
-        result.count.should.be.a('string').and.equal('2');
-      });
+        .then(function () {
+          return knex('mentions').count('url').first();
+        })
+        .then(function (result) {
+          templateMock.done();
+          result.count.should.be.a('string').and.equal('2');
+        });
     });
 
     it('should update all existing source mentions on valid ping', function () {
@@ -381,32 +381,32 @@ describe('WebMention API', function () {
         ).then(waitForNotification()),
         Promise.resolve()
       )
-      .then(() => { templateMock.done(); })
-      .then(() => knex('mentions').select().orderBy('url', 'desc'))
-      .then(result => {
-        result.should.be.an('array').with.a.lengthOf(2);
+        .then(() => { templateMock.done(); })
+        .then(() => knex('mentions').select().orderBy('url', 'desc'))
+        .then(result => {
+          result.should.be.an('array').with.a.lengthOf(2);
 
-        result.should.have.nested.property('[0].url', 'http://example.org/foo');
-        result.should.have.nested.property('[0].interaction', true);
-        result.should.not.have.nested.property('[0].updated', null);
-        result.should.have.nested.property('[0].removed', false);
+          result.should.have.nested.property('[0].url', 'http://example.org/foo');
+          result.should.have.nested.property('[0].interaction', true);
+          result.should.not.have.nested.property('[0].updated', null);
+          result.should.have.nested.property('[0].removed', false);
 
-        result.should.have.nested.property('[1].url', 'http://example.org/bar');
-        result.should.have.nested.property('[1].interaction', false);
-        result.should.have.nested.property('[1].updated', null);
-        result.should.have.nested.property('[1].removed', false);
-      })
-      .then(() => knex('entries').select())
-      .then(result => {
-        result.should.be.an('array').with.a.lengthOf(1);
+          result.should.have.nested.property('[1].url', 'http://example.org/bar');
+          result.should.have.nested.property('[1].interaction', false);
+          result.should.have.nested.property('[1].updated', null);
+          result.should.have.nested.property('[1].removed', false);
+        })
+        .then(() => knex('entries').select())
+        .then(result => {
+          result.should.be.an('array').with.a.lengthOf(1);
 
-        result.should.have.nested.property('[0].url', 'http://example.com/');
-        result.should.have.nested.property('[0].published').that.is.a('date');
-        result.should.have.nested.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
-        result.should.have.nested.property('[0].type', 'like');
-        result.should.have.nested.property('[0].data.interactionType', 'like');
-        result.should.have.nested.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
-      });
+          result.should.have.nested.property('[0].url', 'http://example.com/');
+          result.should.have.nested.property('[0].published').that.is.a('date');
+          result.should.have.nested.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
+          result.should.have.nested.property('[0].type', 'like');
+          result.should.have.nested.property('[0].data.interactionType', 'like');
+          result.should.have.nested.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
+        });
     });
 
     it('should update on repeated ping', function () {
@@ -445,52 +445,52 @@ describe('WebMention API', function () {
             resolve();
           });
       })
-      .then(waitForNotification())
-      .then(function () {
-        templateMock1.done();
-        return knex('entries').select();
-      })
-      .then(function (result) {
-        result.should.be.an('array').with.a.lengthOf(1);
-        result.should.have.nested.property('[0].published').that.is.a('date');
-        result.should.have.nested.property('[0].updated').that.is.a('date');
-        result.should.have.nested.property('[0].type', null);
-        result.should.not.have.nested.property('[0].data.interactionType');
-        result.should.not.have.nested.property('[0].data.interactions');
+        .then(waitForNotification())
+        .then(function () {
+          templateMock1.done();
+          return knex('entries').select();
+        })
+        .then(function (result) {
+          result.should.be.an('array').with.a.lengthOf(1);
+          result.should.have.nested.property('[0].published').that.is.a('date');
+          result.should.have.nested.property('[0].updated').that.is.a('date');
+          result.should.have.nested.property('[0].type', null);
+          result.should.not.have.nested.property('[0].data.interactionType');
+          result.should.not.have.nested.property('[0].data.interactions');
 
-        result[0].published.valueOf()
-          .should.equal(result[0].updated.valueOf());
-      })
-      .then(function () {
-        return new Promise(function (resolve, reject) {
-          request(app)
-            .post('/api/webmention')
-            .send({
-              source: 'http://example.com/',
-              target: 'http://example.org/foo'
-            })
-            .expect(202)
-            .end(function (err) {
-              if (err) {
-                return reject(err);
-              }
-              resolve();
-            });
+          result[0].published.valueOf()
+            .should.equal(result[0].updated.valueOf());
+        })
+        .then(function () {
+          return new Promise(function (resolve, reject) {
+            request(app)
+              .post('/api/webmention')
+              .send({
+                source: 'http://example.com/',
+                target: 'http://example.org/foo'
+              })
+              .expect(202)
+              .end(function (err) {
+                if (err) {
+                  return reject(err);
+                }
+                resolve();
+              });
+          });
+        })
+        .then(waitForNotification())
+        .then(function () {
+          templateMock2.done();
+          return knex('entries').select();
+        })
+        .then(function (result) {
+          result.should.be.an('array').with.a.lengthOf(1);
+          result.should.have.nested.property('[0].published').that.is.a('date');
+          result.should.have.nested.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
+          result.should.have.nested.property('[0].type', 'like');
+          result.should.have.nested.property('[0].data.interactionType', 'like');
+          result.should.have.nested.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
         });
-      })
-      .then(waitForNotification())
-      .then(function () {
-        templateMock2.done();
-        return knex('entries').select();
-      })
-      .then(function (result) {
-        result.should.be.an('array').with.a.lengthOf(1);
-        result.should.have.nested.property('[0].published').that.is.a('date');
-        result.should.have.nested.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
-        result.should.have.nested.property('[0].type', 'like');
-        result.should.have.nested.property('[0].data.interactionType', 'like');
-        result.should.have.nested.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
-      });
     });
 
     it('should update remove all outdated source mentions on valid ping', function () {
@@ -535,23 +535,23 @@ describe('WebMention API', function () {
         ).then(waitForNotification()),
         Promise.resolve()
       )
-      .then(() => knex('mentions').select().orderBy('url', 'desc'))
-      .then(result => {
-        templateMock1.done();
-        templateMock2.done();
+        .then(() => knex('mentions').select().orderBy('url', 'desc'))
+        .then(result => {
+          templateMock1.done();
+          templateMock2.done();
 
-        result.should.be.an('array').with.a.lengthOf(2);
+          result.should.be.an('array').with.a.lengthOf(2);
 
-        result.should.have.nested.property('[0].url', 'http://example.org/foo');
-        result.should.have.nested.property('[0].interaction', false);
-        result.should.not.have.nested.property('[0].updated', null);
-        result.should.have.nested.property('[0].removed', true);
+          result.should.have.nested.property('[0].url', 'http://example.org/foo');
+          result.should.have.nested.property('[0].interaction', false);
+          result.should.not.have.nested.property('[0].updated', null);
+          result.should.have.nested.property('[0].removed', true);
 
-        result.should.have.nested.property('[1].url', 'http://example.org/bar');
-        result.should.have.nested.property('[1].interaction', false);
-        result.should.have.nested.property('[1].updated', null);
-        result.should.have.nested.property('[1].removed', false);
-      });
+          result.should.have.nested.property('[1].url', 'http://example.org/bar');
+          result.should.have.nested.property('[1].interaction', false);
+          result.should.have.nested.property('[1].updated', null);
+          result.should.have.nested.property('[1].removed', false);
+        });
     });
 
     it('should properly handle pings of site that returns 404:s');
@@ -591,20 +591,20 @@ describe('WebMention API', function () {
             resolve();
           });
       })
-      .then(waitForNotification(2))
-      .then(function () {
-        return Promise.all([
-          knex('entries').count('id').first(),
-          knex('mentions').count('eid').first()
-        ]);
-      })
-      .then(function (result) {
-        templateMock.done();
-        result.should.deep.equal([
-          {count: '2'},
-          {count: '2'}
-        ]);
-      });
+        .then(waitForNotification(2))
+        .then(function () {
+          return Promise.all([
+            knex('entries').count('id').first(),
+            knex('mentions').count('eid').first()
+          ]);
+        })
+        .then(function (result) {
+          templateMock.done();
+          result.should.deep.equal([
+            {count: '2'},
+            {count: '2'}
+          ]);
+        });
     });
 
     it('should fetch responses-links found on mentions', function () {
@@ -649,20 +649,20 @@ describe('WebMention API', function () {
             resolve();
           });
       })
-      .then(waitForNotification(2))
-      .then(function () {
-        return Promise.all([
-          knex('entries').count('id').first(),
-          knex('mentions').count('eid').first()
-        ]);
-      })
-      .then(function (result) {
-        templateMock.done();
-        result.should.deep.equal([
-          {count: '2'},
-          {count: '2'}
-        ]);
-      });
+        .then(waitForNotification(2))
+        .then(function () {
+          return Promise.all([
+            knex('entries').count('id').first(),
+            knex('mentions').count('eid').first()
+          ]);
+        })
+        .then(function (result) {
+          templateMock.done();
+          result.should.deep.equal([
+            {count: '2'},
+            {count: '2'}
+          ]);
+        });
     });
 
     it('should fetch and ping upstream salmention targets of mention', function () {
@@ -716,28 +716,28 @@ describe('WebMention API', function () {
             resolve();
           });
       })
-      .then(waitForNotification(3))
-      .then(function () {
+        .then(waitForNotification(3))
+        .then(function () {
         // TODO: Improve – relyng on timers in tests are pretty fragile
-        return new Promise(function (resolve) {
-          setTimeout(resolve, 300);
+          return new Promise(function (resolve) {
+            setTimeout(resolve, 300);
+          });
+        })
+        .then(function () {
+          return Promise.all([
+            knex('entries').count('id').first(),
+            knex('mentions').count('eid').first()
+          ]);
+        })
+        .then(function (result) {
+          templateMock.done();
+          targetMock.done();
+          pingMock.done();
+          result.should.deep.equal([
+            {count: '3'},
+            {count: '1'}
+          ]);
         });
-      })
-      .then(function () {
-        return Promise.all([
-          knex('entries').count('id').first(),
-          knex('mentions').count('eid').first()
-        ]);
-      })
-      .then(function (result) {
-        templateMock.done();
-        targetMock.done();
-        pingMock.done();
-        result.should.deep.equal([
-          {count: '3'},
-          {count: '1'}
-        ]);
-      });
     });
 
     it('should fetch and ping upstream salmention targets on downstream mention', function () {
@@ -799,28 +799,28 @@ describe('WebMention API', function () {
             resolve();
           });
       })
-      .then(waitForNotification(4))
-      .then(function () {
+        .then(waitForNotification(4))
+        .then(function () {
         // TODO: Improve – relyng on timers in tests are pretty fragile
-        return new Promise(function (resolve) {
-          setTimeout(resolve, 300);
+          return new Promise(function (resolve) {
+            setTimeout(resolve, 300);
+          });
+        })
+        .then(function () {
+          return Promise.all([
+            knex('entries').count('id').first(),
+            knex('mentions').count('eid').first()
+          ]);
+        })
+        .then(function (result) {
+          templateMock.done();
+          targetMock.done();
+          pingMock.done();
+          result.should.deep.equal([
+            {count: '4'},
+            {count: '2'}
+          ]);
         });
-      })
-      .then(function () {
-        return Promise.all([
-          knex('entries').count('id').first(),
-          knex('mentions').count('eid').first()
-        ]);
-      })
-      .then(function (result) {
-        templateMock.done();
-        targetMock.done();
-        pingMock.done();
-        result.should.deep.equal([
-          {count: '4'},
-          {count: '2'}
-        ]);
-      });
     });
 
     it('should fetch and ping upstream salmention person tags', function () {
@@ -874,28 +874,28 @@ describe('WebMention API', function () {
             resolve();
           });
       })
-      .then(waitForNotification(3))
-      .then(function () {
+        .then(waitForNotification(3))
+        .then(function () {
         // TODO: Improve – relyng on timers in tests are pretty fragile
-        return new Promise(function (resolve) {
-          setTimeout(resolve, 300);
+          return new Promise(function (resolve) {
+            setTimeout(resolve, 300);
+          });
+        })
+        .then(function () {
+          return Promise.all([
+            knex('entries').count('id').first(),
+            knex('mentions').count('eid').first()
+          ]);
+        })
+        .then(function (result) {
+          templateMock.done();
+          targetMock.done();
+          pingMock.done();
+          result.should.deep.equal([
+            {count: '3'},
+            {count: '1'}
+          ]);
         });
-      })
-      .then(function () {
-        return Promise.all([
-          knex('entries').count('id').first(),
-          knex('mentions').count('eid').first()
-        ]);
-      })
-      .then(function (result) {
-        templateMock.done();
-        targetMock.done();
-        pingMock.done();
-        result.should.deep.equal([
-          {count: '3'},
-          {count: '1'}
-        ]);
-      });
     });
 
     it('should reject malformed source URL:s', function () {

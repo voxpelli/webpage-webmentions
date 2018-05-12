@@ -42,8 +42,8 @@ exports.down = function (knex) {
     return trx.schema.table('entries', function (table) {
       table.dropColumn('normalizedUrl');
     })
-    .then(function () {
-      return trx.raw('ALTER TABLE "entries" ADD UNIQUE ("url")');
-    });
+      .then(function () {
+        return trx.raw('ALTER TABLE "entries" ADD UNIQUE ("url")');
+      });
   });
 };

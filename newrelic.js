@@ -8,26 +8,26 @@ exports.config = {
   /**
    * Default to disabled to help non-newrelic users.
    */
-  agent_enabled : false,
+  agent_enabled: false,
   /**
    * Array of application names.
    */
-  app_name : ['A WebMention Endpoint'],
-  logging : {
+  app_name: ['A WebMention Endpoint'],
+  logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    level : 'info'
+    level: 'info'
   },
-  rules : {
+  rules: {
     /**
      * Ensures that the EventSource endpoint doesn't dominate the response time metrics
      */
-    ignore : [
+    ignore: [
       '^/api/mentions/live'
     ]
   },
-  capture_params : true
+  capture_params: true
 };
