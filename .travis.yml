@@ -1,7 +1,6 @@
 language: node_js
 before_script:
   - psql -c 'create database webmention_test;' -U postgres
-script: npm run travis
 sudo: false
 matrix:
   include:
@@ -17,3 +16,5 @@ matrix:
     - node_js: "6"
       addons:
         postgresql: "9.3"
+after_success:
+  - 'cat coverage/lcov.info | ./node_modules/.bin/coveralls'

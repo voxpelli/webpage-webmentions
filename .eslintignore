@@ -1,0 +1,3 @@
+/coverage/**/*
+/theme/public/js/**/*
+/theme/sources/js/vendor/**/*
