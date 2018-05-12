@@ -12,7 +12,7 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const request = require('supertest');
 const nock = require('nock');
-const { createSandbox } = require('sinon');
+const sinon = require('sinon');
 const cloneDeep = require('lodash.clonedeep');
 const urlModule = require('url');
 const knex = require('../../lib/knex');
@@ -30,13 +30,13 @@ describe('WebMention API', function () {
   const microformatsVersion = require('@voxpelli/metadataparser-mf2').versions;
   const templateCollection = new WebMentionTemplates();
 
-  let waitingForNotifications, sandbox;
+  let waitingForNotifications;
 
   const waitForNotification = function (limit) {
     if (!Entry.prototype._notify.restore) {
       let count = 0;
 
-      sandbox.stub(Entry.prototype, '_notify').callsFake(() => {
+      sinon.stub(Entry.prototype, '_notify').callsFake(() => {
         count += 1;
         waitingForNotifications.reduce(function (position, options) {
           var limit = position + options.limit;
@@ -61,12 +61,11 @@ describe('WebMention API', function () {
   };
 
   beforeEach(function () {
+    nock.cleanAll();
     nock.disableNetConnect();
     nock.enableNetConnect('127.0.0.1');
 
     waitingForNotifications = [];
-
-    sandbox = createSandbox();
 
     return dbUtils.clearDb()
       .then(dbUtils.setupSchema)
@@ -74,12 +73,11 @@ describe('WebMention API', function () {
   });
 
   afterEach(function () {
-    if (Entry.prototype._notify.restore) {
-      Entry.prototype._notify.restore();
+    sinon.verifyAndRestore();
+
+    if (!nock.isDone()) {
+      throw new Error('pending mocks: ' + nock.pendingMocks());
     }
-    nock.isDone().should.be.ok;
-    nock.cleanAll();
-    sandbox.verifyAndRestore();
   });
 
   describe('parseSourcePage', function () {
