@@ -4,16 +4,16 @@ before_script:
 sudo: false
 matrix:
   include:
-    - node_js: "node"
+    - node_js: "stable"
+      addons:
+        postgresql: "9.4"
+    - node_js: "lts"
       addons:
         postgresql: "9.4"
     - node_js: "8"
       addons:
         postgresql: "9.4"
-    - node_js: "6"
-      addons:
-        postgresql: "9.4"
-    - node_js: "6"
+    - node_js: "8"
       addons:
         postgresql: "9.3"
 after_success:
