@@ -4,10 +4,7 @@ before_script:
 sudo: false
 matrix:
   include:
-    - node_js: "stable"
-      addons:
-        postgresql: "9.4"
-    - node_js: "lts"
+    - node_js: "10"
       addons:
         postgresql: "9.4"
     - node_js: "8"
