@@ -36,9 +36,6 @@
     "tema": "^0.2.1",
     "verror": "^1.6.0"
   },
-  "engines": {
-    "node": "^8.0.0"
-  },
   "main": "./lib/main",
   "directories": {
     "lib": "./lib"
