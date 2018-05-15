@@ -65,17 +65,17 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.1.0",
-    "grunt": "^1.0.0",
+    "grunt": "^1.0.2",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-notify": "~0.4.1",
     "mocha": "^3.0.0",
-    "nock": "^9.2.5",
+    "nock": "^9.2.6",
     "nyc": "^11.7.3",
     "passport-dummy": "0.0.1",
     "sinon": "^5.0.7",
-    "supertest": "^3.0.0",
+    "supertest": "^3.1.0",
     "webmention-testpinger": "~0.6.0"
   }
 }
