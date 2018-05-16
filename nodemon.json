@@ -1,0 +1,9 @@
+{
+  "ignore": [
+    ".git",
+    ".nyc_output",
+    "coverage",
+    "theme/public/js"
+  ],
+  "ext": "js json css html"
+}

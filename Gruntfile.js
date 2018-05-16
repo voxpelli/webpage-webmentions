@@ -46,19 +46,11 @@ module.exports = function (grunt) {
           'theme/public/js/cutting-edge.js': ['theme/public/js/cutting-edge.js']
         }
       }
-    },
-    watch: {
-      eslint: {
-        files: ['<%= eslint.src %>'],
-        tasks: ['default']
-      }
     }
   });
 
-  grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('build-dev', ['concat']);
   grunt.registerTask('build', ['concat', 'uglify']);

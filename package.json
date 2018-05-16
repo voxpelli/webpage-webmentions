@@ -46,6 +46,7 @@
     "dependency-check": "JS_FILES=\"*.js lib/*/*.js lib/*.js migrations/*.js test/*/*.js test/*.js\" && dependency-check . $JS_FILES && dependency-check . $JS_FILES --no-dev --unused -i pg",
     "test": "concurrently -r 'eslint .' 'npm run --silent dependency-check' 'npm run --silent mocha'",
     "build": "node -e \"require('grunt').tasks(['build']);\"",
+    "build-dev": "node -e \"require('grunt').tasks(['build-dev']);\"",
     "install-schema": "node lib/install-schema.js",
     "migrate-schema": "./node_modules/.bin/knex migrate:latest",
     "rollback-schema": "./node_modules/.bin/knex migrate:rollback"
@@ -68,8 +69,6 @@
     "grunt": "^1.0.2",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-uglify": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-notify": "~0.4.1",
     "mocha": "^3.0.0",
     "nock": "^9.2.6",
     "nyc": "^11.7.3",
