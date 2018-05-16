@@ -1,5 +1,12 @@
 ## Changelog
 
+### 0.12.5
+
+* **Dependencies:** Updated `express` module to supported `4.x.x` version
+* **Dependencies:** Updated `passport` module to latest version
+* **Misc:** Updated dev dependencies
+* **Misc:** Tweaked testing setup – now uses pure npm-scripts
+
 ### 0.12.4
 
 * **Bug fix:** Updated `pg` module to fix possible security issue
