@@ -3,6 +3,9 @@
 
 /newrelic_agent.log
 
+# Ignore package-lock.json, I prefer yarn.lock
+package-lock.json
+
 # Should ignore code coverage reports
 
 /coverage
