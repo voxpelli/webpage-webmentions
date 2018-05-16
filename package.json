@@ -11,8 +11,10 @@
   "dependencies": {
     "@voxpelli/metadataparser": "^2.0.0",
     "@voxpelli/metadataparser-mf2": "^0.3.0",
+    "body-parser": "^1.18.3",
     "cors": "^2.5.2",
-    "express": "^3.4.7",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "faker": "^2.1.1",
     "fetch-politely": "^1.1.0",
     "knex": "^0.7.3",
