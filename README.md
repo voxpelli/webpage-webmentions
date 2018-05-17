@@ -1,6 +1,8 @@
 # A WebMention Endpoint
+[![Build Status](https://travis-ci.org/voxpelli/webpage-webmentions.svg?branch=master)](https://travis-ci.org/voxpelli/webpage-webmentions)
+[![Coverage Status](https://coveralls.io/repos/github/voxpelli/webpage-webmentions/badge.svg?branch=master)](https://coveralls.io/github/voxpelli/webpage-webmentions?branch=master)
+[![dependencies Status](https://david-dm.org/voxpelli/webpage-webmentions/status.svg)](https://david-dm.org/voxpelli/webpage-webmentions)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions?ref=badge_shield)
-
 
 A site that receives and embeds [WebMentions](http://indiewebcamp.com/webmention) for other sites. makes the WebMentions embeddable through a javascript, similar to how eg. Disqus works.
 
