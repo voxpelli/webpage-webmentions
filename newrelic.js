@@ -29,5 +29,7 @@ exports.config = {
       '^/api/mentions/live'
     ]
   },
-  capture_params: true
+  attributes: {
+    enabled: true
+  }
 };
