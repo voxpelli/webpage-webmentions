@@ -1,5 +1,21 @@
 {
   "extends": [
-    "config:base"
+    "config:js-app",
+    "group:linters",
+    ":maintainLockFilesMonthly"
+  ],
+  "packageRules": [
+    {
+      "packagePatterns": [
+        "*"
+      ],
+      "rangeStrategy": "replace"
+    },
+    {
+      "depTypeList": [
+        "peerDependencies"
+      ],
+      "rangeStrategy": "widen"
+    }
   ]
 }
