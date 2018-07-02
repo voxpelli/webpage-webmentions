@@ -59,7 +59,7 @@
     "chai": "4.1.2",
     "chai-as-promised": "7.1.1",
     "concurrently": "3.5.1",
-    "coveralls": "3.0.1",
+    "coveralls": "3.0.2",
     "dependency-check": "3.1.0",
     "dotenv": "2.0.0",
     "eslint": "4.19.1",
@@ -73,9 +73,9 @@
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-uglify": "1.0.2",
     "mocha": "5.2.0",
-    "nock": "9.2.6",
+    "nock": "9.4.1",
     "nyc": "12.0.2",
-    "sinon": "6.0.0",
+    "sinon": "6.0.1",
     "supertest": "3.1.0",
     "webmention-testpinger": "0.6.1"
   }
