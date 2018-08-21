@@ -8,6 +8,9 @@
     "url": "http://kodfabrik.se/"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "dependencies": {
     "@voxpelli/metadataparser": "^2.0.0",
     "@voxpelli/metadataparser-mf2": "^0.3.0",
@@ -49,7 +52,7 @@
     "mocha-functional": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha --exit test/functional/**/*.spec.js",
     "mocha-unit": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha test/unit/**/*.spec.js",
     "dependency-check": "JS_FILES=\"*.js lib/*/*.js lib/*.js migrations/*.js test/*/*.js test/*.js\" && dependency-check . $JS_FILES && dependency-check . $JS_FILES --no-dev --unused -i pg",
-    "test": "concurrently -r 'eslint .' 'npm run --silent dependency-check' 'npm run --silent mocha'",
+    "test": "concurrently -r 'eslint .' 'installed-check -n -e' 'npm run --silent dependency-check' 'npm run --silent mocha'",
     "build": "node -e \"require('grunt').tasks(['build']);\"",
     "build-dev": "node -e \"require('grunt').tasks(['build-dev']);\"",
     "install-schema": "node lib/install-schema.js",
@@ -74,6 +77,7 @@
     "grunt": "^1.0.2",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-uglify": "^1.0.2",
+    "installed-check": "^2.2.0",
     "mocha": "^5.2.0",
     "nock": "^9.6.1",
     "nyc": "^12.0.2",
