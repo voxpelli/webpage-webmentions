@@ -94,10 +94,6 @@ describe('WebMention API', function () {
     }
   });
 
-  after(() => {
-    cleanupTasks();
-  });
-
   describe('parseSourcePage', function () {
     it('should handle the templates alright', function () {
       const mentionTargets = require('../template-mentions.json');

@@ -45,8 +45,8 @@
   },
   "scripts": {
     "start": "node .",
-    "mocha": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha test/**/*.spec.js",
-    "mocha-functional": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha test/functional/**/*.spec.js",
+    "mocha": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha --exit test/**/*.spec.js",
+    "mocha-functional": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha --exit test/functional/**/*.spec.js",
     "mocha-unit": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha test/unit/**/*.spec.js",
     "dependency-check": "JS_FILES=\"*.js lib/*/*.js lib/*.js migrations/*.js test/*/*.js test/*.js\" && dependency-check . $JS_FILES && dependency-check . $JS_FILES --no-dev --unused -i pg",
     "test": "concurrently -r 'eslint .' 'npm run --silent dependency-check' 'npm run --silent mocha'",
