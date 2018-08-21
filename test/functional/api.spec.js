@@ -24,7 +24,8 @@ const should = chai.should();
 describe('WebMention API', function () {
   this.timeout(7000);
 
-  const app = require('../../lib/main');
+  let app, cleanupTasks;
+
   const Entry = require('../../lib/classes/entry');
   const WebMentionTemplates = require('webmention-testpinger').WebMentionTemplates;
   const microformatsVersion = require('@voxpelli/metadataparser-mf2').versions;
@@ -60,7 +61,20 @@ describe('WebMention API', function () {
     };
   };
 
-  beforeEach(function () {
+  before(() => {
+    return dbUtils.clearDb()
+      .then(dbUtils.setupSchema)
+      .then(() => {
+        const main = require('../../lib/main');
+
+        app = main.app;
+        cleanupTasks = main.cleanupTasks;
+
+        return new Promise(resolve => setTimeout(resolve, 1000));
+      });
+  });
+
+  beforeEach(() => {
     nock.cleanAll();
     nock.disableNetConnect();
     nock.enableNetConnect('127.0.0.1');
@@ -78,6 +92,10 @@ describe('WebMention API', function () {
     if (!nock.isDone()) {
       throw new Error('pending mocks: ' + nock.pendingMocks());
     }
+  });
+
+  after(() => {
+    cleanupTasks();
   });
 
   describe('parseSourcePage', function () {
