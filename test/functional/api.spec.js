@@ -24,7 +24,7 @@ const should = chai.should();
 describe('WebMention API', function () {
   this.timeout(7000);
 
-  let app, cleanupTasks;
+  let app;
 
   const Entry = require('../../lib/classes/entry');
   const WebMentionTemplates = require('webmention-testpinger').WebMentionTemplates;
@@ -68,7 +68,6 @@ describe('WebMention API', function () {
         const main = require('../../lib/main');
 
         app = main.app;
-        cleanupTasks = main.cleanupTasks;
 
         return new Promise(resolve => setTimeout(resolve, 1000));
       });
