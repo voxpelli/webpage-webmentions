@@ -1,7 +1,15 @@
 {
-  "extends": "semistandard",
-  "root": true,
+"plugins": ["unicorn", "promise"],
+  "extends": ["semistandard", "plugin:unicorn/recommended", "plugin:promise/recommended"],
   "rules": {
-    "no-var": 2
-  }
-}
+    "func-style": [1, "expression", { "allowArrowFunctions": true }],
+    "no-multi-spaces": ["error", {"ignoreEOLComments": true}],
+    "no-var": 2,
+    "unicorn/explicit-length-check": 0,
+    "unicorn/filename-case": 0,
+    "unicorn/prefer-add-event-listener": 1,
+    "unicorn/prefer-spread": 1,
+    "promise/always-return": 0,
+    "promise/no-callback-in-promise": 0,
+    "promise/no-nesting": 0
+}}
