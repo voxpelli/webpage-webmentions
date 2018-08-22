@@ -39,8 +39,8 @@
     "pg": "^4.5.7",
     "pg-pubsub": "~0.3.0",
     "request": "^2.86.0",
-    "tema": "^0.2.1",
-    "verror": "^1.6.0"
+    "tema": "^0.3.0",
+    "verror": "^1.10.0"
   },
   "main": "./lib/main",
   "directories": {
