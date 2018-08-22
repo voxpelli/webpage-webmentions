@@ -5,7 +5,7 @@ const urlTools = require('../lib/utils/url-tools');
 exports.up = function (knex, Promise) {
   return knex.from('entries').then(function (entries) {
     return Promise.all(entries.map(entry => {
-      var data = entry.data;
+      let data = entry.data;
 
       if (!urlTools.isHttpUrl.test(data.url)) {
         data.url = entry.url;

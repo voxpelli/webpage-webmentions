@@ -10,10 +10,10 @@ exports.up = function (knex, Promise) {
         return trx.from('entries');
       })
       .then(function (entries) {
-        var updates = [];
+        let updates = [];
 
         entries.forEach(function (entry) {
-          var published, update;
+          let published, update;
 
           published = entry.data.published ? new Date(parseInt(entry.data.published, 10)) : new Date();
 

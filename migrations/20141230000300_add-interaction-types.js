@@ -22,7 +22,7 @@ exports.up = function (knex, Promise) {
         return trx.from('entries');
       })
       .then(function (entries) {
-        var updates = [];
+        let updates = [];
 
         entries.forEach(function (entry) {
           const entryInstance = new Entry(entry.url, entry.raw);

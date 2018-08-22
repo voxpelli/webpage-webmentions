@@ -13,23 +13,19 @@ if (options.env !== 'test') {
 }
 
 module.exports = {
-  clearDb: function () {
-    var lastDeleted = Promise.resolve(true);
+  clearDb: () => {
+    let lastDeleted = Promise.resolve(true);
 
-    tables.forEach(function (table) {
-      lastDeleted = lastDeleted.then(function () {
-        return knex.schema.dropTableIfExists(table);
-      });
+    tables.forEach(table => {
+      lastDeleted = lastDeleted.then(() => knex.schema.dropTableIfExists(table));
     });
 
     return lastDeleted;
   },
 
-  setupSchema: function () {
-    return installSchema();
-  },
+  setupSchema: () => installSchema(),
 
-  setupSampleData: function () {
+  setupSampleData: () => {
     return Promise.all([
       knex('sites').insert({
         aid: 1,
@@ -55,8 +51,8 @@ module.exports = {
       entries.push(sampleData.mentions(1, options)[0]);
     }
 
-    return Promise.all(entries.map(function (entry, i) {
-      var entryUrl = entry.url;
+    return Promise.all(entries.map((entry, i) => {
+      const entryUrl = entry.url;
 
       entry.published = now + i * 1000;
       entry.type = entry.type === 'mention' ? null : entry.type;
@@ -78,10 +74,10 @@ module.exports = {
         data: entry,
         raw: {}
       }, 'id');
-    })).then(function (ids) {
-      var mentions = [];
+    })).then(ids => {
+      const mentions = [];
 
-      ids.forEach(function (id, i) {
+      ids.forEach((id, i) => {
         const target = 'http://example.org/path/' + i;
         const normalizedTarget = urlTools.normalizeUrl(target);
 

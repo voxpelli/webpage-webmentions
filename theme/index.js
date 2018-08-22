@@ -12,8 +12,7 @@ const templates = {};
 const preprocessors = {};
 
 preprocessors.mention = function (data) {
-  var self = this;
-  var mention = data.mention;
+  const mention = data.mention;
 
   data.comment = data.comment || false;
 
@@ -26,15 +25,16 @@ preprocessors.mention = function (data) {
     mention.author.name = mention.author.name || 'Anonymous';
   }
 
-  return Promise.all((mention.mentions || []).map(function (mention) {
-    // TODO: Should render as a u-comment, not an h-entry!
-    return self.render('mention', {
-      mention: mention,
-      singleTarget: data.singleTarget,
-      showContext: data.showContext,
-      comment: true
-    });
-  })).then(function (mentions) {
+  return Promise.all(
+    (mention.mentions || [])
+      // TODO: Should render as a u-comment, not an h-entry!
+      .map(mention => this.render('mention', {
+        mention,
+        singleTarget: data.singleTarget,
+        showContext: data.showContext,
+        comment: true
+      }))
+  ).then(mentions => {
     mention.mentions = mentions;
 
     data.mention = mention;
@@ -44,39 +44,36 @@ preprocessors.mention = function (data) {
 };
 
 preprocessors.mentions = function (data) {
-  var self = this;
-  var locals = this.getLocals(theme);
+  const locals = this.getLocals(theme);
 
-  var mentions = Promise.all(data.mentions.map(function (mention) {
-    return self.render('mention', {
-      mention: mention,
-      singleTarget: data.singleTarget,
-      showContext: data.showContext
-    });
-  }));
+  const mentions = Promise.all(data.mentions.map(mention => this.render('mention', {
+    mention,
+    singleTarget: data.singleTarget,
+    showContext: data.showContext
+  })));
 
-  var targets;
+  let targets;
 
   if (data.mentionsArguments.example) {
     targets = ['Example mentions'];
   } else {
     targets = [].concat(
-      [].concat(data.mentionsArguments.url || []).map(function (value) {
-        return 'Mentions of ' + locals.formatLink(value);
-      }),
-      [].concat(data.mentionsArguments.site || []).map(function (value) {
-        return 'All mentions from site ' + locals.formatLink('http://' + value + '/', value);
-      }),
-      [].concat(data.mentionsArguments.path || []).map(function (value) {
-        return 'All mentions matching path ' + escape(value);
-      })
+      [].concat(data.mentionsArguments.url || []).map(value =>
+        'Mentions of ' + locals.formatLink(value)
+      ),
+      [].concat(data.mentionsArguments.site || []).map(value =>
+        'All mentions from site ' + locals.formatLink('http://' + value + '/', value)
+      ),
+      [].concat(data.mentionsArguments.path || []).map(value =>
+        'All mentions matching path ' + escape(value)
+      )
     );
   }
 
   data.targets = targets;
   delete data.mentionsArguments;
 
-  return mentions.then(function (mentions) {
+  return mentions.then(mentions => {
     data.mentions = mentions;
     return data;
   });

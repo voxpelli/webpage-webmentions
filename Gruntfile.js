@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function (grunt) {
-  var indentLines = function (src) {
+  const indentLines = function (src) {
     return src.split('\n').map(function (line) {
       return line ? '  ' + line : line;
     }).join('\n');
