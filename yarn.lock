@@ -95,11 +95,11 @@
   dependencies:
     methods "^1.1.2"
 
-"@newrelic/native-metrics@^2.1.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@newrelic/native-metrics/-/native-metrics-2.4.0.tgz#65503820f1fc6afc215cd9893077848a6c013cae"
+"@newrelic/native-metrics@^3.0.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@newrelic/native-metrics/-/native-metrics-3.1.0.tgz#a211986a0a63cfc4ffa6732fc7beeff6a6098eed"
   dependencies:
-    nan "^2.8.0"
+    nan "^2.10.0"
 
 "@nodelib/fs.stat@^1.0.1":
   version "1.1.0"
@@ -2885,7 +2885,7 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-nan@^2.8.0:
+nan@^2.10.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
 
@@ -2914,9 +2914,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-newrelic@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-4.1.1.tgz#ac85dfa1c7b86bd76f757b1f6ff602b684a87199"
+newrelic@^4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-4.8.0.tgz#5068bb18575b4461c14e2c4642ae5da9bace08ad"
   dependencies:
     "@newrelic/koa" "^1.0.0"
     "@tyriar/fibonacci-heap" "^2.0.7"
@@ -2927,7 +2927,7 @@ newrelic@^4.1.1:
     readable-stream "^2.1.4"
     semver "^5.3.0"
   optionalDependencies:
-    "@newrelic/native-metrics" "^2.1.0"
+    "@newrelic/native-metrics" "^3.0.0"
 
 nise@^1.4.2:
   version "1.4.2"
