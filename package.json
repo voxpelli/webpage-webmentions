@@ -36,7 +36,7 @@
     "newrelic": "^4.8.0",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
-    "pg": "^4.5.7",
+    "pg": "^7.4.3",
     "pg-pubsub": "^0.4.0",
     "request": "^2.86.0",
     "tema": "^0.3.0",
