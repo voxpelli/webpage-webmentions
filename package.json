@@ -22,6 +22,7 @@
     "faker": "^2.1.1",
     "fetch-politely": "^2.0.0-1",
     "knex": "^0.15.2",
+    "knex-migrator-extension": "^0.1.4",
     "lodash.clonedeep": "^4.5.0",
     "lodash.escape": "^4.0.1",
     "lodash.intersection": "^4.4.0",
@@ -55,9 +56,9 @@
     "test": "concurrently -r 'eslint .' 'installed-check -n -e -i newrelic' 'npm run --silent dependency-check' 'npm run --silent mocha'",
     "build": "node -e \"require('grunt').tasks(['build']);\"",
     "build-dev": "node -e \"require('grunt').tasks(['build-dev']);\"",
-    "install-schema": "node lib/install-schema.js",
-    "migrate-schema": "./node_modules/.bin/knex migrate:latest",
-    "rollback-schema": "./node_modules/.bin/knex migrate:rollback"
+    "install-schema": "knex-migrator-extension migrate:install",
+    "migrate-schema": "knex-migrator-extension migrate:latest",
+    "rollback-schema": "knex-migrator-extension migrate:rollback"
   },
   "private": true,
   "devDependencies": {
