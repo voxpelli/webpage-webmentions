@@ -346,10 +346,6 @@ async@^2.1.4:
   dependencies:
     lodash "^4.17.10"
 
-async@~0.2.6:
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
-
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -492,12 +488,6 @@ braces@^2.3.1:
 browser-stdout@1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/browser-stdout/-/browser-stdout-1.3.1.tgz#baa559ee14ced73452229bad7326467c61fabd60"
-
-browserify-zlib@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/browserify-zlib/-/browserify-zlib-0.1.4.tgz#bb35f8a519f600e0fa6b8485241c979d0141fb2d"
-  dependencies:
-    pako "~0.2.0"
 
 buffer-from@^1.0.0:
   version "1.1.1"
@@ -763,7 +753,7 @@ commander@2.15.1:
   version "2.15.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
 
-commander@^2.16.0, commander@^2.9.0:
+commander@^2.16.0, commander@^2.9.0, commander@~2.17.1:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
 
@@ -779,7 +769,7 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
 
-concat-stream@^1.4.1, concat-stream@^1.5.0, concat-stream@^1.6.0:
+concat-stream@^1.5.0, concat-stream@^1.6.0:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.2.tgz#904bdf194cd3122fc675c77fc4ac3d4ff0fd1a34"
   dependencies:
@@ -1118,6 +1108,10 @@ domutils@^1.5.1:
 dotenv@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.0.0.tgz#24e37c041741c5f4b25324958ebbc34bca965935"
+
+duplexer@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
@@ -1827,14 +1821,13 @@ grunt-contrib-concat@^1.0.1:
     chalk "^1.0.0"
     source-map "^0.5.3"
 
-grunt-contrib-uglify@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/grunt-contrib-uglify/-/grunt-contrib-uglify-1.0.2.tgz#ae67a46f9153edd4cb11813a55eb69c70d7db2fb"
+grunt-contrib-uglify@^3.0.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/grunt-contrib-uglify/-/grunt-contrib-uglify-3.4.0.tgz#8a51ab330be05ef62b11b2833abd3e955e85af03"
   dependencies:
     chalk "^1.0.0"
-    lodash "^4.0.1"
-    maxmin "^1.1.0"
-    uglify-js "~2.6.2"
+    maxmin "^2.1.0"
+    uglify-js "~3.4.0"
     uri-path "^1.0.0"
 
 grunt-known-options@~1.1.0:
@@ -1891,12 +1884,11 @@ grunt@^1.0.2:
     path-is-absolute "~1.0.0"
     rimraf "~2.6.2"
 
-gzip-size@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/gzip-size/-/gzip-size-1.0.0.tgz#66cf8b101047227b95bace6ea1da0c177ed5c22f"
+gzip-size@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/gzip-size/-/gzip-size-3.0.0.tgz#546188e9bdc337f673772f81660464b389dce520"
   dependencies:
-    browserify-zlib "^0.1.4"
-    concat-stream "^1.4.1"
+    duplexer "^0.1.1"
 
 handlebars@^4.0.11:
   version "4.0.11"
@@ -2747,7 +2739,7 @@ lodash.zip@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.zip/-/lodash.zip-4.2.0.tgz#ec6662e4896408ed4ab6c542a3990b72cc080020"
 
-lodash@^4.0.1, lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@~4.17.10, lodash@~4.17.5:
+lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@~4.17.10, lodash@~4.17.5:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 
@@ -2803,14 +2795,14 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-maxmin@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/maxmin/-/maxmin-1.1.0.tgz#71365e84a99dd8f8b3f7d5fde2f00d1e7f73be61"
+maxmin@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/maxmin/-/maxmin-2.1.0.tgz#4d3b220903d95eee7eb7ac7fa864e72dc09a3166"
   dependencies:
     chalk "^1.0.0"
     figures "^1.0.1"
-    gzip-size "^1.0.0"
-    pretty-bytes "^1.0.0"
+    gzip-size "^3.0.0"
+    pretty-bytes "^3.0.0"
 
 md5-hex@^1.2.0:
   version "1.3.0"
@@ -2832,7 +2824,7 @@ mem@^1.1.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-meow@^3.1.0, meow@^3.3.0:
+meow@^3.3.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/meow/-/meow-3.7.0.tgz#72cb668b425228290abbfa856892587308a801fb"
   dependencies:
@@ -3263,10 +3255,6 @@ packet-reader@0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/packet-reader/-/packet-reader-0.3.1.tgz#cd62e60af8d7fea8a705ec4ff990871c46871f27"
 
-pako@~0.2.0:
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
-
 parse-filepath@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/parse-filepath/-/parse-filepath-1.0.2.tgz#a632127f53aaf3d15876f5872f3ffac763d6c891"
@@ -3514,12 +3502,11 @@ prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
 
-pretty-bytes@^1.0.0:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-1.0.4.tgz#0a22e8210609ad35542f8c8d5d2159aff0751c84"
+pretty-bytes@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-3.0.1.tgz#27d0008d778063a0b4811bb35c79f1bd5d5fbccf"
   dependencies:
-    get-stdin "^4.0.1"
-    meow "^3.1.0"
+    number-is-nan "^1.0.0"
 
 process-nextick-args@~2.0.0:
   version "2.0.0"
@@ -4035,7 +4022,7 @@ source-map@^0.5.0, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.1:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
 
-source-map@^0.6.1:
+source-map@^0.6.1, source-map@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
 
@@ -4380,14 +4367,12 @@ uglify-js@^2.6:
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
 
-uglify-js@~2.6.2:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.6.4.tgz#65ea2fb3059c9394692f15fed87c2b36c16b9adf"
+uglify-js@~3.4.0:
+  version "3.4.9"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.4.9.tgz#af02f180c1207d76432e473ed24a28f4a782bae3"
   dependencies:
-    async "~0.2.6"
-    source-map "~0.5.1"
-    uglify-to-browserify "~1.0.0"
-    yargs "~3.10.0"
+    commander "~2.17.1"
+    source-map "~0.6.1"
 
 uglify-to-browserify@~1.0.0:
   version "1.0.2"
