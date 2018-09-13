@@ -20,7 +20,7 @@ exports.up = function (knex, Promise) {
           update = trx.table('entries')
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
-              published: published,
+              published,
               fetched: published
             });
 

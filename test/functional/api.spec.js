@@ -219,8 +219,8 @@ describe('WebMention API', function () {
         .then(result => {
           templateMock.done();
           result.should.deep.equal([
-            {count: '1'},
-            {count: '1'}
+            { count: '1' },
+            { count: '1' }
           ]);
         });
     });
@@ -302,7 +302,7 @@ describe('WebMention API', function () {
               .post('/api/webmention')
               .send({
                 source: 'http://example.com/',
-                target: target
+                target
               })
               .expect(202)
               .end(err => {
@@ -349,7 +349,7 @@ describe('WebMention API', function () {
               .post('/api/webmention')
               .send({
                 source: 'http://example.com/',
-                target: target
+                target
               })
               .expect(202)
               .end(err => {
@@ -495,7 +495,7 @@ describe('WebMention API', function () {
               .post('/api/webmention')
               .send({
                 source: 'http://example.com/',
-                target: target
+                target
               })
               .expect(202)
               .end(err => {
@@ -568,8 +568,8 @@ describe('WebMention API', function () {
         .then(result => {
           templateMock.done();
           result.should.deep.equal([
-            {count: '2'},
-            {count: '2'}
+            { count: '2' },
+            { count: '2' }
           ]);
         });
     });
@@ -621,8 +621,8 @@ describe('WebMention API', function () {
         .then(result => {
           templateMock.done();
           result.should.deep.equal([
-            {count: '2'},
-            {count: '2'}
+            { count: '2' },
+            { count: '2' }
           ]);
         });
     });
@@ -693,8 +693,8 @@ describe('WebMention API', function () {
           targetMock.done();
           pingMock.done();
           result.should.deep.equal([
-            {count: '3'},
-            {count: '1'}
+            { count: '3' },
+            { count: '1' }
           ]);
         });
     });
@@ -772,8 +772,8 @@ describe('WebMention API', function () {
           targetMock.done();
           pingMock.done();
           result.should.deep.equal([
-            {count: '4'},
-            {count: '2'}
+            { count: '4' },
+            { count: '2' }
           ]);
         });
     });
@@ -844,8 +844,8 @@ describe('WebMention API', function () {
           targetMock.done();
           pingMock.done();
           result.should.deep.equal([
-            {count: '3'},
-            {count: '1'}
+            { count: '3' },
+            { count: '1' }
           ]);
         });
     });

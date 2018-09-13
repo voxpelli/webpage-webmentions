@@ -103,7 +103,7 @@ const formatLink = function (href, text, attributes) {
   if (!text) {
     text = href;
   }
-  return formatTag('a', text, Object.assign({}, attributes, { href: href }));
+  return formatTag('a', text, Object.assign({}, attributes, { href }));
 };
 
 const locals = {

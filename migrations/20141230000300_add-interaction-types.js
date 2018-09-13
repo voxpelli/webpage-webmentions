@@ -41,7 +41,7 @@ exports.up = function (knex, Promise) {
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
               type: newEntry.type,
-              data: data
+              data
             });
 
           updates.push(entryUpdate);
