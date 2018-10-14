@@ -82,9 +82,9 @@
     "grunt-contrib-uglify": "^1.0.2",
     "installed-check": "^2.2.0",
     "mocha": "^5.2.0",
-    "nock": "^9.6.1",
+    "nock": "^10.0.0",
     "nyc": "^13.0.0",
-    "sinon": "^6.1.5",
+    "sinon": "^7.0.0",
     "supertest": "^3.1.0",
     "webmention-testpinger": "^0.6.1"
   }
