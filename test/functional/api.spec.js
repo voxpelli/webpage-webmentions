@@ -888,6 +888,31 @@ describe('WebMention API', function () {
           .end(err => err ? reject(err) : resolve());
       });
     });
+
+    it('should reject when normalized source and target URL:s are equal', () => {
+      return Promise.all([
+        new Promise((resolve, reject) => {
+          request(app)
+            .post('/api/webmention')
+            .send({
+              source: 'https://example.org/foo',
+              target: 'http://example.org/foo'
+            })
+            .expect(400)
+            .end(err => err ? reject(err) : resolve());
+        }),
+        new Promise((resolve, reject) => {
+          request(app)
+            .post('/api/webmention')
+            .send({
+              source: 'https://www.example.org/foo',
+              target: 'http://example.org/foo/#foobar'
+            })
+            .expect(400)
+            .end(err => err ? reject(err) : resolve());
+        })
+      ]);
+    });
   });
 
   describe('fetch mentions', () => {
