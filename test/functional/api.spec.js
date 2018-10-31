@@ -875,6 +875,19 @@ describe('WebMention API', function () {
           .end(err => err ? reject(err) : resolve());
       });
     });
+
+    it('should reject when source and target URL:s are equal', () => {
+      return new Promise((resolve, reject) => {
+        request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'http://example.org/foo',
+            target: 'http://example.org/foo'
+          })
+          .expect(400)
+          .end(err => err ? reject(err) : resolve());
+      });
+    });
   });
 
   describe('fetch mentions', () => {
