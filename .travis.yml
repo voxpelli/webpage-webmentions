@@ -1,4 +1,5 @@
 language: node_js
+cache: yarn
 before_script:
   - psql -c 'create database webmention_test;' -U postgres
 sudo: false
