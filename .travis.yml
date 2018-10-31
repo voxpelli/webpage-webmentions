@@ -5,6 +5,9 @@ before_script:
 sudo: false
 matrix:
   include:
+    - node_js: "11"
+      addons:
+        postgresql: "9.4"
     - node_js: "10"
       addons:
         postgresql: "9.4"
