@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.12.6
+
+* **Fix:** Now correctly refuses ping where source and target are the same URL (checking a normalized version of the URL). Fixes #43. Thanks @sknebel and @frankmeeuwsen!
+* **Dependencies:** Updated lots of modules to newer versions
+* **Misc:** Generally updated coding style and similar to a more modern standard
+
 ### 0.12.5
 
 * **Dependencies:** Updated `express` module to supported `4.x.x` version
