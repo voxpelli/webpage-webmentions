@@ -1139,6 +1139,20 @@ describe('WebMention API', function () {
           });
       });
     });
+
+    it('should return in HTML when requested', (done) => {
+      request(app)
+        .get('/api/mentions')
+        .query({ site: 'example.org', format: 'html' })
+        .expect(200)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+
+          done();
+        });
+    });
   });
 
   describe('live updates', () => {
