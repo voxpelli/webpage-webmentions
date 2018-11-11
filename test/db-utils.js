@@ -2,7 +2,7 @@
 
 const knex = require('../lib/knex');
 const sampleData = require('../lib/utils/sample-data');
-const urlTools = require('../lib/utils/url-tools');
+const { normalizeUrl } = require('../lib/utils/url-tools');
 const options = require('../lib/config');
 const installSchema = require('../lib/install-schema');
 const tables = installSchema.tables;
@@ -66,7 +66,7 @@ module.exports = {
 
       return knex('entries').insert({
         url: entryUrl,
-        normalizedUrl: urlTools.normalizeUrl(entryUrl),
+        normalizedUrl: normalizeUrl(entryUrl),
         published: new Date(entry.published),
         fetched: new Date(entry.published),
         updated: new Date(entry.published),
@@ -79,7 +79,7 @@ module.exports = {
 
       ids.forEach((id, i) => {
         const target = 'http://example.org/path/' + i;
-        const normalizedTarget = urlTools.normalizeUrl(target);
+        const normalizedTarget = normalizeUrl(target);
 
         // Let one mention only have the foo path
         if (i !== 9) {
