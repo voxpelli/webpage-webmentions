@@ -27,7 +27,6 @@
     "lodash.escape": "^4.0.1",
     "lodash.intersection": "^4.4.0",
     "lodash.isempty": "^4.4.0",
-    "lodash.isplainobject": "^4.0.6",
     "lodash.omit": "^4.5.0",
     "lodash.pick": "^4.4.0",
     "lodash.union": "^4.6.0",
@@ -53,7 +52,7 @@
     "mocha-functional": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha --exit test/functional/**/*.spec.js",
     "mocha-unit": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha test/unit/**/*.spec.js",
     "dependency-check": "JS_FILES=\"*.js lib/*/*.js lib/*.js migrations/*.js test/*/*.js test/*.js\" && dependency-check . $JS_FILES && dependency-check . $JS_FILES --no-dev --unused -i pg -i knex-migrator-extension",
-    "test": "concurrently -r 'eslint .' 'installed-check -n -e -i newrelic -i eslint' 'npm run --silent dependency-check' 'npm run --silent mocha'",
+    "test": "concurrently -r 'eslint .' 'installed-check -n -e -i newrelic -i eslint' 'npm run --silent dependency-check' 'npm run --silent mocha' 'tsc'",
     "build": "node -e \"require('grunt').tasks(['build']);\"",
     "build-dev": "node -e \"require('grunt').tasks(['build-dev']);\"",
     "install-schema": "knex-migrator-extension migrate:install",
@@ -62,6 +61,8 @@
   },
   "private": true,
   "devDependencies": {
+    "@types/knex": "^0.15.0",
+    "@types/node": "^10.12.5",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "concurrently": "^4.0.1",
@@ -86,6 +87,7 @@
     "nyc": "^13.0.0",
     "sinon": "^7.0.0",
     "supertest": "^3.1.0",
+    "typescript": "^3.1.6",
     "webmention-testpinger": "^0.6.1"
   }
 }

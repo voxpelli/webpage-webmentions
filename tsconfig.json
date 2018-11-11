@@ -1,0 +1,23 @@
+{
+  "include": [
+    "lib/**/*",
+    "migrations/**/*",
+    "test/**/*"
+  ],
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ES2016",
+    "module": "commonjs",
+    "allowJs": true,
+    "noEmit": true,
+    "maxNodeModuleJsDepth": 3,
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+
+    /* Additional Checks */
+    "noUnusedLocals": true
+  }
+}
