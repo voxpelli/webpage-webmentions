@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.12.7
+
+* **Fix:** Restored signup functionality that broke in `knex` and/or `pg` module upgrade
+* **Misc:** Added TypeScript linting for typings in the project
+
 ### 0.12.6
 
 * **Fix:** Now correctly refuses ping where source and target are the same URL (checking a normalized version of the URL). Fixes #43. Thanks @sknebel and @frankmeeuwsen!
