@@ -33,7 +33,7 @@
     "lodash.uniq": "^4.5.0",
     "lodash.values": "^4.3.0",
     "moment": "^2.22.2",
-    "newrelic": "^4.10.0",
+    "newrelic": "^5.0.0",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
     "pg": "^7.4.3",
