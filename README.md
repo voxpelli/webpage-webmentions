@@ -24,11 +24,7 @@ Then please let me know. So far I'm easiest to reach on Twitter as [@voxpelli](h
 
 ### Heroku
 
-1. Set up a new application
-2. Set up a database for the new application
-3. Set up environment variables using `heroku config`
-4. Push up the code
-5. Use a [One-Off Dyno](https://devcenter.heroku.com/articles/one-off-dynos) to set up the tables: `heroku run npm run install-schema`
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ## To update
 
