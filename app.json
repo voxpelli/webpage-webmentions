@@ -2,7 +2,6 @@
 {
   "name": "Webmentions Server",
   "description": "A server to accept IndieWeb webmentions on behalf of your static site",
-  "logo": "",
   "repository": "https://github.com/bmann/webpage-webmentions",
   "scripts": {
     "postdeploy": "npm run install-schema"
@@ -26,7 +25,7 @@
       "value": "YOURAPPNAME.herokuapp.com"
     }, 
     "WEBMENTIONS_USER_LIMIT": {
-      "description": "Limit of number of users that can signup"
+      "description": "Limit of number of users that can signup",
       "value": "10"
     }
   }
