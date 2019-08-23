@@ -31,9 +31,9 @@ jobs:
     - name: Yarn install
       run: yarn install --frozen-lockfile --ignore-engines
     - name: Yarn run build
-      run: yarn run build
+      run: yarn run build --ignore-engines
     - name: Mocha tests
-      run: yarn run test:mocha
+      run: yarn run test:mocha --ignore-engines
       working-directory: ./postgres
       env:
         # use postgres for the host here because we have specified a contaienr for the job.
