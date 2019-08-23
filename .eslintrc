@@ -12,22 +12,27 @@
     "plugin:promise/recommended"
   ],
   "rules": {
-    "semi": [2, "always"],
-    "no-extra-semi": 2,
     "func-style": [1, "expression", { "allowArrowFunctions": true }],
+    "no-extra-semi": 2,
     "no-multi-spaces": ["error", {"ignoreEOLComments": true}],
     "no-var": 2,
     "object-shorthand": [2, "properties"],
+    "semi": [2, "always"],
+
+    "unicorn/catch-error-name": ["error", {"name": "err"}],
     "unicorn/explicit-length-check": 0,
     "unicorn/filename-case": 0,
     "unicorn/prefer-add-event-listener": 1,
-    "unicorn/prefer-spread": 1,
-    "unicorn/catch-error-name": ["error", {"name": "err"}],
     "unicorn/prefer-exponentiation-operator": 0,
+    "unicorn/prefer-spread": 1,
+    "unicorn/prevent-abbreviations": 0,
+
     "security/detect-object-injection": 0,
     "security/detect-unsafe-regex": 0,
+
     "promise/always-return": 0,
     "promise/no-callback-in-promise": 0,
     "promise/no-nesting": 0,
+
     "es/no-exponential-operators": 1
 }}
