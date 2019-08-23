@@ -8,8 +8,8 @@ config.env = {};
 
 config.rules = Object.create(config.rules);
 
-config.rules['semi'] = [2, 'always'];
+config.rules.semi = [2, 'always'];
 config.rules['no-extra-semi'] = 2;
-config.rules['semi-spacing'] = [2, { 'before': false, 'after': true }];
+config.rules['semi-spacing'] = [2, { before: false, after: true }];
 
 module.exports = config;

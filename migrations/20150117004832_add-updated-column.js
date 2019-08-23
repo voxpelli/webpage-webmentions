@@ -15,10 +15,10 @@ exports.up = function (knex, Promise) {
         return trx.from('entries');
       })
       .then(function (entries) {
-        let updates = [];
+        const updates = [];
 
         entries.forEach(function (entry) {
-          let update = trx.table('entries')
+          const update = trx.table('entries')
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
               updated: entry.fetched

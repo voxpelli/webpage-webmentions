@@ -26,58 +26,58 @@ describe('MetaDataParser', () => {
     '</article>';
 
   const parsedExample = {
-    'items': [{
-      'properties': {
-        'author': [{
-          'properties': {
-            'name': ['W. Developer'],
-            'url': ['http://example.com']
+    items: [{
+      properties: {
+        author: [{
+          properties: {
+            name: ['W. Developer'],
+            url: ['http://example.com']
           },
-          'type': [
+          type: [
             'h-card'
           ],
-          'value': 'W. Developer'
+          value: 'W. Developer'
         }],
-        'content': [{
-          'html': '    <p><a href="http://example.org/bar">Blah</a> blah blah</p>  ',
-          'value': 'Blah blah blah'
+        content: [{
+          html: '    <p><a href="http://example.org/bar">Blah</a> blah blah</p>  ',
+          value: 'Blah blah blah'
         }],
-        'name': ['Microformats are amazing'],
-        'published': ['2013-06-13T12:00:00'],
-        'summary': ['In which I extoll the virtues of using microformats.'],
-        'url': ['http://example.net/abc']
+        name: ['Microformats are amazing'],
+        published: ['2013-06-13T12:00:00'],
+        summary: ['In which I extoll the virtues of using microformats.'],
+        url: ['http://example.net/abc']
       },
-      'type': ['h-entry']
+      type: ['h-entry']
     }],
     'rel-urls': {},
-    'rels': {}
+    rels: {}
   };
 
   const xssExample = {
-    'items': [{
-      'properties': {
-        'author': [{
-          'properties': {
-            'name': ['W. Developer'],
-            'url': ["javascript:alert('hcard')"]
+    items: [{
+      properties: {
+        author: [{
+          properties: {
+            name: ['W. Developer'],
+            url: ["javascript:alert('hcard')"]
           },
-          'type': [
+          type: [
             'h-card'
           ],
-          'value': 'W. Developer'
+          value: 'W. Developer'
         }],
-        'content': [{
-          'html': '<p><a href="http://example.org/bar">Blah</a> blah blah</p>  ',
-          'value': 'Blah blah blah'
+        content: [{
+          html: '<p><a href="http://example.org/bar">Blah</a> blah blah</p>  ',
+          value: 'Blah blah blah'
         }],
-        'name': ['Microformats are amazing'],
-        'published': ['2013-12-18T22:45:00Z'],
-        'summary': ['In which I extoll the virtues of using microformats.'],
-        'url': ["javascript:alert('hentry')"]
+        name: ['Microformats are amazing'],
+        published: ['2013-12-18T22:45:00Z'],
+        summary: ['In which I extoll the virtues of using microformats.'],
+        url: ["javascript:alert('hentry')"]
       },
-      'type': ['h-entry']
+      type: ['h-entry']
     }],
-    'rels': {}
+    rels: {}
   };
 
   const getEntry = (html) => parser.extract(sourceUrl, html)

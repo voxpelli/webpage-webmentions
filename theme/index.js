@@ -4,8 +4,8 @@ const escape = require('lodash.escape');
 const pathModule = require('path');
 
 const interactionPresentation = {
-  'like': 'liked',
-  'repost': 'reposted'
+  like: 'liked',
+  repost: 'reposted'
 };
 
 const templates = {};

@@ -10,7 +10,7 @@ exports.up = function (knex, Promise) {
         return trx.from('entries');
       })
       .then(function (entries) {
-        let updates = [];
+        const updates = [];
 
         entries.forEach(function (entry) {
           let published, update;

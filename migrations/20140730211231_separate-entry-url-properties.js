@@ -1,6 +1,6 @@
 'use strict';
 
-let urlTools = require('../lib/utils/url-tools');
+const urlTools = require('../lib/utils/url-tools');
 
 exports.up = function (knex, Promise) {
   return knex.transaction(function (trx) {
@@ -16,10 +16,10 @@ exports.up = function (knex, Promise) {
         return trx.from('entries');
       })
       .then(function (entries) {
-        let updates = [];
+        const updates = [];
 
         entries.forEach(function (entry) {
-          let update = trx.table('entries')
+          const update = trx.table('entries')
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
               url: entry.normalizedUrl,
