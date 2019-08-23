@@ -13,11 +13,9 @@ exports.up = function (knex, Promise) {
         const updates = [];
 
         entries.forEach(function (entry) {
-          let published, update;
+          const published = entry.data.published ? new Date(parseInt(entry.data.published, 10)) : new Date();
 
-          published = entry.data.published ? new Date(parseInt(entry.data.published, 10)) : new Date();
-
-          update = trx.table('entries')
+          const update = trx.table('entries')
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
               published,

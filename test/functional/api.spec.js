@@ -226,7 +226,7 @@ describe('WebMention API', function () {
     });
 
     it('should send a live update', done => {
-      let templateMock, result;
+      let templateMock;
 
       let updates = '';
 
@@ -253,7 +253,7 @@ describe('WebMention API', function () {
           res.on('data', listener);
         });
 
-      result = templateCollection.getTemplateNames()
+      const result = templateCollection.getTemplateNames()
         .then(templateNames => templateNames[0])
         .then(templateName => templateCollection.getTemplate(templateName, 'http://example.org/foo'))
         .then(template => nock('http://example.com/')

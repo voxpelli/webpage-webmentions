@@ -19,6 +19,8 @@
     "object-shorthand": [2, "properties"],
     "semi": [2, "always"],
 
+    "node/no-deprecated-api": 1,
+
     "unicorn/catch-error-name": ["error", {"name": "err"}],
     "unicorn/explicit-length-check": 0,
     "unicorn/filename-case": 0,

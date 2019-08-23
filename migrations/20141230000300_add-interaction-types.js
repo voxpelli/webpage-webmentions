@@ -27,17 +27,17 @@ exports.up = function (knex, Promise) {
         entries.forEach(function (entry) {
           const entryInstance = new Entry(entry.url, entry.raw);
           const newEntry = entryInstance.getData();
-          let entryUpdate, mentionUpdate, data;
 
           if (!newEntry.type) {
             return;
           }
 
-          data = cloneDeep(entry.data);
+          const data = cloneDeep(entry.data);
+
           data.interactionType = newEntry.data.interactionType;
           data.interactions = newEntry.data.interactions;
 
-          entryUpdate = trx.table('entries')
+          const entryUpdate = trx.table('entries')
             .where('normalizedUrl', entry.normalizedUrl)
             .update({
               type: newEntry.type,
@@ -46,7 +46,7 @@ exports.up = function (knex, Promise) {
 
           updates.push(entryUpdate);
 
-          mentionUpdate = trx.table('mentions')
+          const mentionUpdate = trx.table('mentions')
             .where('eid', entry.id)
             .whereIn('normalizedUrl', data.interactions.map(target => urlTools.normalizeUrl(target, { relativeTo: entry.normalizedUrl })))
             .update({ interaction: true });
