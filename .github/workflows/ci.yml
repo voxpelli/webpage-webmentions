@@ -30,14 +30,13 @@ jobs:
       with:
         version: ${{ matrix.node_version }}
     - name: Yarn install
-      run: yarn install --frozen-lockfile --ignore-engines
+      run: yarn install --frozen-lockfile
     - name: Yarn run build
-      run: yarn run build --ignore-engines
+      run: yarn run build
     - name: Mocha tests
-      run: yarn run test:mocha --ignore-engines
-      working-directory: ./postgres
+      run: yarn run test:mocha
       env:
-        # use postgres for the host here because we have specified a contaienr for the job.
+        # use postgres for the host here because we have specified a container for the job.
         # If we were running the job on the VM this would be localhost
         POSTGRES_HOST: localhost
         POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
