@@ -1,0 +1,43 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  test:
+    name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node_version: [10, 12]
+        os: [ubuntu-latest, windows-latest]
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+        # will assign a random free host port
+        - 5432/tcp
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v1
+      with:
+        version: ${{ matrix.node_version }}
+    - name: Yarn install
+      run: |
+        yarn install
+    - name: Yarn run build
+      run: yarn run build --if-present
+    - name: Mocha tests
+      run: yarn run test:mocha
+      working-directory: ./postgres
+      env:
+        # use postgres for the host here because we have specified a contaienr for the job.
+        # If we were running the job on the VM this would be localhost
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
