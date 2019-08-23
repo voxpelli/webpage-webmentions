@@ -1,5 +1,5 @@
 # A WebMention Endpoint
-[![Build Status](https://travis-ci.org/voxpelli/webpage-webmentions.svg?branch=master)](https://travis-ci.org/voxpelli/webpage-webmentions)
+[![Build Status](https://travis-ci.com/voxpelli/webpage-webmentions.svg?branch=master)](https://travis-ci.com/voxpelli/webpage-webmentions)
 [![Coverage Status](https://coveralls.io/repos/github/voxpelli/webpage-webmentions/badge.svg?branch=master)](https://coveralls.io/github/voxpelli/webpage-webmentions?branch=master)
 [![dependencies Status](https://david-dm.org/voxpelli/webpage-webmentions/status.svg)](https://david-dm.org/voxpelli/webpage-webmentions)
 [![Known Vulnerabilities](https://snyk.io/test/github/voxpelli/webpage-webmentions/badge.svg?targetFile=package.json)](https://snyk.io/test/github/voxpelli/webpage-webmentions?targetFile=package.json)
