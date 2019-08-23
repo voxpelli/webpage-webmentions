@@ -47,28 +47,36 @@
     "lib": "./lib"
   },
   "scripts": {
-    "start": "node .",
-    "mocha": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha --exit test/**/*.spec.js",
-    "mocha-functional": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha --exit test/functional/**/*.spec.js",
-    "mocha-unit": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha test/unit/**/*.spec.js",
-    "dependency-check": "JS_FILES=\"*.js lib/*/*.js lib/*.js migrations/*.js test/*/*.js test/*.js\" && dependency-check . $JS_FILES && dependency-check . $JS_FILES --no-dev --unused -i pg -i knex-migrator-extension",
-    "test": "concurrently -r 'eslint .' 'installed-check -n -e -i newrelic -i eslint' 'npm run --silent dependency-check' 'npm run --silent mocha' 'tsc'",
-    "build": "node -e \"require('grunt').tasks(['build']);\"",
     "build-dev": "node -e \"require('grunt').tasks(['build-dev']);\"",
+    "build": "node -e \"require('grunt').tasks(['build']);\"",
+    "check:dependency-check": "dependency-check *.js 'lib/**/*.js' 'migrations/**/*.js' 'test/**/*.js' --no-dev --unused -i pg -i knex-migrator-extension",
+    "check:installed-check": "installed-check -i newrelic -i eslint",
+    "check:lint": "eslint .",
+    "check:typescript": "tsc",
+    "check": "run-p check:*",
     "install-schema": "knex-migrator-extension migrate:install",
     "migrate-schema": "knex-migrator-extension migrate:latest",
-    "rollback-schema": "knex-migrator-extension migrate:rollback"
+    "mocha-functional": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha --exit test/functional/**/*.spec.js",
+    "mocha-unit": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha test/unit/**/*.spec.js",
+    "rollback-schema": "knex-migrator-extension migrate:rollback",
+    "start": "node .",
+    "test:mocha": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha --exit test/**/*.spec.js",
+    "test": "run-s check test:*"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm test"
+    }
   },
   "private": true,
   "devDependencies": {
-    "@types/knex": "^0.15.0",
-    "@types/node": "^10.12.5",
-    "@types/request": "^2.48.1",
+    "@types/knex": "^0.15.2",
+    "@types/node": "^10.14.16",
+    "@types/request": "^2.48.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "concurrently": "^4.0.1",
-    "coveralls": "^3.0.2",
-    "dependency-check": "^3.2.0",
+    "coveralls": "^3.0.6",
+    "dependency-check": "^4.1.0",
     "dotenv": "^6.0.0",
     "eslint": "^5.0.0",
     "eslint-config-standard": "^12.0.0",
@@ -82,13 +90,15 @@
     "grunt": "^1.0.2",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-uglify": "^1.0.2",
-    "installed-check": "^2.2.0",
-    "mocha": "^6.0.0",
-    "nock": "^10.0.0",
-    "nyc": "^13.0.0",
-    "sinon": "^7.0.0",
-    "supertest": "^3.1.0",
-    "typescript": "^3.1.6",
+    "husky": "^3.0.4",
+    "installed-check": "^3.0.0",
+    "mocha": "^6.2.0",
+    "nock": "^10.0.6",
+    "npm-run-all": "^4.1.5",
+    "nyc": "^14.1.1",
+    "sinon": "^7.4.1",
+    "supertest": "^4.0.2",
+    "typescript": "^3.5.3",
     "webmention-testpinger": "^0.6.1"
   }
 }
