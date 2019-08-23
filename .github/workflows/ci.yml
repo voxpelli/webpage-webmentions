@@ -31,7 +31,7 @@ jobs:
     - name: Yarn install
       run: yarn install --frozen-lockfile --ignore-engines
     - name: Yarn run build
-      run: yarn run build --if-present
+      run: yarn run build
     - name: Mocha tests
       run: yarn run test:mocha
       working-directory: ./postgres
