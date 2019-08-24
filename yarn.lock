@@ -251,6 +251,21 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
+"@types/pg-types@*":
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/@types/pg-types/-/pg-types-1.11.4.tgz#8d7c59fb509ce3dca3f8bae589252051c639a9a8"
+  integrity sha512-WdIiQmE347LGc1Vq3Ki8sk3iyCuLgnccqVzgxek6gEHp2H0p3MQ3jniIHt+bRODXKju4kNQ+mp53lmP5+/9moQ==
+  dependencies:
+    moment ">=2.14.0"
+
+"@types/pg@^7.4.14":
+  version "7.11.0"
+  resolved "https://registry.yarnpkg.com/@types/pg/-/pg-7.11.0.tgz#11dddc4d54f9b3a8c6dc7e6a6e58a71a033db9ad"
+  integrity sha512-wXduaNIDQp7w9ediwIRAH+FpdgtOlOwFVlYe9DtBPDczxcHgfb0blLNR7yYVNUMhspC0xOLykOvMDHavbO0Sxg==
+  dependencies:
+    "@types/node" "*"
+    "@types/pg-types" "*"
+
 "@types/range-parser@*":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
@@ -3784,7 +3799,7 @@ mocha@^6.2.0:
     yargs-parser "13.0.0"
     yargs-unparser "1.5.0"
 
-moment@^2.22.2:
+moment@>=2.14.0, moment@^2.22.2:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -4453,14 +4468,15 @@ pg-pool@^2.0.4:
   resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-2.0.7.tgz#f14ecab83507941062c313df23f6adcd9fd0ce54"
   integrity sha512-UiJyO5B9zZpu32GSlP0tXy8J2NsJ9EFGFfz5v6PSbdz/1hBLX1rNiiy5+mAm5iJJYwfCv4A0EBcQLGWwjbpzZw==
 
-pg-pubsub@^0.4.0:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/pg-pubsub/-/pg-pubsub-0.4.1.tgz#ea46dfaa449a633218a7acd12fd42685f12e76bf"
-  integrity sha512-AdkHqA/vFJRyBKRfljtpMBIoPc0Itmsb2R1xeYW3CgEBPK6FFnr51UgDnVPsZKUvM7OsgWHSETLccHjzKWOR+A==
+pg-pubsub@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/pg-pubsub/-/pg-pubsub-0.5.0.tgz#5469737af32ac6d13fc3153dc3944f55da3d8840"
+  integrity sha512-lfNMbiVt6d8yomYOWV9+smMdrdUUj3Q8Uq9SiNL+3q2G+jjjjaT9+FKDudw9VEN94pYmCtJzhXz/BlaD4LgyZg==
   dependencies:
+    "@types/pg" "^7.4.14"
     pg "^7.4.3"
     pg-format "^1.0.2"
-    promised-retry "^0.2.1"
+    promised-retry "^0.3.0"
     verror "^1.10.0"
 
 pg-types@^2.1.0:
@@ -4616,10 +4632,10 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-promised-retry@^0.2.1:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/promised-retry/-/promised-retry-0.2.3.tgz#e4d7e33589a83f4186b0d4a637b9d5d6fdef89b3"
-  integrity sha1-5NfjNYmoP0GGsNSmN7nV1v3vibM=
+promised-retry@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/promised-retry/-/promised-retry-0.3.0.tgz#fc3930ca1f76c4d1e559b7368b1f7e953ae0d6ad"
+  integrity sha512-oj7GS7q3g381QuIR8mMJeJe5GSKm16xXL7Q+7/+5MH2mlWBHXn7dUYmS/BBjGkoBm9M8h2KcVifj3vRZ62AB5A==
 
 propagate@^1.0.0:
   version "1.0.0"
