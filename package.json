@@ -21,7 +21,7 @@
     "express-session": "^1.15.6",
     "faker": "^2.1.1",
     "fetch-politely": "^2.0.0-3",
-    "knex": "^0.15.2",
+    "knex": "^0.19.0",
     "knex-migrator-extension": "^0.1.4",
     "lodash.clonedeep": "^4.5.0",
     "lodash.escape": "^4.0.1",
