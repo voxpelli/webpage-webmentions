@@ -5858,10 +5858,10 @@ verror@1.10.0, verror@^1.10.0, verror@^1.6.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-webmention-testpinger@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/webmention-testpinger/-/webmention-testpinger-0.6.1.tgz#23f2ec49e1a046cc6b321e804999d583c09ad5e6"
-  integrity sha1-I/LsSeGgRsxrMh6ASZnVg8Ca1eY=
+webmention-testpinger@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/webmention-testpinger/-/webmention-testpinger-0.7.0.tgz#1967c1b9dc20b8c8aa78e8cad95a0f15ff201de3"
+  integrity sha512-PckZKtsIHIkUapT3csNsBlKwzEgW7zmGOO42Po6FRez49wpze3qmTBZarpvrMiy8mRAR2CtBiUO+A0BPS+apLw==
   dependencies:
     chalk "^1.0.0"
     denodeify "^1.2.1"
