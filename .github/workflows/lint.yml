@@ -17,9 +17,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         version: ${{ matrix.node_version }}
-
-    - name: npm install, build and test
-      run: |
-        npm install
-        npm run build --if-present
-        npm run check
+    - name: Yarn install
+      run: yarn install --frozen-lockfile
+    - name: Yarn run build
+      run: yarn run build
+    - name: Linting
+      run: yarn run check
