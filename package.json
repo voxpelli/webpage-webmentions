@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@voxpelli/metadataparser": "^2.0.0",
-    "@voxpelli/metadataparser-mf2": "^0.3.0",
+    "@voxpelli/metadataparser-mf2": "^0.4.0",
     "@voxpelli/passport-dummy": "^1.0.0",
     "body-parser": "^1.18.3",
     "cors": "^2.5.2",
