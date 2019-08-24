@@ -299,10 +299,10 @@
   resolved "https://registry.yarnpkg.com/@tyriar/fibonacci-heap/-/fibonacci-heap-2.0.9.tgz#df3dcbdb1b9182168601f6318366157ee16666e9"
   integrity sha512-bYuSNomfn4hu2tPiDN+JZtnzCpSpbJ/PNeulmocDy3xN2X5OkJL65zo6rPZp65cPPhLF9vfT/dgE+RtFRCSxOA==
 
-"@voxpelli/metadataparser-mf2@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@voxpelli/metadataparser-mf2/-/metadataparser-mf2-0.3.0.tgz#77da72d90e242edb5ed3331e391b96c532bd8037"
-  integrity sha1-d9py2Q4kLtte0zMeORuWxTK9gDc=
+"@voxpelli/metadataparser-mf2@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@voxpelli/metadataparser-mf2/-/metadataparser-mf2-0.4.0.tgz#4a2669ea1a04e48457e0246e6c2784a486f7fa83"
+  integrity sha512-nZ9TGVy/XZj6rYaU+vMaJZwxUDYJNwtAia4/yYXlMelcr0Ba9H+K4LSiYC3wI1nc89Gih6LlBylwktYpIlAzog==
   dependencies:
     microformat-node "^2.0.1"
 
