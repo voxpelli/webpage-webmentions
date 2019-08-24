@@ -11,9 +11,10 @@ jobs:
       matrix:
         node_version: [10]
         os: [ubuntu-latest]
+        postgres_version: [10.8, 9.5]
     services:
       postgres:
-        image: postgres:10.8
+        image: postgres:${{ matrix.postgres_version }}
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
