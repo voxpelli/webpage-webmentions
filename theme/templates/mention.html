@@ -4,8 +4,8 @@
   <% } else { %>
     <span class="p-author h-card">
   <% } %>
-    <% if (mention.author.url) { %>
-      <img src="<%- mention.author.photo %>" alt="" />
+    <% if (mention.author.photo) { %>
+      <img loading="lazy" src="<%- mention.author.photo %>" alt="" />
     <% } %>
     <%- mention.author.name %>
   <% if (mention.author.url) { %></a><% } else { %></span><% } %>
