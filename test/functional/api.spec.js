@@ -38,6 +38,12 @@ const should = chai.should();
 
 const isSinonStub = (value) => !!(value && value.restore && value.restore.sinon);
 
+/**
+ * @param {number} timeout
+ * @returns {Promise<void>}
+ */
+const promisedWait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
+
 describe('WebMention API', function () {
   this.timeout(15000);
 
@@ -53,9 +59,9 @@ describe('WebMention API', function () {
 
   /**
    * @param {number} [limit]
-   * @returns {() => Promise<void>}
+   * @returns {Promise<void>}
    */
-  const waitForNotification = (limit) => {
+  const asyncNotification = async (limit) => {
     if (!isSinonStub(Entry.prototype._notify)) {
       let count = 0;
 
@@ -79,31 +85,39 @@ describe('WebMention API', function () {
       });
     });
 
+    return notificationPromise;
+  };
+
+  /**
+   * @param {number} [limit]
+   * @returns {() => Promise<void>}
+   */
+  const waitForNotification = (limit) => {
+    const notificationPromise = asyncNotification(limit);
     return () => notificationPromise;
   };
 
-  before(() => {
-    return dbUtils.clearDb()
-      .then(dbUtils.setupSchema)
-      .then(() => {
-        const main = require('../../lib/main');
+  before(async () => {
+    await dbUtils.clearDb();
+    await dbUtils.setupSchema();
 
-        app = main.app;
+    const main = require('../../lib/main');
 
-        return new Promise(resolve => setTimeout(resolve, 1000));
-      });
+    app = main.app;
+
+    await promisedWait(1000);
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     nock.cleanAll();
     nock.disableNetConnect();
     nock.enableNetConnect('127.0.0.1');
 
     waitingForNotifications = [];
 
-    return dbUtils.clearDb()
-      .then(dbUtils.setupSchema)
-      .then(dbUtils.setupSampleData);
+    await dbUtils.clearDb();
+    await dbUtils.setupSchema();
+    await dbUtils.setupSampleData();
   });
 
   afterEach(() => {
@@ -115,135 +129,107 @@ describe('WebMention API', function () {
   });
 
   describe('parseSourcePage', () => {
-    it('should handle the templates alright', () => {
+    it('should handle the templates alright', async () => {
       const mentionTargets = require('../template-mentions.json');
       const templateMocks = [];
-      let templateCount;
 
-      return templateCollection.getTemplateNames()
-        .then(templateNames => {
-          const templates = [];
+      const templateNames = await templateCollection.getTemplateNames();
+      const templateCount = templateNames.length;
 
-          templateCount = templateNames.length;
+      for (const name of templateNames) {
+        const template = await templateCollection.getTemplate(name, 'http://example.org/foo');
 
-          templateNames.forEach(name => {
-            const resolveTemplate = templateCollection.getTemplate(name, 'http://example.org/foo').then(template => {
-              templateMocks.push(
-                nock('http://' + name + '.example.com')
-                  .get('/')
-                  .reply(200, () => template)
-              );
-            }).then(() => name);
-            templates.push(resolveTemplate);
-          });
+        templateMocks.push(
+          nock('http://' + name + '.example.com')
+            .get('/')
+            .reply(200, () => template)
+        );
+      }
 
-          return Promise.all(templates);
-        })
-        .then(templateNames => {
-          const requests = [];
+      const requests = [];
 
-          templateNames.forEach(name => {
-            requests.push(new Promise((resolve, reject) => {
-              request(app)
-                .post('/api/webmention')
-                .send({
-                  source: 'http://' + name + '.example.com/',
-                  target: 'http://example.org/foo'
-                })
-                .expect(202)
-                .end(err => {
-                  if (err) {
-                    return reject(err);
-                  }
-                  resolve();
-                });
-            }));
-          });
+      for (const name of templateNames) {
+        requests.push(
+          request(app)
+            .post('/api/webmention')
+            .send({
+              source: 'http://' + name + '.example.com/',
+              target: 'http://example.org/foo'
+            })
+            .expect(202)
+        );
+      }
 
-          return Promise.all(requests).then(waitForNotification(templateNames.length));
-        })
-        .then(() => knex('entries').select('url', 'type', 'data', 'raw', 'mfversion'))
-        .then(result => {
-          templateMocks.forEach(templateMock => {
-            templateMock.done();
-          });
+      await Promise.all(requests);
 
-          result.should.be.an('array').be.of.length(templateCount);
+      await asyncNotification(templateNames.length);
 
-          return Promise.all(result.map(templateMention => Promise.resolve().then(() => {
-            const name = urlModule.parse(templateMention.url).hostname.replace('.example.com', '');
+      for (const mock of templateMocks) {
+        mock.done();
+      }
 
-            if (name && mentionTargets[name]) {
-              const target = cloneDeep(mentionTargets[name]);
+      const result = await knex('entries').select('url', 'type', 'data', 'raw', 'mfversion');
 
-              // Some templates don't have a published date, falling back to
-              // Date.now() which messes up the deepEqual(). Working around it.
-              if (target.published === undefined) {
-                target.published = templateMention.data.published;
-              }
+      result.should.be.an('array').be.of.length(templateCount);
 
-              templateMention.data.should.deep.equal(target);
+      for (const templateMention of result) {
+        const name = urlModule.parse(templateMention.url).hostname.replace('.example.com', '');
 
-              if (target.interactionType) {
-                should.equal(templateMention.type, target.interactionType);
-              } else {
-                should.not.exist(templateMention.type);
-              }
-
-              templateMention.mfversion.should.equal('mf2::' + microformatsVersion.version + '::' + microformatsVersion.microformatsVersion);
-            } else {
-              // Uncomment to inspect new templates to easily add them to ../template-mentions.json
-              // console.log(JSON.stringify(templateMention.data));
-              // console.log(JSON.stringify(templateMention.raw));
+        if (name && mentionTargets[name]) {
+          try {
+            const target = cloneDeep(mentionTargets[name]);
+            // Some templates don't have a published date, falling back to
+            // Date.now() which messes up the deepEqual(). Working around it.
+            if (target.published === undefined) {
+              target.published = templateMention.data.published;
             }
-          }).catch(err => {
+            templateMention.data.should.deep.equal(target);
+            if (target.interactionType) {
+              should.equal(templateMention.type, target.interactionType);
+            } else {
+              should.not.exist(templateMention.type);
+            }
+            templateMention.mfversion.should.equal('mf2::' + microformatsVersion.version + '::' + microformatsVersion.microformatsVersion);
+          } catch (err) {
             mochaErrorLog(err, 'Template error');
             throw err;
-          })));
-        });
+          }
+        } else {
+          // Uncomment to inspect new templates to easily add them to ../template-mentions.json
+          // console.log(JSON.stringify(templateMention.data));
+          // console.log(JSON.stringify(templateMention.raw));
+        }
+      }
     });
 
-    it('should handle pings asynchronously', () => {
-      let templateMock;
+    it('should handle pings asynchronously', async () => {
+      const [templateName] = await templateCollection.getTemplateNames();
+      const template = await templateCollection.getTemplate(templateName, 'http://example.org/foo');
+      const mock = nock('http://example.com/')
+        .get('/')
+        .reply(200, () => template);
 
-      return templateCollection.getTemplateNames()
-        .then(templateNames => templateNames[0])
-        .then(templateName => templateCollection.getTemplate(templateName, 'http://example.org/foo'))
-        .then(template => nock('http://example.com/')
-          .get('/')
-          .reply(200, () => template)
-        )
-        .then(mock => {
-          templateMock = mock;
-
-          return new Promise((resolve, reject) => {
-            request(app)
-              .post('/api/webmention')
-              .send({
-                source: 'http://example.com/',
-                target: 'http://example.org/foo'
-              })
-              .expect(202)
-              .end(err => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve();
-              });
-          });
+      await request(app)
+        .post('/api/webmention')
+        .send({
+          source: 'http://example.com/',
+          target: 'http://example.org/foo'
         })
-        .then(waitForNotification())
-        .then(() => Promise.all([
-          knex('entries').count('id').first(),
-          knex('mentions').count('eid').first()
-        ]))
-        .then(result => {
-          templateMock.done();
-          result.should.deep.equal([
-            { count: '1' },
-            { count: '1' }
-          ]);
-        });
+        .expect(202);
+
+      await asyncNotification();
+
+      const result = await Promise.all([
+        knex('entries').count('id').first(),
+        knex('mentions').count('eid').first()
+      ]);
+
+      mock.done();
+
+      result.should.deep.equal([
+        { count: '1' },
+        { count: '1' }
+      ]);
     });
 
     it('should send a live update', done => {
@@ -262,47 +248,36 @@ describe('WebMention API', function () {
               updates.should.contain('event: mention\ndata: {"url":"');
               res.removeListener('data', listener);
               result
-                .then(() => knex('entries').count('id').first())
-                .then(result => {
+                .then(async () => {
+                  const dbResult = await knex('entries').count('id').first();
                   templateMock.done();
-                  result.count.should.be.a('string').and.equal('1');
+                  dbResult.count.should.be.a('string').and.equal('1');
+                  done();
                 })
-                .then(() => { done(); })
                 .catch(err => { done(new VError(err, 'DB call failed')); });
             }
           };
           res.on('data', listener);
         });
 
-      const result = templateCollection.getTemplateNames()
-        .then(templateNames => templateNames[0])
-        .then(templateName => templateCollection.getTemplate(templateName, 'http://example.org/foo'))
-        .then(template => nock('http://example.com/')
-          .get('/')
-          .reply(200, () => template)
-        )
-        .then(mock => {
-          templateMock = mock;
+      const result = templateCollection.getTemplateNames().then(async ([templateName]) => {
+        const template = await templateCollection.getTemplate(templateName, 'http://example.org/foo');
 
-          return new Promise((resolve, reject) => {
-            request(app)
-              .post('/api/webmention')
-              .send({
-                source: 'http://example.com/',
-                target: 'http://example.org/foo'
-              })
-              .expect(202)
-              .end(err => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve();
-              });
-          });
-        });
+        templateMock = nock('http://example.com/')
+          .get('/')
+          .reply(200, () => template);
+
+        await request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'http://example.com/',
+            target: 'http://example.org/foo'
+          })
+          .expect(202);
+      });
     });
 
-    it('should handle multiple mentions', () => {
+    it('should handle multiple mentions', async () => {
       const templateMock = nock('http://example.com')
         .get('/')
         .times(2)
@@ -313,37 +288,28 @@ describe('WebMention API', function () {
           '</div>'
         );
 
-      return Promise.all(
+      await Promise.all(
         [
           'http://example.org/foo',
           'http://example.org/bar'
-        ].map(target =>
-          new Promise((resolve, reject) => {
-            request(app)
-              .post('/api/webmention')
-              .send({
-                source: 'http://example.com/',
-                target
-              })
-              .expect(202)
-              .end(err => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve();
-              });
-          })
-            .then(waitForNotification())
-        )
-      )
-        .then(() => knex('mentions').count('url').first())
-        .then((result) => {
-          templateMock.done();
-          result.count.should.be.a('string').and.equal('2');
-        });
+        ].map(async target => {
+          await request(app)
+            .post('/api/webmention')
+            .send({
+              source: 'http://example.com/',
+              target
+            })
+            .expect(202);
+          await asyncNotification();
+        })
+      );
+
+      const result = await knex('mentions').count('url').first();
+      templateMock.done();
+      result.count.should.be.a('string').and.equal('2');
     });
 
-    it('should update all existing source mentions on valid ping', () => {
+    it('should update all existing source mentions on valid ping', async () => {
       const templateMock = nock('http://example.com')
         .get('/')
         .once()
@@ -360,136 +326,102 @@ describe('WebMention API', function () {
           '</div>'
         );
 
-      return [
+      await [
         'http://example.org/foo',
         'http://example.org/bar'
-      ].reduce(
-        (promiseChain, target) => promiseChain.then(() =>
-          new Promise((resolve, reject) => {
-            request(app)
-              .post('/api/webmention')
-              .send({
-                source: 'http://example.com/',
-                target
-              })
-              .expect(202)
-              .end(err => {
-                if (err) { return reject(err); }
-                resolve();
-              });
+      ].reduce(async (promiseChain, target) => {
+        await promiseChain;
+
+        await request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'http://example.com/',
+            target
           })
-        ).then(waitForNotification()),
-        Promise.resolve()
-      )
-        .then(() => { templateMock.done(); })
-        .then(() => knex('mentions').select().orderBy('url', 'desc'))
-        .then(result => {
-          result.should.be.an('array').with.a.lengthOf(2);
+          .expect(202);
 
-          result.should.have.nested.property('[0].url', 'http://example.org/foo');
-          result.should.have.nested.property('[0].interaction', true);
-          result.should.not.have.nested.property('[0].updated', null);
-          result.should.have.nested.property('[0].removed', false);
+        await asyncNotification();
+      }, Promise.resolve());
 
-          result.should.have.nested.property('[1].url', 'http://example.org/bar');
-          result.should.have.nested.property('[1].interaction', false);
-          result.should.have.nested.property('[1].updated', null);
-          result.should.have.nested.property('[1].removed', false);
-        })
-        .then(() => knex('entries').select())
-        .then(result => {
-          result.should.be.an('array').with.a.lengthOf(1);
+      templateMock.done();
 
-          result.should.have.nested.property('[0].url', 'http://example.com/');
-          result.should.have.nested.property('[0].published').that.is.a('date');
-          result.should.have.nested.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
-          result.should.have.nested.property('[0].type', 'like');
-          result.should.have.nested.property('[0].data.interactionType', 'like');
-          result.should.have.nested.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
-        });
+      const result = await knex('mentions').select().orderBy('url', 'desc');
+
+      result.should.be.an('array').with.a.lengthOf(2);
+      result.should.have.nested.property('[0].url', 'http://example.org/foo');
+      result.should.have.nested.property('[0].interaction', true);
+      result.should.not.have.nested.property('[0].updated', null);
+      result.should.have.nested.property('[0].removed', false);
+      result.should.have.nested.property('[1].url', 'http://example.org/bar');
+      result.should.have.nested.property('[1].interaction', false);
+      result.should.have.nested.property('[1].updated', null);
+      result.should.have.nested.property('[1].removed', false);
+
+      const secondResult = await knex('entries').select();
+      secondResult.should.be.an('array').with.a.lengthOf(1);
+      secondResult.should.have.nested.property('[0].url', 'http://example.com/');
+      secondResult.should.have.nested.property('[0].published').that.is.a('date');
+      secondResult.should.have.nested.property('[0].updated').that.is.a('date').that.not.equals(secondResult[0].published);
+      secondResult.should.have.nested.property('[0].type', 'like');
+      secondResult.should.have.nested.property('[0].data.interactionType', 'like');
+      secondResult.should.have.nested.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
     });
 
-    it('should update on repeated ping', () => {
-      const templateMock1 = nock('http://example.com')
-        .get('/')
-        .times(1)
-        .reply(200, () => '<div class="h-entry">' +
-            '<a href="http://example.org/foo">First</a>' +
-          '</div>'
-        );
+    it('should update on repeated ping', async () => {
+      const templateMocks = [
+        nock('http://example.com')
+          .get('/')
+          .times(1)
+          .reply(200, () => '<div class="h-entry">' +
+              '<a href="http://example.org/foo">First</a>' +
+            '</div>'
+          ),
 
-      const templateMock2 = nock('http://example.com')
-        .get('/')
-        .times(1)
-        .reply(200, () => '<div class="h-entry">' +
-            '<a class="u-like-of" href="http://example.org/foo">First</a>' +
-          '</div>'
-        );
+        nock('http://example.com')
+          .get('/')
+          .times(1)
+          .reply(200, () => '<div class="h-entry">' +
+              '<a class="u-like-of" href="http://example.org/foo">First</a>' +
+            '</div>'
+          )
+      ];
 
-      return new Promise((resolve, reject) => {
-        request(app)
+      for (const [i, element] of templateMocks.entries()) {
+        await request(app)
           .post('/api/webmention')
           .send({
             source: 'http://example.com/',
             target: 'http://example.org/foo'
           })
-          .expect(202)
-          .end(err => {
-            if (err) {
-              return reject(err);
-            }
-            resolve();
-          });
-      })
-        .then(waitForNotification())
-        .then(() => {
-          templateMock1.done();
-          return knex('entries').select();
-        })
-        .then(result => {
-          result.should.be.an('array').with.a.lengthOf(1);
-          result.should.have.nested.property('[0].published').that.is.a('date');
-          result.should.have.nested.property('[0].updated').that.is.a('date');
+          .expect(202);
+
+        await asyncNotification();
+
+        element.done();
+
+        const result = await knex('entries').select();
+
+        result.should.be.an('array').with.a.lengthOf(1);
+        result.should.have.nested.property('[0].published').that.is.a('date');
+        result.should.have.nested.property('[0].updated').that.is.a('date');
+
+        if (i === 0) {
           result.should.have.nested.property('[0].type', null);
           result.should.not.have.nested.property('[0].data.interactionType');
           result.should.not.have.nested.property('[0].data.interactions');
 
           result[0].published.valueOf()
             .should.equal(result[0].updated.valueOf());
-        })
-        .then(() =>
-          new Promise((resolve, reject) => {
-            request(app)
-              .post('/api/webmention')
-              .send({
-                source: 'http://example.com/',
-                target: 'http://example.org/foo'
-              })
-              .expect(202)
-              .end(err => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve();
-              });
-          })
-        )
-        .then(waitForNotification())
-        .then(() => {
-          templateMock2.done();
-          return knex('entries').select();
-        })
-        .then(result => {
-          result.should.be.an('array').with.a.lengthOf(1);
-          result.should.have.nested.property('[0].published').that.is.a('date');
-          result.should.have.nested.property('[0].updated').that.is.a('date').that.not.equals(result[0].published);
+        } else {
+          result.should.have.nested.property('[0].updated').that.not.equals(result[0].published);
           result.should.have.nested.property('[0].type', 'like');
           result.should.have.nested.property('[0].data.interactionType', 'like');
           result.should.have.nested.property('[0].data.interactions').that.deep.equals(['http://example.org/foo']);
-        });
+        }
+      }
     });
 
-    it('should update remove all outdated source mentions on valid ping', () => {
+    it('should update remove all outdated source mentions on valid ping', async () => {
       const templateMock1 = nock('http://example.com')
         .get('/')
         .times(1)
@@ -506,49 +438,42 @@ describe('WebMention API', function () {
           '</div>'
         );
 
-      return [
+      await [
         'http://example.org/foo',
         'http://example.org/bar'
-      ].reduce(
-        (promiseChain, target) => promiseChain.then(() =>
-          new Promise((resolve, reject) => {
-            request(app)
-              .post('/api/webmention')
-              .send({
-                source: 'http://example.com/',
-                target
-              })
-              .expect(202)
-              .end(err => {
-                if (err) { return reject(err); }
-                resolve();
-              });
+      ].reduce(async (promiseChain, target) => {
+        await promiseChain;
+
+        await request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'http://example.com/',
+            target
           })
-        ).then(waitForNotification()),
-        Promise.resolve()
-      )
-        .then(() => knex('mentions').select().orderBy('url', 'desc'))
-        .then(result => {
-          templateMock1.done();
-          templateMock2.done();
+          .expect(202);
 
-          result.should.be.an('array').with.a.lengthOf(2);
+        await asyncNotification();
+      }, Promise.resolve());
 
-          result.should.have.nested.property('[0].url', 'http://example.org/foo');
-          result.should.have.nested.property('[0].interaction', false);
-          result.should.not.have.nested.property('[0].updated', null);
-          result.should.have.nested.property('[0].removed', true);
+      templateMock1.done();
+      templateMock2.done();
 
-          result.should.have.nested.property('[1].url', 'http://example.org/bar');
-          result.should.have.nested.property('[1].interaction', false);
-          result.should.have.nested.property('[1].updated', null);
-          result.should.have.nested.property('[1].removed', false);
-        });
+      const result = await knex('mentions').select().orderBy('url', 'desc');
+
+      result.should.be.an('array').with.a.lengthOf(2);
+      result.should.have.nested.property('[0].url', 'http://example.org/foo');
+      result.should.have.nested.property('[0].interaction', false);
+      result.should.not.have.nested.property('[0].updated', null);
+      result.should.have.nested.property('[0].removed', true);
+      result.should.have.nested.property('[1].url', 'http://example.org/bar');
+      result.should.have.nested.property('[1].interaction', false);
+      result.should.have.nested.property('[1].updated', null);
+      result.should.have.nested.property('[1].removed', false);
     });
 
     it('should properly handle pings of site that returns 404:s');
 
-    it('should fetch comments found on mentions', () => {
+    it('should fetch comments found on mentions', async () => {
       const templateMock = nock('http://example.com')
         .get('/')
         .once()
@@ -564,38 +489,30 @@ describe('WebMention API', function () {
           '</div>'
         );
 
-      return new Promise((resolve, reject) => {
-        request(app)
-          .post('/api/webmention')
-          .send({
-            source: 'http://example.com/',
-            target: 'http://example.org/foo'
-          })
-          .expect(202)
-          .end(err => {
-            if (err) {
-              return reject(err);
-            }
-            resolve();
-          });
-      })
-        .then(waitForNotification(2))
-        .then(() =>
-          Promise.all([
-            knex('entries').count('id').first(),
-            knex('mentions').count('eid').first()
-          ])
-        )
-        .then(result => {
-          templateMock.done();
-          result.should.deep.equal([
-            { count: '2' },
-            { count: '2' }
-          ]);
-        });
+      await request(app)
+        .post('/api/webmention')
+        .send({
+          source: 'http://example.com/',
+          target: 'http://example.org/foo'
+        })
+        .expect(202);
+
+      await asyncNotification(2);
+
+      templateMock.done();
+
+      const result = await Promise.all([
+        knex('entries').count('id').first(),
+        knex('mentions').count('eid').first()
+      ]);
+
+      result.should.deep.equal([
+        { count: '2' },
+        { count: '2' }
+      ]);
     });
 
-    it('should fetch responses-links found on mentions', () => {
+    it('should fetch responses-links found on mentions', async () => {
       const templateMock = nock('http://example.com')
         .get('/')
         .once()
@@ -617,38 +534,30 @@ describe('WebMention API', function () {
           '</div>'
         );
 
-      return new Promise((resolve, reject) => {
-        request(app)
-          .post('/api/webmention')
-          .send({
-            source: 'http://example.com/',
-            target: 'http://example.org/foo'
-          })
-          .expect(202)
-          .end(err => {
-            if (err) {
-              return reject(err);
-            }
-            resolve();
-          });
-      })
-        .then(waitForNotification(2))
-        .then(() =>
-          Promise.all([
-            knex('entries').count('id').first(),
-            knex('mentions').count('eid').first()
-          ])
-        )
-        .then(result => {
-          templateMock.done();
-          result.should.deep.equal([
-            { count: '2' },
-            { count: '2' }
-          ]);
-        });
+      await request(app)
+        .post('/api/webmention')
+        .send({
+          source: 'http://example.com/',
+          target: 'http://example.org/foo'
+        })
+        .expect(202);
+
+      await asyncNotification(2);
+
+      templateMock.done();
+
+      const result = await Promise.all([
+        knex('entries').count('id').first(),
+        knex('mentions').count('eid').first()
+      ]);
+
+      result.should.deep.equal([
+        { count: '2' },
+        { count: '2' }
+      ]);
     });
 
-    it('should fetch and ping upstream salmention targets of mention', () => {
+    it('should fetch and ping upstream salmention targets of mention', async () => {
       const templateMock = nock('http://example.com')
         .get('/')
         .once()
@@ -681,46 +590,35 @@ describe('WebMention API', function () {
         .once()
         .reply(202);
 
-      return new Promise((resolve, reject) => {
-        request(app)
-          .post('/api/webmention')
-          .send({
-            source: 'http://example.com/',
-            target: 'http://example.net/foo'
-          })
-          .expect(202)
-          .end(err => {
-            if (err) {
-              return reject(err);
-            }
-            resolve();
-          });
-      })
-        .then(waitForNotification(3))
-        // TODO: Improve – relyng on timers in tests are pretty fragile
-        .then(() =>
-          new Promise(resolve => {
-            setTimeout(resolve, 300);
-          })
-        )
-        .then(() =>
-          Promise.all([
-            knex('entries').count('id').first(),
-            knex('mentions').count('eid').first()
-          ])
-        )
-        .then(result => {
-          templateMock.done();
-          targetMock.done();
-          pingMock.done();
-          result.should.deep.equal([
-            { count: '3' },
-            { count: '1' }
-          ]);
-        });
+      await request(app)
+        .post('/api/webmention')
+        .send({
+          source: 'http://example.com/',
+          target: 'http://example.net/foo'
+        })
+        .expect(202);
+
+      await asyncNotification(3);
+
+      // TODO: Improve – relyng on timers in tests are pretty fragile
+      await promisedWait(300);
+
+      templateMock.done();
+      targetMock.done();
+      pingMock.done();
+
+      const result = await Promise.all([
+        knex('entries').count('id').first(),
+        knex('mentions').count('eid').first()
+      ]);
+
+      result.should.deep.equal([
+        { count: '3' },
+        { count: '1' }
+      ]);
     });
 
-    it('should fetch and ping upstream salmention targets on downstream mention', () => {
+    it('should fetch and ping upstream salmention targets on downstream mention', async () => {
       const templateMock = nock('http://example.com')
         .get('/')
         .once()
@@ -760,46 +658,35 @@ describe('WebMention API', function () {
         .twice() // TODO: Should be .once() really
         .reply(202);
 
-      return new Promise((resolve, reject) => {
-        request(app)
-          .post('/api/webmention')
-          .send({
-            source: 'http://example.com/',
-            target: 'http://example.net/foo'
-          })
-          .expect(202)
-          .end(err => {
-            if (err) {
-              return reject(err);
-            }
-            resolve();
-          });
-      })
-        .then(waitForNotification(4))
-        // TODO: Improve – relyng on timers in tests are pretty fragile
-        .then(() =>
-          new Promise(resolve => {
-            setTimeout(resolve, 300);
-          })
-        )
-        .then(() =>
-          Promise.all([
-            knex('entries').count('id').first(),
-            knex('mentions').count('eid').first()
-          ])
-        )
-        .then(result => {
-          templateMock.done();
-          targetMock.done();
-          pingMock.done();
-          result.should.deep.equal([
-            { count: '4' },
-            { count: '2' }
-          ]);
-        });
+      await request(app)
+        .post('/api/webmention')
+        .send({
+          source: 'http://example.com/',
+          target: 'http://example.net/foo'
+        })
+        .expect(202);
+
+      await asyncNotification(4);
+
+      // TODO: Improve – relying on timers in tests are pretty fragile
+      await promisedWait(300);
+
+      templateMock.done();
+      targetMock.done();
+      pingMock.done();
+
+      const result = await Promise.all([
+        knex('entries').count('id').first(),
+        knex('mentions').count('eid').first()
+      ]);
+
+      result.should.deep.equal([
+        { count: '4' },
+        { count: '2' }
+      ]);
     });
 
-    it('should fetch and ping upstream salmention person tags', () => {
+    it('should fetch and ping upstream salmention person tags', async () => {
       const templateMock = nock('http://example.com')
         .get('/')
         .once()
@@ -832,108 +719,82 @@ describe('WebMention API', function () {
         .once()
         .reply(202);
 
-      return new Promise((resolve, reject) => {
-        request(app)
-          .post('/api/webmention')
-          .send({
-            source: 'http://example.com/',
-            target: 'http://example.net/foo'
-          })
-          .expect(202)
-          .end(err => {
-            if (err) {
-              return reject(err);
-            }
-            resolve();
-          });
-      })
-        .then(waitForNotification(3))
-        // TODO: Improve – relyng on timers in tests are pretty fragile
-        .then(() =>
-          new Promise(resolve => {
-            setTimeout(resolve, 300);
-          })
-        )
-        .then(() =>
-          Promise.all([
-            knex('entries').count('id').first(),
-            knex('mentions').count('eid').first()
-          ])
-        )
-        .then(result => {
-          templateMock.done();
-          targetMock.done();
-          pingMock.done();
-          result.should.deep.equal([
-            { count: '3' },
-            { count: '1' }
-          ]);
-        });
-    });
-
-    it('should reject malformed source URL:s', () => {
-      return new Promise((resolve, reject) => {
-        request(app)
-          .post('/api/webmention')
-          .send({
-            source: 'invalid',
-            target: 'http://example.org/foo'
-          })
-          .expect(400)
-          .end(err => err ? reject(err) : resolve());
-      });
-    });
-
-    it('should reject malformed target URL:s', () => {
-      return new Promise((resolve, reject) => {
-        request(app)
-          .post('/api/webmention')
-          .send({
-            source: 'http://example.org/foo',
-            target: 'invalid'
-          })
-          .expect(400)
-          .end(err => err ? reject(err) : resolve());
-      });
-    });
-
-    it('should reject when source and target URL:s are equal', () => {
-      return new Promise((resolve, reject) => {
-        request(app)
-          .post('/api/webmention')
-          .send({
-            source: 'http://example.org/foo',
-            target: 'http://example.org/foo'
-          })
-          .expect(400)
-          .end(err => err ? reject(err) : resolve());
-      });
-    });
-
-    it('should reject when normalized source and target URL:s are equal', () => {
-      return Promise.all([
-        new Promise((resolve, reject) => {
-          request(app)
-            .post('/api/webmention')
-            .send({
-              source: 'https://example.org/foo',
-              target: 'http://example.org/foo'
-            })
-            .expect(400)
-            .end(err => err ? reject(err) : resolve());
-        }),
-        new Promise((resolve, reject) => {
-          request(app)
-            .post('/api/webmention')
-            .send({
-              source: 'https://www.example.org/foo',
-              target: 'http://example.org/foo/#foobar'
-            })
-            .expect(400)
-            .end(err => err ? reject(err) : resolve());
+      await request(app)
+        .post('/api/webmention')
+        .send({
+          source: 'http://example.com/',
+          target: 'http://example.net/foo'
         })
+        .expect(202);
+
+      await asyncNotification(3);
+
+      // TODO: Improve – relying on timers in tests are pretty fragile
+      await promisedWait(300);
+
+      templateMock.done();
+      targetMock.done();
+      pingMock.done();
+
+      const result = await Promise.all([
+        knex('entries').count('id').first(),
+        knex('mentions').count('eid').first()
+      ]);
+
+      result.should.deep.equal([
+        { count: '3' },
+        { count: '1' }
       ]);
     });
+
+    it('should reject malformed source URL:s', async () =>
+      request(app)
+        .post('/api/webmention')
+        .send({
+          source: 'invalid',
+          target: 'http://example.org/foo'
+        })
+        .expect(400)
+    );
+
+    it('should reject malformed target URL:s', async () =>
+      request(app)
+        .post('/api/webmention')
+        .send({
+          source: 'http://example.org/foo',
+          target: 'invalid'
+        })
+        .expect(400)
+    );
+
+    it('should reject when source and target URL:s are equal', async () =>
+      request(app)
+        .post('/api/webmention')
+        .send({
+          source: 'http://example.org/foo',
+          target: 'http://example.org/foo'
+        })
+        .expect(400)
+    );
+
+    it('should reject when normalized source and target URL:s are equal', async () =>
+      Promise.all([
+        request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'https://example.org/foo',
+            target: 'http://example.org/foo'
+          })
+          .expect(400),
+        request(app)
+          .post('/api/webmention')
+          .send({
+            source: 'https://www.example.org/foo',
+            target: 'http://example.org/foo/#foobar'
+          })
+          .expect(400)
+      ])
+    );
   });
 
   describe('fetch mentions', () => {
