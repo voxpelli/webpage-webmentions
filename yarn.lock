@@ -1856,10 +1856,10 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
-faker@^2.1.1:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/faker/-/faker-2.1.5.tgz#e07f8bff5e1262e67fd5193fca0785f4ca681150"
-  integrity sha1-4H+L/14SYuZ/1Rk/ygeF9MpoEVA=
+faker@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
+  integrity sha1-HkW7vsxndLPBlfrSg1EJxtdIzD8=
 
 fast-deep-equal@^2.0.1:
   version "2.0.1"
