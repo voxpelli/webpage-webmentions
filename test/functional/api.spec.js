@@ -1,7 +1,20 @@
+// @ts-check
+/// <reference types="node" />
+/// <reference types="mocha" />
+/// <reference types="chai" />
+/// <reference types="sinon" />
+/// <reference types="supertest" />
+
 'use strict';
 
 const mochaList = require('mocha').reporters.Base.list;
+
+/**
+ * @param {Error} err
+ * @param {string} title
+ */
 const mochaErrorLog = (err, title) => {
+  // @ts-ignore
   mochaList([{
     err,
     fullTitle: () => title || 'Untitled'
@@ -23,6 +36,8 @@ const dbUtils = require('../db-utils');
 chai.use(chaiAsPromised);
 const should = chai.should();
 
+const isSinonStub = (value) => !!(value && value.restore && value.restore.sinon);
+
 describe('WebMention API', function () {
   this.timeout(7000);
 
@@ -33,13 +48,18 @@ describe('WebMention API', function () {
   const microformatsVersion = require('@voxpelli/metadataparser-mf2').versions;
   const templateCollection = new WebMentionTemplates();
 
+  /** @type {{limit: number, callback: () => void}[]} */
   let waitingForNotifications;
 
+  /**
+   * @param {number} [limit]
+   * @returns {() => Promise<void>}
+   */
   const waitForNotification = (limit) => {
-    if (!Entry.prototype._notify.restore) {
+    if (!isSinonStub(Entry.prototype._notify)) {
       let count = 0;
 
-      sinon.stub(Entry.prototype, '_notify').callsFake(() => {
+      sinon.stub(Entry.prototype, '_notify').callsFake(async () => {
         count += 1;
         waitingForNotifications.reduce((position, options) => {
           const limit = position + options.limit;
@@ -51,6 +71,7 @@ describe('WebMention API', function () {
       });
     }
 
+    /** @type {Promise<void>} */
     const notificationPromise = new Promise(resolve => {
       waitingForNotifications.push({
         limit: limit === undefined ? 1 : limit,
@@ -234,7 +255,7 @@ describe('WebMention API', function () {
         .get('/api/mentions/live?site=example.org')
         .query({ site: 'example.org' })
         .buffer(false)
-        .end().req.on('response', res => {
+        .end().on('response', res => {
           const listener = (data) => {
             updates += data;
             if (data.indexOf('data:') === 0) {

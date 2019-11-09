@@ -9,6 +9,7 @@
     "target": "ES2016",
     "module": "commonjs",
     "allowJs": true,
+    "resolveJsonModule": true,
     "noEmit": true,
     "maxNodeModuleJsDepth": 3,
 
