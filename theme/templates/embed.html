@@ -54,6 +54,7 @@
       }
       if (mention.author.photo) {
         avatar = createChild(author, 'img');
+        avatar.loading = 'lazy';
         avatar.src = mention.author.photo;
       }
       addText(author, mention.author.name || 'Unknown');

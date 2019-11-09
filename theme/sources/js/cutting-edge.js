@@ -81,6 +81,7 @@ var classPrefix = 'webmention-',
     var elem;
     if (src) {
       elem = createChild(container, 'img');
+      elem.loading = 'lazy';
       elem.onerror = imgOnError;
       elem.src = src;
     }
