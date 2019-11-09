@@ -1,5 +1,12 @@
 ## Changelog
 
+### 0.13.0
+
+* **BREAKING:** Now requires at least Node 10.x
+* **Improvement:** In browsers that support it, now tries to lazy load images. Thanks @kevinmarks!
+* **Dependencies:** Updated lots of modules to newer versions
+* **Misc:** Tweaked testing setup – now eg. uses GitHub CI
+
 ### 0.12.7
 
 * **Fix:** Restored signup functionality that broke in `knex` and/or `pg` module upgrade
