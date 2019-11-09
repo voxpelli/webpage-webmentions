@@ -39,7 +39,7 @@ const should = chai.should();
 const isSinonStub = (value) => !!(value && value.restore && value.restore.sinon);
 
 describe('WebMention API', function () {
-  this.timeout(7000);
+  this.timeout(15000);
 
   let app;
 
