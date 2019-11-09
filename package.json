@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=10.0.0"
+    "node": "^10.0.0 || ^12.0.0"
   },
   "dependencies": {
     "@voxpelli/metadataparser": "^2.0.0",
