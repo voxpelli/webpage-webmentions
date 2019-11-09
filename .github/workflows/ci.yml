@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node_version: [10]
+        node_version: [10, 12]
         os: [ubuntu-latest]
         postgres_version: [12, 11, 10, 9.5]
     services:
@@ -29,7 +29,7 @@ jobs:
     - name: Use Node.js ${{ matrix.node_version }}
       uses: actions/setup-node@v1
       with:
-        version: ${{ matrix.node_version }}
+        node-version: ${{ matrix.node_version }}
     - name: Yarn install
       run: yarn install --frozen-lockfile
     - name: Yarn run build
