@@ -32,7 +32,7 @@
     "lodash.union": "^4.6.0",
     "lodash.uniq": "^4.5.0",
     "lodash.values": "^4.3.0",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
     "pg": "^7.4.3",
