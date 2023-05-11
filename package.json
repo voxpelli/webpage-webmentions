@@ -60,6 +60,7 @@
     "rollback-schema": "knex-migrator-extension migrate:rollback",
     "start": "node .",
     "test:mocha": "NODE_ENV=test DOTENV_FILE=test/test.env nyc --reporter=lcov --reporter text mocha --exit test/**/*.spec.js",
+    "test-ci": "run-s test:*",
     "test": "run-s check test:*"
   },
   "husky": {
