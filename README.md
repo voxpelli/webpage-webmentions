@@ -1,10 +1,9 @@
 # A WebMention Endpoint
-[![Linting Build Status](https://github.com/voxpelli/webpage-webmentions/workflows/Linting/badge.svg)](https://github.com/voxpelli/webpage-webmentions/actions)
-[![Node CI Build Status](https://github.com/voxpelli/webpage-webmentions/workflows/Node%20CI/badge.svg)](https://github.com/voxpelli/webpage-webmentions/actions)
-[![Coverage Status](https://coveralls.io/repos/github/voxpelli/webpage-webmentions/badge.svg?branch=master)](https://coveralls.io/github/voxpelli/webpage-webmentions?branch=master)
-[![dependencies Status](https://david-dm.org/voxpelli/webpage-webmentions/status.svg)](https://david-dm.org/voxpelli/webpage-webmentions)
-[![Known Vulnerabilities](https://snyk.io/test/github/voxpelli/webpage-webmentions/badge.svg?targetFile=package.json)](https://snyk.io/test/github/voxpelli/webpage-webmentions?targetFile=package.json)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions?ref=badge_shield)
+
+[![IndieWeb](https://img.shields.io/badge/indie-web-FFB100?labelColor=FF5C01)](https://indieweb.org/)
+[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/voxpelli/eslint-config)
+[![Types in JS](https://img.shields.io/badge/types_in_js-yes-brightgreen)](https://github.com/voxpelli/types-in-js)
+[![Follow @voxpelli@mastodon.social](https://img.shields.io/mastodon/follow/109247025527949675?domain=https%3A%2F%2Fmastodon.social&style=social)](https://mastodon.social/@voxpelli)
 
 A site that receives and embeds [WebMentions](http://indiewebcamp.com/webmention) for other sites. makes the WebMentions embeddable through a javascript, similar to how eg. Disqus works.
 
@@ -81,7 +80,3 @@ Install [webmention-testpinger](https://github.com/voxpelli/node-webmention-test
 ```bash
 webmention-testpinger --endpoint=http://127.0.0.1:5000/api/webmention --target=http://127.0.0.1:5000/
 ```
-
-
-## License
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvoxpelli%2Fwebpage-webmentions?ref=badge_large)
