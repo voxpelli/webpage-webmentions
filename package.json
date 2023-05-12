@@ -96,7 +96,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-unicorn": "^12.1.0",
     "grunt": "^1.0.2",
-    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-concat": "^2.0.0",
     "grunt-contrib-uglify": "^1.0.2",
     "husky": "^3.0.9",
     "installed-check": "^3.0.0",
