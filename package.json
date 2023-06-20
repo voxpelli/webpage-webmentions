@@ -106,7 +106,7 @@
     "nyc": "^14.1.1",
     "sinon": "^7.5.0",
     "supertest": "^4.0.2",
-    "typescript": "^3.7.2",
+    "typescript": "^5.0.0",
     "webmention-testpinger": "^0.7.0"
   }
 }
