@@ -85,7 +85,7 @@
     "chai-as-promised": "^7.1.1",
     "coveralls": "^3.0.7",
     "dependency-check": "^4.1.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^16.0.0",
     "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-es": "^2.0.0",
