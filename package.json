@@ -19,7 +19,7 @@
     "cors": "^2.5.2",
     "express": "^4.16.3",
     "express-session": "^1.17.0",
-    "faker": "^2.1.1",
+    "@faker-js/faker": "^2.1.5",
     "fetch-politely": "^2.0.0-3",
     "knex": "^0.15.2",
     "knex-migrator-extension": "^0.1.4",
